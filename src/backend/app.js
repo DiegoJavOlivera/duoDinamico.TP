@@ -3,7 +3,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 
 const app = express();
-const publicPath = path.join(__dirname, 'public');
+const publicPath = path.join(__dirname, '..', '..', 'public');
 const viewsPath = path.join(__dirname, 'views');
 
 app.set('view engine', 'ejs');

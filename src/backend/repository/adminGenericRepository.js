@@ -20,6 +20,4 @@ export default class AdminGenericRepository extends GenericRepository {
     disableProduct = async (id) =>{
         return await this.dao.disableProduct(id);
     }
-
-
 }

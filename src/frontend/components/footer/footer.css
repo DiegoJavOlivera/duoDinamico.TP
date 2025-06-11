@@ -1,0 +1,39 @@
+:host {
+    --wine-red: #7b1e22;
+    --gold: #facc15;
+    --charcoal: #1f1f25;
+    --muted-foreground: #9ca3af;
+  }
+  
+  .footer {
+    background-color: var(--charcoal);
+    border-top: 1px solid rgba(123, 30, 34, 0.2); /* border-wine-red/20 */
+    margin-top: auto;
+    padding: 1.5rem 1rem;
+  }
+  
+  .footer-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .footer-text {
+    color: var(--muted-foreground);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .heart-icon {
+    color: var(--wine-red);
+    font-size: 1rem;
+  }
+  
+  .highlight {
+    color: var(--gold);
+    font-weight: 600;
+  }
+  

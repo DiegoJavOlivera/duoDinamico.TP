@@ -1,0 +1,67 @@
+<!-- admin-login.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login - BarServe</title>
+  <link rel="stylesheet" href="login.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+  <div class="login-container">
+    <div class="light wine"></div>
+    <div class="light gold"></div>
+
+    <div class="login-content">
+      <div class="icon-circle">
+        <i class="bi bi-shield"></i>
+      </div>
+      <div class="login-header">
+        <h1>Panel de Administración</h1>
+        <p>Acceso restringido</p>
+        <div class="separator"></div>
+      </div>
+
+      <div class="login-card">
+        <h2><i class="bi bi-lock"></i> Iniciar Sesión</h2>
+
+        <label for="username">Usuario</label>
+        <input type="text" id="username" placeholder="Ingresa tu usuario" />
+
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" placeholder="Ingresa tu contraseña" />
+
+        <button class="btn primary" onclick="handleLogin()">Ingresar al Panel</button>
+        <button class="btn outline" onclick="fillDemo()">Acceso Rápido (Demo)</button>
+      </div>
+
+      <button class="btn back" onclick="goBack()">
+        <i class="bi bi-arrow-left"></i> Volver al inicio
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function handleLogin() {
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+      if (user === 'admin' && pass === 'admin123') {
+        alert('Acceso concedido: Bienvenido al panel de administración');
+        window.location.href = 'dashboard.html';
+      } else {
+        alert('Error: Usuario o contraseña incorrectos');
+      }
+    }
+
+    function fillDemo() {
+      document.getElementById('username').value = 'admin';
+      document.getElementById('password').value = 'admin123';
+    }
+
+    function goBack() {
+      window.location.href = 'frontend/pages/client/welcome/welcome.html';
+    }
+  </script>
+</body>
+</html>

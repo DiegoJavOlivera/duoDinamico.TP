@@ -1,0 +1,208 @@
+html, body {
+    background-image: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='29' height='33.487' patternTransform='scale(2) rotate(145)'><rect x='0' y='0' width='100%' height='100%' fill='%230c0b0bff'/><path d='M29 20.928v14.813M14.5 12.56v16.745M29-2.559v6.744l-14.5 8.374L0 4.189v-6.745m29 6.742l14.5 8.37m0 16.745L29 20.928l-14.5 8.376L0 20.931l-14.5 8.376m0-16.744L0 4.189m0 31.487V20.931'  stroke-width='1' stroke='%232c070fff' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(-64,-96)' fill='url(%23a)'/></svg>");
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+main {
+    flex: 1;
+}
+
+  .welcome-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    min-height: 100vh;
+    position: relative;
+    background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  /* Efectos ambientales */
+  .glow-wine {
+    position: absolute;
+    top: 5rem;
+    left: 5rem;
+    width: 8rem;
+    height: 8rem;
+    background-color: rgba(139, 0, 0, 0.1);
+    border-radius: 50%;
+    filter: blur(100px);
+    animation: gentle-glow 6s ease-in-out infinite;
+  }
+  
+  .glow-gold {
+    position: absolute;
+    bottom: 5rem;
+    right: 5rem;
+    width: 6rem;
+    height: 6rem;
+    background-color: rgba(255, 215, 0, 0.05);
+    border-radius: 50%;
+    filter: blur(80px);
+  }
+  
+  /* Animación sutil */
+  @keyframes gentle-glow {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+  }
+  
+  /* Contenedor principal */
+  .welcome-container {
+    max-width: 400px;
+    width: 100%;
+    z-index: 1;
+    text-align: center;
+    animation: fade-in-up 0.8s ease-out both;
+  }
+  
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Logo redondo con ícono */
+  .logo-circle {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto;
+    background: radial-gradient(circle at top left, #8b0000, #4b0000);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 25px rgba(139, 0, 0, 0.3);
+    animation: gentle-glow 6s ease-in-out infinite;
+  }
+  
+  .logo-circle i {
+    font-size: 2rem;
+    color: #fff;
+  }
+  
+  /* Títulos */
+  .brand-title {
+    font-size: 2rem;
+    font-weight: bold;
+    background: linear-gradient(to right, #fff, #ffd700, #fff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 1rem;
+  }
+  
+  .subtitle {
+    color: #999;
+    font-size: 1.1rem;
+  }
+  
+  .divider {
+    width: 64px;
+    height: 4px;
+    background: linear-gradient(to right, #8b0000, #ffd700);
+    border-radius: 2px;
+    margin: 1rem auto;
+  }
+  
+  /* Tarjeta central */
+  .welcome-card {
+    background: #1a1a1a;
+    padding: 2rem;
+    border: 1px solid rgba(139, 0, 0, 0.3);
+    border-radius: 0.75rem;
+    margin-top: 2rem;
+    box-shadow: 0 8px 20px rgba(139, 0, 0, 0.15);
+  }
+  
+  /* Texto de bienvenida */
+  .welcome-card h2 {
+    color: #ffd700;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .welcome-card p {
+    color: #bbb;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Input */
+  .welcome-card label {
+    display: block;
+    text-align: left;
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+    color: #fff;
+  }
+  
+  .welcome-card input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(139, 0, 0, 0.5);
+    background-color: #2c2c2c;
+    color: #fff;
+    outline: none;
+  }
+  
+  .welcome-card input::placeholder {
+    color: #888;
+  }
+  
+  /* Botón principal */
+  .start-button {
+    margin-top: 1.5rem;
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 0.5rem;
+    background: linear-gradient(to right, #8b0000, #4b0000);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(139, 0, 0, 0.3);
+    transition: all 0.3s ease;
+  }
+  
+  .start-button:hover {
+    background: linear-gradient(to right, #600000, #8b0000);
+    box-shadow: 0 6px 25px rgba(139, 0, 0, 0.5);
+  }
+  
+  .start-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  
+  /* Acceso admin */
+  .admin-access {
+    margin-top: 2rem;
+    color: #bbb;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    transition: color 0.3s ease;
+  }
+  
+  .admin-access i {
+    margin-right: 0.5rem;
+  }
+  
+  .admin-access:hover {
+    color: #ffd700;
+  }
+  
