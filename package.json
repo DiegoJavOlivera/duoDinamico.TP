@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/backend/index.js",
-    "dev": "node --watch --watch-path ./src/backend ./src/backend/index.js"
+    "dev": "node --watch --watch-path ./src/backend ./src/backend/index.js",
+    "db:sync": "node scripts/sync.js"
   },
   "engines": {
     "node": ">=22.0.0"
