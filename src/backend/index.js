@@ -6,5 +6,5 @@ const app = require('./app');
 const server = http.createServer(app);
 
 server.listen(process.env.PORT, () => {
-  console.log(`creating server at http://localhost:${config.env.port}`);
+  console.log(`creating server at http://localhost:${process.env.PORT}`);
 });
