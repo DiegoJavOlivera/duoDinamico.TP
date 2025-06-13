@@ -1,5 +1,4 @@
-const { Sequelize } = require('sequelize');
-require('dotenv').config();
+const connection = require('../config/db');
 
 const UserModel = require('./user');
 const RoleModel = require('./role');
@@ -11,15 +10,6 @@ const SaleModel = require('./sale');
 const SaleDetailModel = require('./saleDetail');
 const SubcategoryModel = require('./subcategory');
 
-
-const name = process.env.DB_NAME;
-const user = process.env.DB_USER;
-const password = process.env.DB_PASS;
-const host = process.env.DB_HOST;
-const db = process.env.DB_DIALECT;
-
-const connection = new Sequelize(name, user, password, { host: host, dialect: db });
-
 const User = UserModel(connection);
 const Role = RoleModel(connection);
 const UserActionLog = UserActionLogModel(connection);
@@ -29,8 +19,6 @@ const Action = ActionModel(connection);
 const Sale = SaleModel(connection);
 const SaleDetail = SaleDetailModel(connection);
 const Subcategory = SubcategoryModel(connection);
-
-
 
 Product.belongsTo(Category, { foreignKey: 'category_id' });
 Category.hasMany(Product, { foreignKey: 'category_id' });
@@ -55,10 +43,6 @@ Product.hasMany(SaleDetail, { foreignKey: 'product_id' });
 
 Sale.hasMany(SaleDetail, { foreignKey: 'sale_id' });
 SaleDetail.belongsTo(Sale, { foreignKey: 'sale_id' });
-
-
-
-
 
 module.exports = {
   connection,

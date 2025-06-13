@@ -1,4 +1,4 @@
-const { connection } = require('../src/backend/models');
+const { connection } = require('../backend/models');
 
 ( async () => {
   try {

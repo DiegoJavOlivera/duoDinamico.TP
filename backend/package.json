@@ -4,9 +4,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./src/backend/index.js",
-    "dev": "node --watch --watch-path ./src/backend ./src/backend/index.js",
-    "db:sync": "node scripts/sync.js"
+    "start": "node ./index.js",
+    "dev": "node --watch --watch-path . ./index.js",
+    "debug": "node --inspect --watch --watch-path . ./index.js",
+    "db:sync": "node ../scripts/sync.js",
+    "db:seed": "node ../scripts/seed.js",
+    "db:clear": "node ../scripts/clearDatabase.js"
   },
   "engines": {
     "node": ">=22.0.0"
@@ -16,10 +19,13 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.14.1",
     "sequelize": "^6.37.7"
   },
