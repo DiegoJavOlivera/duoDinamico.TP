@@ -35,21 +35,17 @@ DB_NAME=botilleria
 
 ### Common
 #### Productos
-- `GET /products`: Obtener lista de productos
+- `GET api/products`: Obtener lista de productos
   - Retorna: Lista de productos disponibles
   - Filtros: En el futuro incluirá filtros por categoría, subcategoría, rol, etc.
-- `GET /products/:id`: Obtener producto por ID
+- `GET api/products/:id`: Obtener producto por ID
   - Parámetros: ID del producto
   - Retorna: Detalles del producto específico
 
 ### SuperAdmin
-#### Productos
-- `GET /super-admin/products`: Rutas base para productos
-  - Acceso: Solo para super administradores
-  - Funcionalidad: Gestión completa de productos
 
 #### Users
-- `POST /super-admin/users`: Crear un nuevo usuario administrador
+- `POST api/admin/users`: Crear un nuevo usuario administrador
   - Requiere: 
     - name: Nombre del usuario
     - email: Correo electrónico
