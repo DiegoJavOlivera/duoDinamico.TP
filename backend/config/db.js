@@ -1,11 +1,15 @@
 const { Sequelize } = require('sequelize');
+const { getConfig } = require('./index');
 
-const name = process.env.DB_NAME;
-const user = process.env.DB_USER;
-const password = process.env.DB_PASS;
-const host = process.env.DB_HOST;
-const db = process.env.DB_DIALECT;
+const name = getConfig('DB_NAME');
+const user = getConfig('DB_USER');
+const password = getConfig('DB_PASS');
+const host = getConfig('DB_HOST');
+const dialect = getConfig('DB_DIALECT');
 
-const connection = new Sequelize(name, user, password, { host: host, dialect: db });
+const connection = new Sequelize(name, user, password, { 
+    host: host, 
+    dialect: dialect 
+});
 
 module.exports = connection;

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { connection } = require('../backend/models');
 
 ( async () => {

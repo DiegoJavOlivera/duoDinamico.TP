@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { 
     connection, 
     User, 
@@ -9,7 +10,9 @@ const {
     Sale,
     SaleDetail,
     UserActionLog
-} = require('../backend/models');
+} = require('../models');
+
+const { hashPassword } = require('../utils/userUtils');
 
 async function conditionalSeed() {
   try {
@@ -64,18 +67,21 @@ async function conditionalSeed() {
     // Cargar usuarios
     const users = await User.count();
     if (users === 0) {
+      const superAdminPassword = await hashPassword('superadmin123');
+      const adminPassword = await hashPassword('admin123');
+      
       await User.bulkCreate([
         { 
           name: 'Super Admin', 
           email: 'superadmin@example.com', 
-          password: 'superadmin123',
+          password: superAdminPassword,
           is_active: true,
           role_id: 2
         },
         { 
           name: 'Profesor', 
           email: 'profesor@example.com', 
-          password: 'admin123',
+          password: adminPassword,
           is_active: true,
           role_id: 1
         }

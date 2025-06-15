@@ -5,11 +5,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./index.js",
-    "dev": "node --watch --watch-path . ./index.js",
-    "debug": "node --inspect --watch --watch-path . ./index.js",
-    "db:sync": "node ../scripts/sync.js",
-    "db:seed": "node ../scripts/seed.js",
-    "db:clear": "node ../scripts/clearDatabase.js"
+    "dev": "nodemon --watch . ./index.js",
+    "debug": "nodemon --inspect --watch . ./index.js",
+    "db:sync": "node ./scripts/sync.js",
+    "db:seed": "node ./scripts/seed.js",
+    "db:clear": "node ./scripts/clearDatabase.js"
   },
   "engines": {
     "node": ">=22.0.0"
@@ -20,7 +20,6 @@
   "description": "",
   "dependencies": {
     "bcrypt": "^6.0.0",
-    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
@@ -30,6 +29,6 @@
     "sequelize": "^6.37.7"
   },
   "devDependencies": {
-    "sqlite3": "^5.1.7"
+    "nodemon": "^3.1.10"
   }
 }

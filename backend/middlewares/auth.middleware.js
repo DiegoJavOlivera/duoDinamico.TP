@@ -10,12 +10,12 @@ const isAuthenticate = async (req, res, next) => {
         }
 
         const token = authHeader.split(' ')[1];
-        const decoded = verifyToken(token);
-
+        const decoded = await verifyToken(token);
         const user = await User.findByPk(decoded.id);
+
         if (!user || !user.is_active) {
             return res.status(401).json({ error: 'Usuario no encontrado o inactivo' });
-        }
+        }  
 
         req.user = user;
         next();
@@ -23,7 +23,6 @@ const isAuthenticate = async (req, res, next) => {
         return res.status(401).json({ error: 'Token inválido' });
     }
 };
-
 
 const isSuperAdmin = async (req, res, next) => {
     try {
@@ -34,7 +33,7 @@ const isSuperAdmin = async (req, res, next) => {
     } catch (error) {
         return res.status(500).json({ error: 'Error al verificar permisos' });
     }
-};
+}; 
 
 
 const isAdmin = async (req, res, next) => {

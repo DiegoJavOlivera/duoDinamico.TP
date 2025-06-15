@@ -1,6 +1,6 @@
+const { getConfig } = require('./index');
 
 module.exports = {
-    secret: process.env.JWT_SECRET,
-    expiresIn: '24h', 
-    refreshExpiresIn: '7d'
+    secret: getConfig('JWT_SECRET'),
+    expiresIn: '24h'
 }; 
