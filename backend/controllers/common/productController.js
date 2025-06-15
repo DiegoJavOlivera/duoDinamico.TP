@@ -1,8 +1,8 @@
-const { Product } = require("../../models/index");
+const {getProductById, getAllProducts} = require("../../repository/productRepository");
 
 const getProducts = async (req, res) => {
     try {
-        const products = await Product.findAll();
+        const products = await getAllProducts();
         res.status(200).json(products);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -12,7 +12,7 @@ const getProducts = async (req, res) => {
 const getProductById = async (req, res) => {
     try {
         const { id } = req.params;
-        const product = await Product.findByPk(id);
+        const product = await getProductById(id);
         res.status(200).json(product);
     } catch (error) {
         res.status(500).json({ message: error.message });

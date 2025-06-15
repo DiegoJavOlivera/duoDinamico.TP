@@ -5,6 +5,7 @@ const {
     returnUser, 
     hashPassword 
 } = require("../../utils/userUtils");
+const {createNewUser} = require("../../repository/userRepository");
 
 
 const createUser = async (req, res) => {
@@ -22,7 +23,7 @@ const createUser = async (req, res) => {
         }
 
         const hashedPassword = await hashPassword(userData.password);
-        const newAdmin = await User.create({
+        const newAdmin = await createNewUser({
             ...userData,
             password: hashedPassword,
             is_active: true
