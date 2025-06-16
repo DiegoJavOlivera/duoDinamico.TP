@@ -32,7 +32,13 @@ const getProduct = async (req, res) => {
     }
 };
 
+const createProduct = async (req, res) => {
+    // This function is not implemented yet, but it will be used to create a new product
+    res.status(501).json({ message: "Not implemented yet" });
+}
+
 module.exports = {
     getProducts, 
-    getProduct
+    getProduct,
+    createProduct
 };
