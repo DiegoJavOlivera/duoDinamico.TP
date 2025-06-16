@@ -9,7 +9,7 @@ const getProducts = async (req, res) => {
     }
 };
 
-const getProductById = async (req, res) => {
+const getProduct = async (req, res) => {
     try {
         const { id } = req.params;
         const product = await getProductById(id);
@@ -20,5 +20,5 @@ const getProductById = async (req, res) => {
 };
 
 module.exports = {
-    getProducts, getProductById
+    getProducts, getProduct
 };

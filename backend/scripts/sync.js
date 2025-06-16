@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { connection } = require('../backend/models');
+const  connection  = require('../config/db');
 
 ( async () => {
   try {

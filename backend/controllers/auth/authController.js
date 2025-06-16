@@ -1,11 +1,11 @@
-const { User } = require("../../models");
+
+const { findUserByEmail } = require("../../repository/authRepository");
 const { isValidPassword } = require("../../utils/password");
 const { generateToken } = require("../../utils/jwtUtils");
 
 const signIn = async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ where: { email } });
-
+  const user = await findUserByEmail(email);
   if (!user) {
     return res.status(404).json({ error: "User not found" });
   }

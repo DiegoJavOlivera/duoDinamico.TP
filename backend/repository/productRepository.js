@@ -11,7 +11,6 @@ const getAllProducts = async () => {
     }
 }
 
-
 const getProductById = async (id) => {
     try {
         validateProductId(id);

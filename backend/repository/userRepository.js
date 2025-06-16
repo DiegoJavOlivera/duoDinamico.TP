@@ -12,6 +12,23 @@ const createNewUser = async (userData) => {
     }
 }
 
+const checkEmailExists = async (email) => {
+    const existingUser = await User.findOne({ where: { email } });
+    return !!existingUser;
+};
+
+const getAllUsers = async () =>{
+    try {
+        const users = await User.findAll();
+        return users;
+    } catch (error) {
+        throw new Error("Error al obtener los usuarios: " + error.message);
+    }
+}
+
+
 module.exports = {
     createNewUser,
+    checkEmailExists,
+    getAllUsers
 };

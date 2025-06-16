@@ -1,28 +1,30 @@
-const { User } = require("../../models");
 const { 
     validateUserData, 
-    checkEmailExists, 
     returnUser, 
     hashPassword 
 } = require("../../utils/userUtils");
-const {createNewUser} = require("../../repository/userRepository");
+
+const {createNewUser,
+    checkEmailExists,
+    getAllUsers
+} = require("../../repository/userRepository");
 
 
 const createUser = async (req, res) => {
     try {
         const userData = req.body;
-        
         const validation = validateUserData(userData);
         if (!validation.isValid) {
             return res.status(400).json({ error: validation.error });
         }
 
-        const emailExists = await checkEmailExists(User, userData.email);
+        const emailExists = await checkEmailExists(userData.email);
         if (emailExists) {
             return res.status(400).json({ error: "El email ya está registrado" });
         }
 
         const hashedPassword = await hashPassword(userData.password);
+
         const newAdmin = await createNewUser({
             ...userData,
             password: hashedPassword,
@@ -40,7 +42,7 @@ const createUser = async (req, res) => {
 };
 
 const getUsers = async (req, res) => {
-    const users = await User.findAll();
+    const users = await getAllUsers();
     res.status(200).json(users);
 };
 

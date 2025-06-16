@@ -13,10 +13,6 @@ const validateUserData = (userData) => {
     return { isValid: true };
 };
 
-const checkEmailExists = async (User, email) => {
-    const existingUser = await User.findOne({ where: { email } });
-    return !!existingUser;
-};
 
 const returnUser = (user) => ({
     id: user.id,
@@ -31,7 +27,6 @@ const hashPassword = async (password) => {
 
 module.exports = {
     validateUserData,
-    checkEmailExists,
     returnUser,
     hashPassword
 }; 

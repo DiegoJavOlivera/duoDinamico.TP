@@ -1,5 +1,6 @@
 const { verifyToken } = require('../utils/jwtUtils');
-const { User } = require('../models');
+const {findByPkCustom} = require('../repository/authMiddlewareRepository');
+
 
 const isAuthenticate = async (req, res, next) => {
     try {
@@ -11,7 +12,7 @@ const isAuthenticate = async (req, res, next) => {
 
         const token = authHeader.split(' ')[1];
         const decoded = await verifyToken(token);
-        const user = await User.findByPk(decoded.id);
+        const user = await findByPkCustom(decoded.id);
 
         if (!user || !user.is_active) {
             return res.status(401).json({ error: 'Usuario no encontrado o inactivo' });
