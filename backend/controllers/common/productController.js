@@ -15,7 +15,7 @@ const getProducts = async (req, res) => {
     }
 };
 
-const getProduct = async (req, res) => {s
+const getProduct = async (req, res) => {
     try {
         const { id } = req.params;
         if(!isValidId(id)){
@@ -27,7 +27,8 @@ const getProduct = async (req, res) => {s
         }
         res.status(200).json(product);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        const statusCode = error.statusCode || 500;
+        res.status(statusCode).json({ message: error.message });
     }
 };
 
