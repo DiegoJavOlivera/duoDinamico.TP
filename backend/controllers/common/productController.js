@@ -18,7 +18,7 @@ const getProducts = async (req, res) => {
 const getProduct = async (req, res) => {s
     try {
         const { id } = req.params;
-        if(isValidId(id)){
+        if(!isValidId(id)){
             throw new InvalidIdException(`The PRODUCT ID "${id}" is not valid`);
         }
         const product = await getProductById(id);
