@@ -1,34 +1,18 @@
-const {returnUser} = require("../utils/userUtils");
 
 const {User} = require("../models");
 
 
-const createNewUser = async (userData) => {
-    try {
-        const newAdmin = await User.create(userData)
-        return returnUser(newAdmin);
-    } catch (error) {
-        throw new Error("Error al crear el usuario: " + error.message);
-    }
-}
+const create = (userData) => User.create(userData);
 
-const checkEmailExists = async (email) => {
-    const existingUser = await User.findOne({ where: { email } });
-    return !!existingUser;
-};
+const checkEmailExists = (email) => User.findOne({ where: { email } });
 
-const getAllUsers = async () =>{
-    try {
-        const users = await User.findAll();
-        return users;
-    } catch (error) {
-        throw new Error("Error al obtener los usuarios: " + error.message);
-    }
-}
+const getAllUsers = () => User.findAll();
 
+const findByPkCustom = (id) => User.findByPk(id);
 
 module.exports = {
-    createNewUser,
+    create,
     checkEmailExists,
-    getAllUsers
-};
+    getAllUsers,
+    findByPkCustom
+};  

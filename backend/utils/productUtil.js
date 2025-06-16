@@ -14,7 +14,7 @@ const validateProductId = (id) => {
 
 const validateProductData = (productData) => {
     if(!productData || productData.length === 0){
-        throw new Error("No products found");
+        return true;
     }
 }
 

@@ -4,7 +4,7 @@ const {
     hashPassword 
 } = require("../../utils/userUtils");
 
-const {createNewUser,
+const {create,
     checkEmailExists,
     getAllUsers
 } = require("../../repository/userRepository");
@@ -19,13 +19,13 @@ const createUser = async (req, res) => {
         }
 
         const emailExists = await checkEmailExists(userData.email);
-        if (emailExists) {
+        if (!!emailExists) {
             return res.status(400).json({ error: "El email ya está registrado" });
         }
 
         const hashedPassword = await hashPassword(userData.password);
 
-        const newAdmin = await createNewUser({
+        const newAdmin = await create({
             ...userData,
             password: hashedPassword,
             is_active: true
