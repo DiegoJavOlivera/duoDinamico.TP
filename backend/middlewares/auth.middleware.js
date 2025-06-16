@@ -1,5 +1,5 @@
 const { verifyToken } = require('../utils/jwtUtils');
-const {findByPkCustom} = require('../repository/authMiddlewareRepository');
+const { findByPkCustom } = require('../repository/userRepository');
 
 
 const isAuthenticate = async (req, res, next) => {
