@@ -1,7 +1,12 @@
-const {getProductById, getAllProducts} = require("../../repository/productRepository");
-const { isProductEmpty } = require("../../utils/productUtil");
-const { isValidId } = require("../../utils/commons")
+const {getProductById, getAllProducts, addProduct} = require("../../repository/productRepository");
+const {addLog} = require("../../repository/logRepository");
+const {getAllActions} = require("../../repository/actionRepository");
+
+const { isProductEmpty, isDataProductValid } = require("../../utils/productUtil");
+const { isValidId } = require("../../utils/commons");
 const InvalidIdException = require("../../errors/invalidIdException");
+const {verifyToken} = require("../../utils/jwtUtils");
+
 
 const getProducts = async (req, res) => {
     try {
@@ -33,8 +38,56 @@ const getProduct = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
-    // This function is not implemented yet, but it will be used to create a new product
-    res.status(501).json({ message: "Not implemented yet" });
+    try {
+        
+        if(!isDataProductValid(req.body)){
+            return res.status(400).json({ message: "Invalid product data" });
+        }
+        const headerData = req.headers.authorization;
+        const token = headerData.split(" ")[1];
+        const dataUser = verifyToken(token); // el id del admin actual lo saco del token quizas hay que abstraer esto a una funcion en utils 
+
+        const {name,
+            description,
+            image,
+            price,
+            stock,
+            category_id,
+            subcategory_id} = req.body;
+        
+        const imagePath = process.env.IMAGE_PATH //Pri mira esto por favor ,despues habria que acomodarlo 
+
+        const newProduct = {
+            name,
+            description,
+            image: `${imagePath}/${image}`,
+            price,
+            stock,
+            category_id,
+            subcategory_id
+        };
+
+        const create =  await addProduct(newProduct);
+        if(!create){
+            return res.status(400).json({ message: "Error creating product" });
+        }
+        const createLog = await addLog({
+            user_id: dataUser.id,
+            product_id: create.id,
+            action_id: 1, // a esto despues habria que acomodarlo por que esta Hardcodeado
+            created_at: new Date()
+        })
+        if(!createLog){
+            return res.status(400).json({ message: "Error creating log" });
+        }
+
+        res.status(201).json({ message: "Log created successfully", log: createLog });
+        res.status(201).json({ message: "Product created successfully", product: create });
+
+    } catch (error) {
+        res.status(500).json({ message: "Error Nuevo" });
+    }
+
 }
 
 module.exports = {
