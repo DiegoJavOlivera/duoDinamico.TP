@@ -3,6 +3,12 @@ const isValidId = (id) => {
 };
 
 
+
+const isAllValid = (arr) => arr.every(Boolean);
+
+
 module.exports = {
-    isValidId
+    isValidId,
+
+    isAllValid
 };

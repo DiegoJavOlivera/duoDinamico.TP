@@ -1,9 +1,10 @@
 const multer = require('multer');
 const path = require('path');
+const {getConfig} = require('../config/index');
 
-require('dotenv').config();
 
-const IMAGES_PATH = process.env.IMAGES_PATH 
+
+const IMAGES_PATH = getConfig("IMAGE_PATH"); 
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {

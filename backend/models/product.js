@@ -25,12 +25,12 @@ module.exports = (connection) => {
         price: {
             type: DataTypes.FLOAT,
             allowNull: false,
-            defaultValue: 0.0,
+            defaultValue: 1.0,
         },
         stock: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            defaultValue: 0,
+            defaultValue: 1,
         },
         is_active: {
             type: DataTypes.BOOLEAN,

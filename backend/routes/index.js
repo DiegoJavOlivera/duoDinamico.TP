@@ -5,6 +5,7 @@ const productRouter = require("./common/productRouter");
 const authRouter = require("./auth/authRouter");
 
 const { isAdmin, isAuthenticate } = require("../middlewares/auth.middleware");
+
 const router = express.Router();
 
 router.use("/auth", authRouter);

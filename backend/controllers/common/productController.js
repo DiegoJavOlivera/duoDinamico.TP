@@ -1,17 +1,18 @@
 const {getProductById, getAllProducts, addProduct} = require("../../repository/productRepository");
 const {addLog} = require("../../repository/logRepository");
-const {getAllActions} = require("../../repository/actionRepository");
 
-const { isProductEmpty, isDataProductValid } = require("../../utils/productUtil");
-const { isValidId } = require("../../utils/commons");
+
+const {getConfig} = require("../../config/index");
+
+const { isValidId, isAllValid } = require("../../utils/commons");
 const InvalidIdException = require("../../errors/invalidIdException");
-const {verifyToken} = require("../../utils/jwtUtils");
 
+const ACTION_ID = 1;
 
 const getProducts = async (req, res) => {
     try {
         const products = await getAllProducts();
-        if(isProductEmpty(products)){
+        if(isAllValid(products)){
             res.status(404).json({ message: "No products found" });
         }
         res.status(200).json(products);
@@ -27,7 +28,7 @@ const getProduct = async (req, res) => {
             throw new InvalidIdException(`The PRODUCT ID "${id}" is not valid`);
         }
         const product = await getProductById(id);
-        if(isProductEmpty([product])){
+        if(isAllValid([product])){
             return res.status(404).json({ message: "Product not found" });
         }
         res.status(200).json(product);
@@ -39,23 +40,27 @@ const getProduct = async (req, res) => {
 
 const createProduct = async (req, res) => {
     try {
-        
-        if(!isDataProductValid(req.body)){
-            return res.status(400).json({ message: "Invalid product data" });
-        }
-        const headerData = req.headers.authorization;
-        const token = headerData.split(" ")[1];
-        const dataUser = verifyToken(token); // el id del admin actual lo saco del token quizas hay que abstraer esto a una funcion en utils 
 
-        const {name,
+        let {name,
             description,
-            image,
             price,
             stock,
             category_id,
             subcategory_id} = req.body;
         
-        const imagePath = process.env.IMAGE_PATH //Pri mira esto por favor ,despues habria que acomodarlo 
+        stock = parseInt(stock);
+        price = parseFloat(price);
+        category_id = parseInt(category_id);
+        subcategory_id = parseInt(subcategory_id);
+    
+        const image = req.file.filename;
+        
+        if(!isAllValid([name, description, image, price, stock, category_id, subcategory_id])){
+            return res.status(400).json({ message: "Invalid product data" });
+        }
+
+
+        const imagePath = getConfig("IMAGE_PATH") 
 
         const newProduct = {
             name,
@@ -69,23 +74,23 @@ const createProduct = async (req, res) => {
 
         const create =  await addProduct(newProduct);
         if(!create){
-            return res.status(400).json({ message: "Error creating product" });
-        }
-        const createLog = await addLog({
-            user_id: dataUser.id,
-            product_id: create.id,
-            action_id: 1, // a esto despues habria que acomodarlo por que esta Hardcodeado
-            created_at: new Date()
-        })
-        if(!createLog){
-            return res.status(400).json({ message: "Error creating log" });
+            return res.status(500).json({ message: "Error creating product" });
         }
 
-        res.status(201).json({ message: "Log created successfully", log: createLog });
+        const createLog = await addLog({
+            user_id: req.user.dataValues.id,
+            product_id: create.dataValues.id,
+            action_id: ACTION_ID, 
+        })
+
+        if(!createLog){
+            return res.status(500).json({ message: "Error creating log" });
+        }
+
         res.status(201).json({ message: "Product created successfully", product: create });
 
     } catch (error) {
-        res.status(500).json({ message: "Error Nuevo" });
+        res.status(500).json({ message: "Internal server error" });
     }
 
 }

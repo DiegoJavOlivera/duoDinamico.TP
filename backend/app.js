@@ -1,6 +1,9 @@
 const express = require('express');
 const router = require("./routes");
 const cors = require("cors");
+const path = require('path');
+const { getConfig } = require('./config/index');
+const fs = require('fs');
 
 const app = express();
 
@@ -11,7 +14,11 @@ app.get('/', (req, res) => {
   res.send('hello worldsito');
 });
 
+
 app.use("/api", router);
+
+app.use('/uploads', express.static(path.join(__dirname, getConfig("IMAGE_PATH"))));
+
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
