@@ -45,17 +45,17 @@ const createProduct = async (req, res) => {
             description,
             price,
             stock,
-            category_id,
             subcategory_id} = req.body;
         
         stock = parseInt(stock);
         price = parseFloat(price);
-        category_id = parseInt(category_id);
         subcategory_id = parseInt(subcategory_id);
-    
+
+
         const image = req.file.filename;
+
         
-        if(!isAllValid([name, description, image, price, stock, category_id, subcategory_id])){
+        if(!isAllValid([name, description, image, price, stock, subcategory_id])){
             return res.status(400).json({ message: "Invalid product data" });
         }
 
@@ -68,7 +68,6 @@ const createProduct = async (req, res) => {
             image: `${imagePath}/${image}`,
             price,
             stock,
-            category_id,
             subcategory_id
         };
 
