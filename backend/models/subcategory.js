@@ -12,7 +12,15 @@ module.exports = (connection) => {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
-        }
+        },
+        category_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'categories',
+                key: 'id',
+            },
+        },
     },{
         tableName: 'subcategories',
         timestamps: false,

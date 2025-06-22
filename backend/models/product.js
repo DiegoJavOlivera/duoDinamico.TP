@@ -37,14 +37,6 @@ module.exports = (connection) => {
             allowNull: false,
             defaultValue: true,
         },
-        category_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: 'categories',
-                key: 'id',
-            },
-        },
         subcategory_id: {
             type: DataTypes.INTEGER,
             allowNull: false,

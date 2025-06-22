@@ -4,7 +4,7 @@ const  connection  = require('../config/db');
 ( async () => {
   try {
     console.log('Sincronizando modelos...');
-    await connection.sync(); 
+    await connection.sync({ force: true }); 
     console.log('Modelos sincronizados correctamente');
     process.exit(0);
   } catch (error) {

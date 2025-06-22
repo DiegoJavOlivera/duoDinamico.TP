@@ -49,17 +49,20 @@ async function conditionalSeed() {
       console.log('Categorías insertadas');
     }
 
+    const bebidas = await Category.findOne({ where: { name: 'bebidas' } });
+    const accesorios = await Category.findOne({ where: { name: 'accesorios' } });
+
     // Cargar subcategorías
     const subcategories = await Subcategory.count();
     if (subcategories === 0) {
       await Subcategory.bulkCreate([
-        { name: 'alcoholico' },
-        { name: 'no alcoholico' },
-        { name: 'refrigeracion' },
-        { name: 'kits' },
-        { name: 'utensilios' },
-        { name: 'vasos' },
-        { name: 'copas' }
+        { name: 'alcoholico', category_id: bebidas.id },
+        { name: 'no alcoholico', category_id: bebidas.id },
+        { name: 'refrigeracion', category_id: accesorios.id },
+        { name: 'kits', category_id: accesorios.id },
+        { name: 'utensilios', category_id: accesorios.id },
+        { name: 'vasos', category_id: accesorios.id },
+        { name: 'copas', category_id: accesorios.id }
       ]);
       console.log('Subcategorías insertadas');
     }
