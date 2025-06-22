@@ -20,9 +20,6 @@ const Sale = SaleModel(connection);
 const SaleDetail = SaleDetailModel(connection);
 const Subcategory = SubcategoryModel(connection);
 
-Product.belongsTo(Category, { foreignKey: 'category_id' });
-Category.hasMany(Product, { foreignKey: 'category_id' });
-
 Product.belongsTo(Subcategory, { foreignKey: 'subcategory_id' });
 Subcategory.hasMany(Product, { foreignKey: 'subcategory_id' });
 
@@ -44,6 +41,9 @@ Product.hasMany(SaleDetail, { foreignKey: 'product_id' });
 Sale.hasMany(SaleDetail, { foreignKey: 'sale_id' });
 SaleDetail.belongsTo(Sale, { foreignKey: 'sale_id' });
 
+Category.hasMany(Subcategory, { foreignKey: 'category_id' });
+Subcategory.belongsTo(Category, { foreignKey: 'category_id' });
+
 module.exports = {
   connection,
   User,
@@ -54,5 +54,5 @@ module.exports = {
   Action,
   Sale,
   SaleDetail,
-  Subcategory,
+  Subcategory
 };

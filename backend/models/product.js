@@ -1,7 +1,5 @@
 const { DataTypes} = require('sequelize');
 
-
-
 module.exports = (connection) => {
     return connection.define('Product', {
         id:{
