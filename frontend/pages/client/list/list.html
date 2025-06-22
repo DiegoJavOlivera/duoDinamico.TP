@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>DrinkMart | Selección</title>
+  <link rel="stylesheet" href="list.css">
+</head>
+<body class="bg">
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">DrinkMart</div>
+      <div class="user">Hola, <span class="user-name">priscilla</span></div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-cancel">Cancelar Compra</button>
+      <button class="btn-cart">Ver Carrito</button>
+    </div>
+  </header>
+  <main class="main">
+    <div class="categories-container">
+      <h1 class="title">¿Qué estás buscando hoy?</h1>
+      <p class="subtitle">Selecciona una categoría para comenzar</p>
+      <div class="row">
+        <div class="card bebidas">
+          <div class="content">
+            <div class="title">Bebidas</div>
+            <div class="desc">Whiskys, Vinos, Cervezas, Vodka, Tequila, Gaseosas y más</div>
+            <button class="btn" onclick="selectCategory(categories.drink)">Explorar Bebidas</button>
+          </div>
+        </div>
+        <div class="card acc">
+          <div class="content">
+            <div class="title">Accesorios</div>
+            <div class="desc">Refrigeración, Kits, Utensilios, Vasos, Copas y más</div>
+            <button class="btn" onclick="selectCategory(categories.accessories)">Explorar Accesorios</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="subcategories-container isHidden">
+      <button id="back-to-categories" class="back-btn isHidden">← Volver</button>
+      <h1 class="title" id="subcategory-title"></h1>
+      <p class="subtitle">Selecciona una subcategoría para ver los productos</p>
+      <div class="sub-cards-container subrow"></div>
+    </div>
+    <div class="products-container isHidden">
+      <button id="back-to-subcategories" class="back-btn isHidden">← Volver</button>
+      <h1 class="title" id="product-title"></h1>
+      <p class="subtitle">Selecciona un producto para agregarlo al carrito</p>
+      <div class="product-cards-container"></div>
+    </div>
+  </main>
+  <script src="/frontend/pages/client/list/list.js"></script>
+  <script src="/frontend/api/subcategories.js"></script>
+  <script src="/frontend/api/products.js"></script>
+  <script src="/frontend/api/fetcher.js"></script>
+</body>
+</html>

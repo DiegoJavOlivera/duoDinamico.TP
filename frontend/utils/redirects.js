@@ -9,3 +9,7 @@ const moveToWelcome = () => {
 const moveToAdminDashboard = () => {
     window.location.href = '/frontend/pages/admin/dashboard/dashboard.html';
 }
+
+const moveToDashboard = () => {
+    window.location.href = '/frontend/pages/client/list/list.html';
+}
