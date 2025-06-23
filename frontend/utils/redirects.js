@@ -1,15 +1,15 @@
 const moveToLogin = () => {
-    window.location.href = '/frontend/pages/admin/login/login.html';
+    window.location.href = '/pages/admin/login/login.html';
 }
 
 const moveToWelcome = () => {
-    window.location.href = '/frontend/index.html';
+    window.location.href = '/index.html';
 }
 
 const moveToAdminDashboard = () => {
-    window.location.href = '/frontend/pages/admin/dashboard/dashboard.html';
+    window.location.href = '/pages/admin/dashboard/dashboard.html';
 }
 
 const moveToDashboard = () => {
-    window.location.href = '/frontend/pages/client/list/list.html';
+    window.location.href = '/pages/client/list/list.html';
 }

@@ -7,8 +7,6 @@ const { createProduct } = require("../../controllers/common/productController");
 const { upload } = require("../../middlewares/upload.middleware");
 
 
-
-
 router.get("/", getProducts);
 router.get("/:id", getProduct);
 router.post("/", isAuthenticate, isAdmin, upload, createProduct);

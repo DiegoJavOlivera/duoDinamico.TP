@@ -7,6 +7,7 @@ const signIn = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await findUserByEmail(email);
+    
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }

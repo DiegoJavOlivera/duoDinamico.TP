@@ -159,13 +159,13 @@ body.bg {
   background: #b52e2e;
 }
 .bebidas {
-  background-image: url("/frontend/images/categories/alcohol.jpg");
+  background-image: url("/images/categories/alcohol.jpg");
   background-size: cover;
   background-position: center;
   box-shadow: 0 4px 24px #e03c3c22;
 }
 .acc {
-  background-image: url("/frontend/images/categories/tools.jpg");
+  background-image: url("/images/categories/tools.jpg");
   background-size: cover;
   background-position: center;
   box-shadow: 0 4px 24px #ffd60022;

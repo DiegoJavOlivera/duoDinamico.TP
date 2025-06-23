@@ -14,6 +14,12 @@ window.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  nameInput.addEventListener('keyup', function(evt) {
+    if (evt.key === 'Enter' && isValidName(nameInput.value)) {
+      moveToDashboard();
+    }
+  });
+
   startButton.addEventListener('click', function() {
     if (isValidName(nameInput.value)) {
       localStorage.setItem('userName', nameInput.value);

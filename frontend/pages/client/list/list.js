@@ -93,7 +93,7 @@ const cancelBtn = document.querySelector('.btn-cancel');
 if (cancelBtn) {
     cancelBtn.onclick = () => {
         localStorage.clear();
-        window.location.href = '/frontend/index.html';
+        window.location.href = '/index.html';
     };
 }
 
@@ -108,12 +108,11 @@ function renderProducts(products, subcategory_name) {
         const card = document.createElement('div');
         card.className = 'product-card';
         card.innerHTML = `
-            <img class="product-img" src="/frontend/images/categories/alcohol.jpg" alt="${product.name}">
+            <img class="product-img" src="/images/categories/alcohol.jpg" alt="${product.name}">
             <div class="product-name">${product.name}</div>
             <div class="product-price">$${product.price}</div>
             <button class="product-btn">+ Agregar</button>
         `;
-        // Aquí puedes agregar lógica para el botón agregar al carrito
         container.appendChild(card);
     });
 }
