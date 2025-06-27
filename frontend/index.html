@@ -11,7 +11,8 @@
   <link rel="stylesheet" href="./components/footer/footer.css" />
   <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="colors.css" />
-  <link rel="stylesheet" href="bootstrap-icons.css" />
+  <link rel="stylesheet" href="assets/bootstrap-icons.css" />
+  <link rel="stylesheet" href="assets/bootstrap.css" />
 
   <script src="utils/redirects.js"></script>
   <script src="utils/includeHTML.js"></script>
@@ -40,7 +41,8 @@
         <p>Ingresa tu nombre para comenzar</p>
         <label for="name">Tu nombre</label>
         <input id="name" type="text" placeholder="Ingresa tu nombre aquí..." />
-  
+        <div id="name-error" class="alert alert-danger py-2" style="display:none"></div>
+
         <button class="start-button" disabled onclick="moveToDashboard()">
           Comenzar Compra
         </button>

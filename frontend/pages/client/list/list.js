@@ -9,6 +9,12 @@ const categories = {
     }
 };
 
+const USERNAME = localStorage.getItem('userName');
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('.user-name').textContent = USERNAME;
+});
+
 // Render subcategory cards
 function renderSubcategories(subcategories, category_name) {
     const container = document.querySelector('.sub-cards-container');
@@ -18,10 +24,13 @@ function renderSubcategories(subcategories, category_name) {
     subcategories.forEach(subcat => {
         const card = document.createElement('div');
         card.className = 'subcard';
-        card.style.background = '#f7c873'; 
+        card.style.position = 'relative'
+
         card.innerHTML = `
-            <div class="subtitle">${subcat.name}</div>
-            <button class="subbtn">Ver productos</button>
+            <div class="card-body">
+                <div class="subtitle fs-5">${subcat.name}</div>
+                <button class="subbtn btn btn-primary">Ver productos</button>
+            </div>
         `;
         card.querySelector('.subbtn').onclick = () => selectSubcategory(subcat);
         container.appendChild(card);
@@ -89,12 +98,9 @@ document.getElementById('back-to-subcategories').onclick = () => {
 renderStep();
 
 // Lógica botón Cancelar Compra
-const cancelBtn = document.querySelector('.btn-cancel');
-if (cancelBtn) {
-    cancelBtn.onclick = () => {
-        localStorage.clear();
-        window.location.href = '/index.html';
-    };
+const cancel = () => {
+    localStorage.clear();
+    moveToWelcome();
 }
 
 // Render product cards
@@ -111,7 +117,7 @@ function renderProducts(products, subcategory_name) {
             <img class="product-img" src="/images/categories/alcohol.jpg" alt="${product.name}">
             <div class="product-name">${product.name}</div>
             <div class="product-price">$${product.price}</div>
-            <button class="product-btn">+ Agregar</button>
+            <button class="btn text-light product-btn">+ Agregar</button>
         `;
         container.appendChild(card);
     });
