@@ -1,4 +1,25 @@
 window.addEventListener('DOMContentLoaded', function() {
+  const adminAccess = document.querySelector('.admin-access');
+
+  // Mostrar/Ocultar admin-access con atajos
+  window.addEventListener('keydown', function(e) {
+    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+    // Mostrar con A
+    if (
+      (isMac && e.metaKey && e.shiftKey && e.key.toLowerCase() === 'a') ||
+      (!isMac && e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a')
+    ) {
+      adminAccess.classList.remove('d-none');
+    }
+    // Ocultar con Q
+    if (
+      (isMac && e.metaKey && e.shiftKey && e.key.toLowerCase() === 'z') ||
+      (!isMac && e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'z')
+    ) {
+      adminAccess.classList.add('d-none');
+    }
+  });
+
   const nameInput = document.getElementById('name');
   const startButton = document.querySelector('.start-button');
   const nameError = document.getElementById('name-error');
