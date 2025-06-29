@@ -15,6 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.user-name').textContent = USERNAME;
 });
 
+function updateCartBadge() {
+    const badge = document.getElementById('cart-badge');
+    const count = getCartCount();
+    if (badge) {
+      badge.textContent = count;
+      badge.style.display = count > 0 ? 'inline-block' : 'none';
+    }
+}
+
 // Render subcategory cards
 function renderSubcategories(subcategories, category_name) {
     const container = document.querySelector('.sub-cards-container');
@@ -106,10 +115,20 @@ const cancel = () => {
 // Render product cards
 function renderProducts(products, subcategory_name) {
     const container = document.querySelector('.product-cards-container');
+    const noProducts = document.querySelector('.no-products');
     const title = document.getElementById('product-title');
+    const selectText = document.querySelector('.select-product');
     title.textContent = subcategory_name;
 
     container.innerHTML = '';
+    noProducts.textContent = '';
+
+    if (!products || products.length === 0) {
+        noProducts.textContent = 'No hay productos disponibles para esta subcategoría';
+        selectText.classList.add('isHidden');
+        return;
+    }
+
     products.forEach(product => {
         const card = document.createElement('div');
         card.className = 'product-card';
@@ -119,6 +138,9 @@ function renderProducts(products, subcategory_name) {
             <div class="product-price">$${product.price}</div>
             <button class="btn text-light product-btn">+ Agregar</button>
         `;
+
+        const btn = card.querySelector('.product-btn');
+        btn.addEventListener('click', () => addToCart(product));
         container.appendChild(card);
     });
 }

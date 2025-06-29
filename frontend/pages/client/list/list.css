@@ -152,6 +152,10 @@ body {
   text-align: center;
 }
 
+.no-products {
+  text-align: center;
+}
+
 @media (min-width: 850px) {
   .product-categories-container .row {
     display: flex;

@@ -13,3 +13,7 @@ const moveToAdminDashboard = () => {
 const moveToDashboard = () => {
     window.location.href = '/pages/client/list/list.html';
 }
+
+const moveToCart = () => {
+    window.location.href = '/pages/client/cart/cart.html';
+}
