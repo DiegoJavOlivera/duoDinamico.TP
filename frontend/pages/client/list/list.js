@@ -21,8 +21,14 @@ function updateCartBadge() {
     if (badge) {
       badge.textContent = count;
       badge.style.display = count > 0 ? 'inline-block' : 'none';
+      badge.classList.toggle('bg-warning', count > 0);
+      badge.classList.toggle('text-dark', count > 0);
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateCartBadge();
+});
 
 // Render subcategory cards
 function renderSubcategories(subcategories, category_name) {
@@ -129,6 +135,10 @@ function renderProducts(products, subcategory_name) {
         return;
     }
 
+    // Import helpers si no están en el scope global
+    // import { getCart, addToCart, setCart } from '../../utils/productsStorage.js';
+    // Asumimos que están disponibles globalmente
+
     products.forEach(product => {
         const card = document.createElement('div');
         card.className = 'product-card';
@@ -136,11 +146,59 @@ function renderProducts(products, subcategory_name) {
             <img class="product-img" src="/images/categories/alcohol.jpg" alt="${product.name}">
             <div class="product-name">${product.name}</div>
             <div class="product-price">$${product.price}</div>
-            <button class="btn text-light product-btn">+ Agregar</button>
+            <div class="product-btn-container"></div>
         `;
 
-        const btn = card.querySelector('.product-btn');
-        btn.addEventListener('click', () => addToCart(product));
+        const btnContainer = card.querySelector('.product-btn-container');
+        let cartObj = getCart();
+        if (!cartObj || !Array.isArray(cartObj.products)) {
+            cartObj = { products: [] };
+        }
+        const prodInCart = cartObj.products.find(p => p.id === product.id);
+
+        if (prodInCart) {
+            // Si está en el carrito, muestra controles de cantidad
+            btnContainer.innerHTML = `
+                <button class="btn btn-sm btn-danger btn-restar" style="margin-right: 5px;">-</button>
+                <span class="cantidad-en-carrito">${prodInCart.cantidad}</span>
+                <button class="btn btn-sm btn-success btn-sumar" style="margin-left: 5px;">+</button>
+            `;
+            const btnSumar = btnContainer.querySelector('.btn-sumar');
+            const btnRestar = btnContainer.querySelector('.btn-restar');
+            const cantidadSpan = btnContainer.querySelector('.cantidad-en-carrito');
+
+            btnSumar.addEventListener('click', () => {
+                addToCart(product);
+                renderProducts(products, subcategory_name);
+                updateCartBadge();
+            });
+            btnRestar.addEventListener('click', () => {
+                let cartObj = getCart();
+                const idx = cartObj.products.findIndex(p => p.id === product.id);
+                if (idx > -1) {
+                    if (cartObj.products[idx].cantidad > 1) {
+                        cartObj.products[idx].cantidad -= 1;
+                    } else {
+                        cartObj.products.splice(idx, 1);
+                    }
+                    setCart(cartObj);
+                }
+                renderProducts(products, subcategory_name);
+                updateCartBadge();
+            });
+        } else {
+            // Si no está en el carrito, muestra solo el botón agregar
+            btnContainer.innerHTML = `
+                <button class="btn text-light product-btn">+ Agregar</button>
+            `;
+            const btn = btnContainer.querySelector('.product-btn');
+            btn.addEventListener('click', () => {
+                addToCart(product);
+                renderProducts(products, subcategory_name);
+                updateCartBadge();
+            });
+        }
         container.appendChild(card);
     });
 }
+

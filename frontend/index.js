@@ -47,6 +47,9 @@ window.addEventListener('DOMContentLoaded', function() {
 
   nameInput.addEventListener('keyup', function(evt) {
     if (evt.key === 'Enter' && isValidName(nameInput.value)) {
+      localStorage.setItem('userName', nameInput.value);
+      nameInput.value = '';
+      startButton.setAttribute('disabled', 'disabled');
       moveToDashboard();
     }
   });
