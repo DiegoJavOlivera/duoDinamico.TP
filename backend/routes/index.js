@@ -3,7 +3,7 @@ const express = require("express");
 const adminRouter = require("./admin");
 const productRouter = require("./common/productRouter");
 const authRouter = require("./auth/authRouter");
-const createTicket = require("./common/ticketRouter");
+const createTicket = require("./common/SaleRouter");
 
 const { isAdmin, isAuthenticate } = require("../middlewares/auth.middleware");
 
