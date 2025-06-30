@@ -16,7 +16,7 @@ module.exports = (connection) => {
                 min: 1
             },
         },
-        total: {
+        subtotal: {
             type: DataTypes.FLOAT,
             allowNull: false,
             validate: {

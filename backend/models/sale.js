@@ -7,6 +7,11 @@ module.exports = (connection) =>{
             primaryKey: true,
             autoIncrement: true,
         },
+        ticket_code: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique:true,
+        },
         customer_name:{
             type: DataTypes.STRING,
             allowNull: false,
