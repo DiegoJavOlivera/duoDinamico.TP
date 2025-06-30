@@ -2,7 +2,7 @@
 const {getAllProductsById, reduceStock} = require("../../repository/productRepository");
 const {createSale} = require("../../repository/saleRepository");
 const {createSaleDetail} = require("../../repository/saleDetailRepository");
-
+const {nanoid} = require("nanoid");
 
 const createTicket = async (req, res) => {
     try {
@@ -22,11 +22,9 @@ const createTicket = async (req, res) => {
         let totalCalculated = 0;
         const saleDetails = [];
 
-        for (let i = 0; i < products.length; i++) {
-            const { id, quantity } = products[i];
+        products.forEach(({ id, quantity }) => {
             const dbProduct = productData.find(p => p.id === id);
-
-            if (!dbProduct) continue;
+            if (!dbProduct) return; 
 
             const subtotal = dbProduct.price * quantity;
             totalCalculated += subtotal;
@@ -34,29 +32,18 @@ const createTicket = async (req, res) => {
             saleDetails.push({
                 product_id: dbProduct.id,
                 quantity,
-                total: parseFloat(dbProduct.price),
-                subtotal
+                subtotal: parseFloat(subtotal)
             });
-        }
+        });
 
         if (totalCalculated !== total) {
             return res.status(400).json({ message: "Total does not match calculated total" });
         }
 
-        for(let i = 0; i < products.length; i++){
-            const { id, quantity } = products[i];
-            const dbProduct = productData.find(p => p.id === id);
-
-            if (!dbProduct) continue;
-
-            if (dbProduct.stock < quantity) {
-                return res.status(400).json({ message: `Insufficient stock for product ${dbProduct.name}` });
-            }
-            await reduceStock(id, quantity);
-        }
-
+        const ticketCode = nanoid(8);
         
         const newSale = await createSale({
+            ticket_code: ticketCode,
             customer_name: nameCostumer,
             total: totalCalculated
         })
@@ -70,13 +57,15 @@ const createTicket = async (req, res) => {
         }));
 
         await createSaleDetail(saleDetailsWithSaleId);
+        
+        for(const {id, quantity} of products) {
+            await reduceStock(id, quantity);
+        }
 
 
         res.status(201).json({
             message: "Ticket created successfully",
-            saleId: newSale.id,
-            total: totalCalculated,
-            saleDetails: saleDetailsWithSaleId
+            saleId: ticketCode,
         });
 
     } catch (error) {
