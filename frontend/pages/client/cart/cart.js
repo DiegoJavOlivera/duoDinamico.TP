@@ -59,6 +59,16 @@ function renderCart() {
         `;
         // Controles sumar/restar
         card.querySelector('.btn-sumar').addEventListener('click', () => {
+            // Validar stock antes de agregar
+            console.log(product)
+            const currentQty = product.cantidad;
+            const stock = product.stock;
+            console.log("CURRENT QTY", currentQty)
+            console.log("STOCK", stock)
+            if (currentQty >= stock) {
+                alert('No hay más stock disponible para este producto');
+                return;
+            }
             addToCart(product);
             renderCart();
         });

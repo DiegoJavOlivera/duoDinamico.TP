@@ -140,8 +140,10 @@ function renderProducts(products, subcategory_name) {
     // Asumimos que están disponibles globalmente
 
     products.forEach(product => {
+        console.log("PRODUCT ", product)
         const card = document.createElement('div');
         card.className = 'product-card';
+        card.setAttribute('data-stock', product.stock); // Guardar stock como atributo
         card.innerHTML = `
             <img class="product-img" src="/images/categories/alcohol.jpg" alt="${product.name}">
             <div class="product-name">${product.name}</div>
@@ -168,6 +170,13 @@ function renderProducts(products, subcategory_name) {
             const cantidadSpan = btnContainer.querySelector('.cantidad-en-carrito');
 
             btnSumar.addEventListener('click', () => {
+                // Validar stock antes de agregar
+                const currentQty = prodInCart.cantidad;
+                const stock = Number(card.getAttribute('data-stock'));
+                if (currentQty >= stock) {
+                    alert('No hay más stock disponible para este producto');
+                    return;
+                }
                 addToCart(product);
                 renderProducts(products, subcategory_name);
                 updateCartBadge();
@@ -193,6 +202,16 @@ function renderProducts(products, subcategory_name) {
             `;
             const btn = btnContainer.querySelector('.product-btn');
             btn.addEventListener('click', () => {
+                // Validar stock antes de agregar
+                let cartObj = getCart();
+                if (!cartObj || !Array.isArray(cartObj.products)) cartObj = { products: [] };
+                const prodInCart = cartObj.products.find(p => p.id === product.id);
+                const currentQty = prodInCart ? prodInCart.cantidad : 0;
+                const stock = Number(card.getAttribute('data-stock'));
+                if (currentQty >= stock) {
+                    alert('No hay más stock disponible para este producto');
+                    return;
+                }
                 addToCart(product);
                 renderProducts(products, subcategory_name);
                 updateCartBadge();

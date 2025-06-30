@@ -20,8 +20,9 @@ function addToCart(product) {
     } else {
         cartObj.products.push({
             id: product.id,
-            nombre: product.name || product.nombre,
-            precio: product.price || product.precio,
+            nombre: product.name,
+            precio: product.price,
+            stock: product.stock,
             cantidad: 1
         });
     }
