@@ -9,11 +9,9 @@ const createTicket = async (req, res) => {
         const { nameCostumer,
             products,
             total } = req.body;
-        console.log("Received request to create ticket with data:", req.body);
-
+        
         const id_products = products.map(product =>product.id);
 
-        console.log("Extracted product IDs:", id_products);
         
         const productData = await getAllProductsById(id_products);
 
@@ -27,7 +25,6 @@ const createTicket = async (req, res) => {
         for (let i = 0; i < products.length; i++) {
             const { id, quantity } = products[i];
             const dbProduct = productData.find(p => p.id === id);
-            console.log(`Processing product ID ${id} with quantity ${quantity}`);
 
             if (!dbProduct) continue;
 
@@ -41,7 +38,7 @@ const createTicket = async (req, res) => {
                 subtotal
             });
         }
-        console.log("Total calculated from products:", totalCalculated);
+
         if (totalCalculated !== total) {
             return res.status(400).json({ message: "Total does not match calculated total" });
         }
@@ -57,14 +54,13 @@ const createTicket = async (req, res) => {
             }
             await reduceStock(id, quantity);
         }
-        console.log("All products have sufficient stock and stock has been reduced");
+
         
         const newSale = await createSale({
             customer_name: nameCostumer,
             total: totalCalculated
         })
 
-        console.log("Sale created successfully:", newSale);
 
         const saleId = newSale.id;
 
@@ -72,10 +68,9 @@ const createTicket = async (req, res) => {
             ...detail,
             sale_id: saleId
         }));
-        console.log("Sale details with sale ID:", saleDetailsWithSaleId);
 
         await createSaleDetail(saleDetailsWithSaleId);
-        console.log("Sale details created successfully");
+
 
         res.status(201).json({
             message: "Ticket created successfully",
