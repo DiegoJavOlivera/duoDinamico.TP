@@ -1,0 +1,186 @@
+body {
+  background-image: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='29' height='33.487' patternTransform='scale(2) rotate(145)'><rect x='0' y='0' width='100%' height='100%' fill='%230c0b0bff'/><path d='M29 20.928v14.813M14.5 12.56v16.745M29-2.559v6.744l-14.5 8.374L0 4.189v-6.745m29 6.742l14.5 8.37m0 16.745L29 20.928l-14.5 8.376L0 20.931l-14.5 8.376m0-16.744L0 4.189m0 31.487V20.931'  stroke-width='1' stroke='%232c070fff' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(-64,-96)' fill='url(%23a)'/></svg>");
+  height: 100%;  
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #fff;
+  min-height: 100vh;
+}
+
+
+.header {
+  padding: 18px 32px;
+  background: #191e2b;
+  gap: 18px;
+}
+
+.btn {
+  background: #e03c3c;
+  border: none;
+}
+
+.btn:hover {
+  background: #b52e2e;
+}
+
+.cancel-btn {
+  background: #fff0f0;
+  color: #e03c3c;
+  border: 1px solid #e03c3c;
+}
+
+.cancel-btn:hover {
+  background: #e03c3c;
+  color: #fff;
+}
+
+.user-name {
+  color: #ffd600;
+  font-weight: bold;
+}
+
+.card {
+  background: #23293a;
+  width: 100%;
+  height: 350px;
+  transition: transform 0.15s;
+  border-radius: 18px;
+  position: relative;
+}
+
+.card-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 2em;
+  width: 100%;
+  background: rgba(30, 20, 20, 0.60); 
+}
+
+.card:hover {
+  transform: translateY(-4px) scale(1.025);
+  cursor: pointer;
+}
+
+.bebidas {
+  background-image: url("/images/categories/alcohol.jpg");
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 4px 24px #e03c3c22;
+}
+
+.acc {
+  background-image: url("/images/categories/tools.jpg");
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 4px 24px #ffd60022;
+}
+
+.isHidden {
+  display: none !important;
+}
+
+.sub-cards-container {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr; 
+}
+
+.subcard {
+  background-image: url("/images/categories/imagenes/champagne.webp");
+  background-size: cover;
+  background-position: center;
+  border-radius: 18px;
+  height: 300px;
+}
+
+.subcard:hover {
+  transform: translateY(-4px) scale(1.025);
+  cursor: pointer;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.product-cards-container {
+  display: grid;
+  gap: 1.5rem;
+  justify-items: center;
+}
+
+/* Productos */
+.product-card {
+  background: #23293a;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px #00000022;
+  width: 100%;
+  max-width: 340px;
+  align-items: center;
+  padding: 0 0 2rem 0;
+  transition: transform 0.15s;
+}
+
+.product-card:hover {
+  transform: translateY(-4px) scale(1.025);
+  box-shadow: 0 8px 32px #00000033;
+}
+
+.product-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  margin-bottom: 1.2rem;
+}
+
+.product-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 0.7rem;
+  text-align: center;
+}
+
+.product-price {
+  font-size: 1.6rem;
+  color: #ffd600;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+@media (min-width: 850px) {
+  .product-categories-container .row {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+  }
+  .card {
+    margin-bottom: 0;
+  }
+
+  .sub-cards-container {
+    grid-template-columns: repeat(3, 1fr); 
+  }
+
+  .product-cards-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .product-card {
+    width: 100%; 
+  }
+
+  .btn-text {
+    margin-left: .3rem;
+  }
+}
+
+@media (max-width: 850px) {
+  .btn-text {
+    display: none;
+  }
+}

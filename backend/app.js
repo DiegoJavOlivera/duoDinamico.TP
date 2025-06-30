@@ -10,15 +10,9 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get('/', (req, res) => {
-  res.send('hello worldsito');
-});
-
 
 app.use("/api", router);
-
 app.use('/uploads', express.static(path.join(__dirname, getConfig("IMAGE_PATH"))));
-
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

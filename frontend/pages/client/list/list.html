@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>DrinkMart | Selección</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/assets/bootstrap-icons.css" />
+  <link rel="stylesheet" href="/assets/bootstrap.css" />
+  <link rel="stylesheet" href="list.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="bg-light">
+  <header class="header shadow-sm py-2 mb-4">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+      <div class="d-flex flex-column">
+        <span class="fs-4 fw-bold me-4">DrinkMart</span>
+        <span class="text-light">Hola, <span class="user-name"></span></span>
+      </div>
+      <div>
+        <button class="btn cancel-btn me-2" onclick="cancel()"><i class="bi bi-x-lg"></i><span class="btn-text">Cancelar Compra</span></button>
+        <button class="btn btn-primary"><i class="bi bi-cart"></i><span class="btn-text">Ver Carrito</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Categorías -->
+    <section class="categories-container">
+      <h1 class="fs-1 mb-2 fw-semibold text-center mt-5">¿Qué estás buscando hoy?</h1>
+      <p class="title mb-5 fs-5 text-center">Selecciona una categoría para comenzar</p>
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-6 col-lg-5 d-lg-flex">
+          <div class="card bebidas text-light shadow-sm text-center flex-fill w-100 mb-4 mb-lg-0">
+            <div class="card-body d-flex flex-column justify-content-between h-50">
+              <div>
+                <h5 class="card-title">Bebidas</h5>
+                <p class="card-text">Whiskys, Vinos, Cervezas, Vodka, Gaseosas y más</p>
+              </div>
+              <button class="btn btn-primary mt-3 mx-auto w-50" onclick="selectCategory(categories.drink)">Explorar Bebidas</button>
+            </div>
+          </div>
+        </div>
+      
+        <div class="col-12 col-md-6 col-lg-5 d-lg-flex">
+          <div class="card acc text-light shadow-sm text-center flex-fill w-100 mb-4 mb-lg-0">
+            <div class="card-body d-flex flex-column justify-content-between h-50">
+              <div>
+                <h5 class="card-title">Accesorios</h5>
+                <p class="card-text">Refrigeración, Kits, Utensilios, Vasos, Copas y más</p>
+              </div>
+              <button class="btn btn-primary mt-3 mx-auto w-50" onclick="selectCategory(categories.accessories)">Explorar Accesorios</button>
+            </div>
+          </div>
+        </div>
+      </div>      
+    </section>
+
+    <!-- Subcategorías -->
+    <section class="subcategories-container isHidden text-center">
+      <button id="back-to-categories" class="btn btn-primary mb-3 isHidden">← Volver</button>
+      <h1 class="h4 mb-2" id="subcategory-title"></h1>
+      <p class="mb-4">Selecciona una subcategoría para ver los productos</p>
+      <div class="row sub-cards-container subrow"></div>
+    </section>
+
+    <!-- Productos -->
+    <section class="products-container text-center isHidden">
+      <button id="back-to-subcategories" class="btn btn-primary mb-3 isHidden">← Volver</button>
+      <h1 class="h4 mb-2" id="product-title"></h1>
+      <p class="mb-4 text-center">Selecciona un producto para agregarlo al carrito</p>
+      <div class="row product-cards-container productrow"></div>
+    </section>
+  </main>
+  <!-- Bootstrap JS (opcional, para algunos componentes) -->
+  <script src="/assets/bootstrap.bundle.min.js"></script>
+  <script src="/pages/client/list/list.js"></script>
+  <script src="/utils/redirects.js"></script>
+  <script src="/api/subcategories.js"></script>
+  <script src="/api/products.js"></script>
+  <script src="/api/fetcher.js"></script>
+</body>
+</html>
