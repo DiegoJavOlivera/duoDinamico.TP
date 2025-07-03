@@ -17,3 +17,7 @@ const moveToDashboard = () => {
 const moveToCart = () => {
     window.location.href = '/pages/client/cart/cart.html';
 }
+
+const moveToTicket = () => {
+    window.location.href = '/pages/client/ticket/ticket.html';
+}

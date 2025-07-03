@@ -11,8 +11,6 @@ const createTicket = async (req, res) => {
             total } = req.body;
         
         const id_products = products.map(product =>product.id);
-
-        
         const productData = await getAllProductsById(id_products);
 
         if(productData.length !== id_products.length){
@@ -63,14 +61,25 @@ const createTicket = async (req, res) => {
         }
 
 
+        const productsWithSubtotal = products.map(product => ({
+            ...product,
+            subtotal: product.price * product.quantity
+        }));
+
         res.status(201).json({
             message: "Ticket created successfully",
-            saleId: ticketCode,
+            success: true,
+            ticket: {
+                ticketCode: ticketCode,
+                customerName: nameCostumer,
+                total: totalCalculated,
+                products: productsWithSubtotal
+            },
         });
 
     } catch (error) {
         console.error("Error creating ticket:", error);
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: error.message, success: false });
     }
 };
 

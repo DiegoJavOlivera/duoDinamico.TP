@@ -16,14 +16,14 @@ function addToCart(product) {
     const idx = cartObj.products.findIndex(p => p.id === product.id);
 
     if (idx > -1) {
-        cartObj.products[idx].cantidad += 1;
+        cartObj.products[idx].quantity += 1;
     } else {
         cartObj.products.push({
             id: product.id,
-            nombre: product.name,
-            precio: product.price,
+            name: product.name,
+            price: product.price,
             stock: product.stock,
-            cantidad: 1
+            quantity: 1
         });
     }
 
@@ -37,8 +37,8 @@ function removeFromCart(productId) {
     }
     const idx = cartObj.products.findIndex(p => p.id === productId);
     if (idx > -1) {
-        if (cartObj.products[idx].cantidad > 1) {
-            cartObj.products[idx].cantidad -= 1;
+        if (cartObj.products[idx].quantity > 1) {
+            cartObj.products[idx].quantity -= 1;
         } else {
             cartObj.products.splice(idx, 1);
         }
@@ -52,9 +52,9 @@ function getCartTotal() {
     if (!cartObj || !Array.isArray(cartObj.products)) {
         return 0;
     }
-    return cartObj.products.reduce((acc, p) => acc + (p.precio * p.cantidad), 0);
+    return cartObj.products.reduce((acc, p) => acc + (p.price * p.quantity), 0);
 }
 
 function getCartCount() {
-    return getCart().products.reduce((acc, p) => acc + p.cantidad, 0);
+    return getCart().products.reduce((acc, p) => acc + p.quantity, 0);
 }

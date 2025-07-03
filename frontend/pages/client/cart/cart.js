@@ -41,30 +41,26 @@ function renderCart() {
         card.className = 'card cart-item d-flex flex-row align-items-center justify-content-between';
         card.innerHTML = `
             <div class="cart-item-img-wrap d-flex align-items-center justify-content-center" style="flex:0 0 64px;">
-                <img class="cart-item-img" src="/images/categories/alcohol.jpg" alt="${product.nombre}">
+                <img class="cart-item-img" src="/images/categories/alcohol.jpg" alt="${product.name}">
             </div>
             <div class="cart-item-info flex-grow-1 px-2">
-                <div class="cart-item-title">${product.nombre}</div>
-                <div class="cart-item-price">$${product.precio} c/u</div>
+                <div class="cart-item-title">${product.name}</div>
+                <div class="cart-item-price">$${product.price} c/u</div>
             </div>
             <div class="cart-item-controls flex-shrink-0 d-flex align-items-center mx-2">
                 <button class="btn-restar" aria-label="Restar">-</button>
-                <span class="cart-item-qty">${product.cantidad}</span>
+                <span class="cart-item-qty">${product.quantity}</span>
                 <button class="btn-sumar" aria-label="Sumar">+</button>
             </div>
             <div class="cart-item-actions flex-shrink-0 d-flex flex-column align-items-end" style="min-width: 80px;">
-                <div class="cart-item-price fw-bold fs-5">$${product.precio * product.cantidad}</div>
+                <div class="cart-item-price fw-bold fs-5">$${product.price * product.quantity}</div>
                 <button class="cart-item-delete mt-2" aria-label="Eliminar"><i class="bi bi-trash"></i></button>
             </div>
         `;
         // Controles sumar/restar
         card.querySelector('.btn-sumar').addEventListener('click', () => {
-            // Validar stock antes de agregar
-            console.log(product)
-            const currentQty = product.cantidad;
+            const currentQty = product.quantity;
             const stock = product.stock;
-            console.log("CURRENT QTY", currentQty)
-            console.log("STOCK", stock)
             if (currentQty >= stock) {
                 alert('No hay más stock disponible para este producto');
                 return;
@@ -90,7 +86,7 @@ function renderCart() {
         cartItemsContainer.appendChild(card);
     });
     // Actualiza resumen
-    cartCount.textContent = products.reduce((acc, p) => acc + p.cantidad, 0);
+    cartCount.textContent = products.reduce((acc, p) => acc + p.quantity, 0);
     cartTotal.textContent = '$' + getCartTotal();
 }
 
@@ -100,7 +96,26 @@ document.addEventListener('DOMContentLoaded', () => {
         window.history.back();
     });
     document.getElementById('btn-finalizar').addEventListener('click', () => {
-        alert('¡Compra finalizada! (aquí iría el flujo real)');
+        const conf = confirm('¿Desea finalizar la compra?');
+
+        const ticketPayload = {
+            nameCostumer: USERNAME,
+            products: getCart().products,
+            total: getCartTotal()
+        }
+
+        if (conf) {
+            createTicket(ticketPayload).then((ticketResponse) => {
+                if (ticketResponse && ticketResponse.success) {
+                    localStorage.setItem('ticket', JSON.stringify(ticketResponse.ticket));
+                    moveToTicket();
+                } else {
+                    alert('Ocurrió un error durante la compra. Intenta nuevamente.');
+                }
+            }).catch(() => {
+                alert('Ocurrió un error durante la compra. Intenta nuevamente.');
+            });
+        }
     });
 
     document.getElementById('cart-client').textContent = USERNAME;
