@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCartBadge();
 });
 
-// Render subcategory cards
 function renderSubcategories(subcategories, category_name) {
     const container = document.querySelector('.sub-cards-container');
     const title = document.getElementById('subcategory-title');
@@ -135,15 +134,10 @@ function renderProducts(products, subcategory_name) {
         return;
     }
 
-    // Import helpers si no están en el scope global
-    // import { getCart, addToCart, setCart } from '../../utils/productsStorage.js';
-    // Asumimos que están disponibles globalmente
-
     products.forEach(product => {
-        console.log("PRODUCT ", product)
         const card = document.createElement('div');
         card.className = 'product-card';
-        card.setAttribute('data-stock', product.stock); // Guardar stock como atributo
+        card.setAttribute('data-stock', product.stock);
         card.innerHTML = `
             <img class="product-img" src="/images/categories/alcohol.jpg" alt="${product.name}">
             <div class="product-name">${product.name}</div>
@@ -159,10 +153,9 @@ function renderProducts(products, subcategory_name) {
         const prodInCart = cartObj.products.find(p => p.id === product.id);
 
         if (prodInCart) {
-            // Si está en el carrito, muestra controles de cantidad
             btnContainer.innerHTML = `
                 <button class="btn btn-sm btn-danger btn-restar" style="margin-right: 5px;">-</button>
-                <span class="cantidad-en-carrito">${prodInCart.cantidad}</span>
+                <span class="cantidad-en-carrito">${prodInCart.quantity}</span>
                 <button class="btn btn-sm btn-success btn-sumar" style="margin-left: 5px;">+</button>
             `;
             const btnSumar = btnContainer.querySelector('.btn-sumar');
@@ -170,8 +163,7 @@ function renderProducts(products, subcategory_name) {
             const cantidadSpan = btnContainer.querySelector('.cantidad-en-carrito');
 
             btnSumar.addEventListener('click', () => {
-                // Validar stock antes de agregar
-                const currentQty = prodInCart.cantidad;
+                const currentQty = prodInCart.quantity;
                 const stock = Number(card.getAttribute('data-stock'));
                 if (currentQty >= stock) {
                     alert('No hay más stock disponible para este producto');
@@ -185,8 +177,8 @@ function renderProducts(products, subcategory_name) {
                 let cartObj = getCart();
                 const idx = cartObj.products.findIndex(p => p.id === product.id);
                 if (idx > -1) {
-                    if (cartObj.products[idx].cantidad > 1) {
-                        cartObj.products[idx].cantidad -= 1;
+                    if (cartObj.products[idx].quantity > 1) {
+                        cartObj.products[idx].quantity -= 1;
                     } else {
                         cartObj.products.splice(idx, 1);
                     }
@@ -206,7 +198,7 @@ function renderProducts(products, subcategory_name) {
                 let cartObj = getCart();
                 if (!cartObj || !Array.isArray(cartObj.products)) cartObj = { products: [] };
                 const prodInCart = cartObj.products.find(p => p.id === product.id);
-                const currentQty = prodInCart ? prodInCart.cantidad : 0;
+                const currentQty = prodInCart ? prodInCart.quantity : 0;
                 const stock = Number(card.getAttribute('data-stock'));
                 if (currentQty >= stock) {
                     alert('No hay más stock disponible para este producto');
