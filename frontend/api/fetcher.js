@@ -14,4 +14,4 @@ const apiFetch = async (endpoint, { method = 'GET', headers = {}, body } = {}) =
         throw new Error(`API error: ${response.status}`);
     }
     return response.json();
-  }
+}

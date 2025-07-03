@@ -1,4 +1,4 @@
-const includeHTML = async () => {
+const includeHTML = async (callback) => {
     const includes = document.querySelectorAll('[data-include]');
     for (const el of includes) {
         const file = el.getAttribute('data-include');
@@ -9,6 +9,11 @@ const includeHTML = async () => {
         } else {
             el.innerHTML = "<!-- Error cargando " + file + " -->";
         }
+    }
+    
+    // Ejecutar callback si se proporciona
+    if (typeof callback === 'function') {
+        callback();
     }
 };
 

@@ -23,7 +23,7 @@ const handleLogin = async () => {
         const data = await res.json();
 
         if(res.status === 200 && data.token){
-            // Guardar token y datos del usuario en localStorage
+            // Guardar token y datos del usuario en sessionStorage
             saveAuthData(data.token, data.user);
             
             moveToAdminDashboard();
