@@ -2,23 +2,37 @@ const handleLogin = async () => {
     const email = document.getElementById('email').value;
     const pass = document.getElementById('password').value;
 
-    const url = "http://localhost:3000/api/auth/login"
-    const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            email: email,
-            password: pass
-        })
-    })
+    if (!email || !pass) {
+        alert('Por favor, ingresa email y contraseña');
+        return;
+    }
 
-    if(res.status === 200){
-      alert('Acceso concedido: Bienvenido al panel de administración');
-      moveToAdminDashboard();
-    } else {
-        alert('Error: Usuario o contraseña incorrectos');
+    try {
+        const url = "http://localhost:3000/api/auth/login"
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                password: pass
+            })
+        })
+
+        const data = await res.json();
+
+        if(res.status === 200 && data.token){
+            // Guardar token y datos del usuario en localStorage
+            saveAuthData(data.token, data.user);
+            
+            moveToAdminDashboard();
+        } else {
+            alert('Error: Usuario o contraseña incorrectos');
+        }
+    } catch (error) {
+        console.error('Error en el login:', error);
+        alert('Error de conexión. Verifica que el servidor esté ejecutándose.');
     }
 }
 

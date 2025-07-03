@@ -1,4 +1,5 @@
 
+
 const {Product} = require("../models/index");
 
 
@@ -13,7 +14,20 @@ const getAllProducts = (all=true, subcategory='') => {
         where.subcategory_id = subcategory;
     }
     
-    return Product.findAll({ where }) 
+    return Product.findAll({ where,
+        include:[
+            {
+                association: "Subcategory",
+                attributes: ['id', 'name'],
+                include:[
+                    {
+                        association: "Category",
+                        attributes: ['id', 'name']
+                    }
+                ]
+            }
+        ]
+     }) 
 };
 
 const getProductById = (id) => Product.findByPk(id);

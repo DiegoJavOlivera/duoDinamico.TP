@@ -1,8 +1,249 @@
 
 <!DOCTYPE html>
-<html>
-    <head></head>
-    <body>
-        admin dashboard
-    </body>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <title>Dashboard Admin - BarServe</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="/colors.css" />
+  <link rel="stylesheet" href="/components/navbar/navbar.css" />
+  <link rel="stylesheet" href="/components/footer/footer.css" />
+  <link rel="stylesheet" href="/assets/bootstrap-icons.css" />
+  <link rel="stylesheet" href="/assets/bootstrap.css" />
+  
+  <script src="/utils/redirects.js"></script>
+  <script src="/utils/includeHTML.js"></script>
+  <script src="/utils/auth.js"></script>
+  <script src="./dashboard.js"></script>
+</head>
+
+<body>
+  <header>
+    <div data-include="/components/navbar/navbar.html"></div>
+  </header>
+
+  <div class="dashboard-container">
+    <div class="light wine"></div>
+    <div class="light gold"></div>
+
+    <div class="dashboard-content">
+      <div class="icon-circle">
+        <i class="bi bi-gear"></i>
+      </div>
+      
+      <div class="dashboard-header">
+        <div class="header-info">
+          <h1>Panel de Administración</h1>
+          <p>Gestiona tu autoservicio</p>
+        </div>
+      </div>
+      <button class="btn back" onclick="logout()">
+        <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
+      </button>
+      <div class="separator"></div>
+
+      <div class="dashboard-tabs">
+        <div class="tab-buttons">
+          <button class="tab-btn active" onclick="switchTab('products-list')">
+            <i class="bi bi-list-ul"></i> Lista Productos
+          </button>
+          <button class="tab-btn" onclick="switchTab('add-product')">
+            <i class="bi bi-plus-circle"></i> Agregar Producto
+          </button>
+          <button class="tab-btn" onclick="switchTab('edit-product')">
+            <i class="bi bi-pencil-square"></i> Modificar Producto
+          </button>
+          <button class="tab-btn" onclick="switchTab('add-user')">
+            <i class="bi bi-person-plus"></i> Agregar Usuario
+          </button>
+          <button class="tab-btn" onclick="switchTab('movements')">
+            <i class="bi bi-clock-history"></i> Movimientos
+          </button>
+          <button class="tab-btn" onclick="switchTab('tickets')">
+            <i class="bi bi-receipt-cutoff"></i> Tickets
+          </button>
+        </div>
+
+        <div class="tab-content">
+          <!-- Tab de Lista de Productos -->
+          <div id="products-list-tab" class="tab-pane active">
+            <div class="tab-header">
+              <h2><i class="bi bi-list-ul"></i> Lista de Productos</h2>
+            </div>
+            
+            <div class="loading" id="products-loading">
+              <i class="bi bi-arrow-clockwise spin"></i> Cargando productos...
+            </div>
+            
+            <div class="products-grid" id="products-grid">
+              <!-- Los productos se cargarán aquí dinámicamente -->
+            </div>
+          </div>
+
+          <!-- Tab de Agregar Producto -->
+          <div id="add-product-tab" class="tab-pane">
+            <div class="tab-header">
+              <h2><i class="bi bi-plus-circle"></i> Agregar Nuevo Producto</h2>
+            </div>
+            <div class="form-container">
+              <form class="product-form" id="addProductForm">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="productName">Nombre del Producto</label>
+                    <input type="text" id="productName" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="productPrice">Precio</label>
+                    <input type="number" id="productPrice" step="0.01" required>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="productStock">Stock</label>
+                    <input type="number" id="productStock" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="productCategory">Categoría</label>
+                    <select id="productCategory" required>
+                      <option value="">Seleccionar categoría</option>
+                      <option value="1">Bebidas</option>
+                      <option value="2">Herramientas</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="productDescription">Descripción</label>
+                  <textarea id="productDescription" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="productImage">Imagen del Producto</label>
+                  <div class="file-input-container">
+                    <input type="file" id="productImage" accept="image/*" class="file-input">
+                    <label for="productImage" class="file-input-label">
+                      <i class="bi bi-cloud-upload"></i>
+                      <span class="file-text">Seleccionar imagen</span>
+                    </label>
+                    <div class="image-preview" id="imagePreview" style="display: none;">
+                      <img id="previewImg" src="" alt="Vista previa">
+                      <button type="button" class="remove-image" onclick="removeImage()">
+                        <i class="bi bi-x"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn primary">
+                    <i class="bi bi-check"></i> Crear Producto
+                  </button>
+                  <button type="reset" class="btn secondary">
+                    <i class="bi bi-x"></i> Limpiar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Tab de Modificar Producto -->
+          <div id="edit-product-tab" class="tab-pane">
+            <div class="tab-header">
+              <h2><i class="bi bi-pencil-square"></i> Modificar Producto</h2>
+            </div>
+            <div class="form-container">
+              <div class="edit-instructions">
+                <div class="instruction-card">
+                  <i class="bi bi-info-circle"></i>
+                  <div>
+                    <h3>¿Cómo modificar un producto?</h3>
+                    <p>Ve a la pestaña "Lista Productos" y haz clic en el botón <strong>"Editar"</strong> de cualquier producto que desees modificar.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Formulario de edición que aparecerá dinámicamente -->
+              <div id="editProductFormContainer" style="display: none;">
+                <h3 class="edit-title">Editando Producto</h3>
+                <form class="product-form" id="editProductForm">
+                  <!-- El contenido se llenará dinámicamente -->
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab de Agregar Usuario -->
+          <div id="add-user-tab" class="tab-pane">
+            <div class="tab-header">
+              <h2><i class="bi bi-person-plus"></i> Agregar Usuario Administrador</h2>
+            </div>
+            <div class="form-container">
+              <form class="user-form" id="addUserForm">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="userEmail">Email</label>
+                    <input type="email" id="userEmail" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="userPassword">Contraseña</label>
+                    <input type="password" id="userPassword" required>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn primary">
+                    <i class="bi bi-check"></i> Crear Usuario
+                  </button>
+                  <button type="reset" class="btn secondary">
+                    <i class="bi bi-x"></i> Limpiar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Tab de Movimientos -->
+          <div id="movements-tab" class="tab-pane">
+            <div class="tab-header">
+              <h2><i class="bi bi-clock-history"></i> Movimientos Realizados</h2>
+              <div class="date-filter">
+                <input type="date" id="dateFrom" class="date-input">
+                <span>hasta</span>
+                <input type="date" id="dateTo" class="date-input">
+                <button class="btn primary" onclick="filterMovements()">
+                  <i class="bi bi-funnel"></i> Filtrar
+                </button>
+              </div>
+            </div>
+            <div class="movements-list" id="movementsList">
+              <p class="coming-soon">Cargando movimientos...</p>
+            </div>
+          </div>
+
+          <!-- Tab de Tickets -->
+          <div id="tickets-tab" class="tab-pane">
+            <div class="tab-header">
+              <h2><i class="bi bi-receipt-cutoff"></i> Tickets de Ventas</h2>
+              <div class="tab-actions">
+                <select class="filter-select" id="ticketStatus">
+                  <option value="">Todos los estados</option>
+                  <option value="pending">Pendientes</option>
+                  <option value="completed">Completados</option>
+                  <option value="cancelled">Cancelados</option>
+                </select>
+                <button class="btn primary" onclick="exportTickets()">
+                  <i class="bi bi-download"></i> Exportar
+                </button>
+              </div>
+            </div>
+            <div class="tickets-list" id="ticketsList">
+              <p class="coming-soon">Cargando tickets...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div data-include="../../../components/footer/footer.html"></div>
+</body>
 </html>
