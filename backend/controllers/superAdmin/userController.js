@@ -12,6 +12,7 @@ const {create,
 
 const createUser = async (req, res) => {
     try {
+        console.log("Creating user with data:", req.body);
         const userData = req.body;
         const validation = validateUserData(userData);
         if (!validation.isValid) {

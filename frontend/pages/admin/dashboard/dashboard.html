@@ -110,10 +110,16 @@
                   </div>
                   <div class="form-group">
                     <label for="productCategory">Categoría</label>
-                    <select id="productCategory" required>
-                      <option value="">Seleccionar categoría</option>
-                      <option value="1">Bebidas</option>
-                      <option value="2">Herramientas</option>
+                    <select id="productCategory" required onchange="loadSubcategoriesForForm()">
+                      <option value="">Cargando categorías...</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="productSubcategory">Subcategoría</label>
+                    <select id="productSubcategory" required>
+                      <option value="">Primero selecciona una categoría</option>
                     </select>
                   </div>
                 </div>
@@ -184,12 +190,26 @@
               <form class="user-form" id="addUserForm">
                 <div class="form-row">
                   <div class="form-group">
-                    <label for="userEmail">Email</label>
-                    <input type="email" id="userEmail" required>
+                    <label for="userName">Nombre Completo *</label>
+                    <input type="text" id="userName" placeholder="Ingresa el nombre completo" required>
                   </div>
                   <div class="form-group">
-                    <label for="userPassword">Contraseña</label>
-                    <input type="password" id="userPassword" required>
+                    <label for="userEmail">Email *</label>
+                    <input type="email" id="userEmail" placeholder="ejemplo@correo.com" required>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="userPassword">Contraseña *</label>
+                    <input type="password" id="userPassword" placeholder="Mínimo 6 caracteres" required minlength="6">
+                  </div>
+                  <div class="form-group">
+                    <label for="userRole">Rol *</label>
+                    <select id="userRole" required>
+                      <option value="">Seleccionar rol</option>
+                      <option value="1">Admin</option>
+                      <option value="2">Super Admin</option>
+                    </select>
                   </div>
                 </div>
                 <div class="form-actions">

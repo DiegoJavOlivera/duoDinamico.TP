@@ -3,6 +3,43 @@
 // Variable global para almacenar los productos
 let productsData = [];
 
+// Variable global para almacenar las subcategorías (incluye información de categorías)
+let subcategoriesData = [];
+
+// Función de respaldo para getImageUrl si no está disponible
+function getImageUrl(imageName) {
+    if (!imageName) return null;
+    
+    // Si la imagen incluye "backend/uploads/img/", remover "backend/" para el frontend
+    if (imageName.startsWith('backend/uploads/img/')) {
+        const imagePath = imageName.replace('backend/', '');
+        return `http://localhost:3000/${imagePath}`;
+    }
+    
+    // Si la imagen ya incluye la ruta completa (como "uploads/img/nombre.png"), usar directamente
+    if (imageName.startsWith('uploads/')) {
+        return `http://localhost:3000/${imageName}`;
+    }
+    
+    // Si es solo el nombre del archivo, agregar la ruta uploads/img
+    return `http://localhost:3000/uploads/img/${imageName}`;
+}
+
+/**
+ * Función para cargar subcategorías desde la API (se ejecuta una vez)
+ */
+async function loadSubcategoriesData() {
+    if (subcategoriesData.length === 0) {
+        try {
+            subcategoriesData = await getAllSubcategories();
+        } catch (error) {
+            console.error('Error al cargar datos de subcategorías:', error);
+            subcategoriesData = [];
+        }
+    }
+    return subcategoriesData;
+}
+
 /**
  * Función para escapar HTML y evitar XSS
  * @param {string} text - Texto a escapar
@@ -41,6 +78,7 @@ async function loadProducts() {
         console.log('Cargando productos desde la API...');
         
         const products = await getProducts();
+        console.log(products)
         productsData = products;
         
         console.log('Productos cargados:', products.length);
@@ -81,25 +119,23 @@ function renderProducts(products) {
         return;
     }
     
-    gridElement.innerHTML = products.map(product => `
+    gridElement.innerHTML = products.map(product => {
+        const imageUrl = getImageUrl(product.image);
+        
+        return `
         <div class="product-card">
             <div class="card-main">
                 <div class="product-image-section">
-                    ${product.image ? `
-                        <div class="product-image">
-                            <img src="${product.image}" alt="${escapeHtml(product.name)}" onerror="this.parentElement.style.display='none'">
-                            <div class="product-status-overlay ${product.is_active ? 'active' : 'inactive'}">
-                                ${product.is_active ? 'ACTIVE' : 'INACTIVE'}
-                            </div>
-                        </div>
-                    ` : `
-                        <div class="product-image no-image">
+                    <div class="product-image ${!imageUrl ? 'no-image' : ''}">
+                        ${imageUrl ? `
+                            <img src="${imageUrl}" alt="${escapeHtml(product.name)}" onerror="this.parentElement.classList.add('no-image'); this.style.display='none';">
+                        ` : `
                             <i class="bi bi-image"></i>
-                            <div class="product-status-overlay ${product.is_active ? 'active' : 'inactive'}">
-                                ${product.is_active ? 'ACTIVE' : 'INACTIVE'}
-                            </div>
+                        `}
+                        <div class="product-status-overlay ${product.is_active ? 'active' : 'inactive'}">
+                            ${product.is_active ? 'ACTIVE' : 'INACTIVE'}
                         </div>
-                    `}
+                    </div>
                 </div>
                 
                 <div class="product-details-section">
@@ -158,7 +194,8 @@ function renderProducts(products) {
                 </button>
             </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 /**
@@ -168,19 +205,71 @@ function renderProducts(products) {
 async function handleAddProduct(e) {
     e.preventDefault();
     
-    const formData = {
-        name: document.getElementById('productName').value,
-        description: document.getElementById('productDescription').value,
-        price: parseFloat(document.getElementById('productPrice').value),
-        stock: parseInt(document.getElementById('productStock').value),
-        subcategory_id: parseInt(document.getElementById('productCategory').value),
-        is_active: true
-    };
+    // Obtener todos los valores del formulario
+    const name = document.getElementById('productName').value.trim();
+    const description = document.getElementById('productDescription').value.trim();
+    const price = document.getElementById('productPrice').value;
+    const stock = document.getElementById('productStock').value;
+    const subcategoryId = document.getElementById('productSubcategory').value;
+    const imageFile = document.getElementById('productImage').files[0];
+    
+    // Validaciones básicas
+    if (!name || !price || !stock || !subcategoryId) {
+        alert('Por favor completa todos los campos obligatorios');
+        return;
+    }
+    
+    if (!imageFile) {
+        alert('Por favor selecciona una imagen para el producto');
+        return;
+    }
+    
+    // Validar tipos de archivo
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(imageFile.type)) {
+        alert('Por favor selecciona una imagen válida (JPG, PNG o WebP)');
+        return;
+    }
+    
+    // Validar tamaño del archivo (max 5MB)
+    if (imageFile.size > 5 * 1024 * 1024) {
+        alert('La imagen no puede superar los 5MB');
+        return;
+    }
+    
+    // Crear FormData para enviar archivos
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('description', description);
+    formData.append('price', price);
+    formData.append('stock', stock);
+    formData.append('subcategory_id', subcategoryId);
+    formData.append('image', imageFile);
     
     try {
         await createProduct(formData);
         alert('Producto creado correctamente');
         e.target.reset();
+        
+        // Resetear también el select de subcategorías
+        const subcategorySelect = document.getElementById('productSubcategory');
+        if (subcategorySelect) {
+            subcategorySelect.innerHTML = '<option value="">Primero selecciona una categoría</option>';
+            subcategorySelect.disabled = true;
+        }
+        
+        // Limpiar vista previa de imagen si existe
+        const imagePreview = document.getElementById('imagePreview');
+        if (imagePreview) {
+            imagePreview.style.display = 'none';
+        }
+        
+        // Resetear el texto del input de archivo
+        const fileText = document.querySelector('.file-text');
+        if (fileText) {
+            fileText.textContent = 'Seleccionar imagen';
+        }
+        
         // Recargar productos
         productsData = [];
         loadProducts();
@@ -205,86 +294,111 @@ async function editProduct(productId) {
     const formContainer = document.getElementById('editProductFormContainer');
     const form = document.getElementById('editProductForm');
     
-    form.innerHTML = `
-        <div class="form-row">
-            <div class="form-group">
-                <label for="editProductName">Nombre del Producto</label>
-                <input type="text" id="editProductName" value="${escapeHtml(product.name)}" required>
-            </div>
-            <div class="form-group">
-                <label for="editProductPrice">Precio</label>
-                <input type="number" id="editProductPrice" step="0.01" value="${product.price}" required>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group">
-                <label for="editProductStock">Stock</label>
-                <input type="number" id="editProductStock" value="${product.stock}" required>
-            </div>
-            <div class="form-group">
-                <label for="editProductStatus">Estado</label>
-                <select id="editProductStatus" required>
-                    <option value="true" ${product.is_active ? 'selected' : ''}>Activo</option>
-                    <option value="false" ${!product.is_active ? 'selected' : ''}>Inactivo</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group">
-                <label for="editProductCategory">Categoría</label>
-                <input type="text" id="editProductCategory" value="${product.Subcategory?.Category?.name || 'Sin categoría'}" readonly>
-            </div>
-            <div class="form-group">
-                <label for="editProductSubcategory">Subcategoría</label>
-                <input type="text" id="editProductSubcategory" value="${product.Subcategory?.name || 'Sin subcategoría'}" readonly>
-                <input type="hidden" id="editProductSubcategoryId" value="${product.subcategory_id}">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="editProductDescription">Descripción</label>
-            <textarea id="editProductDescription" rows="3">${escapeHtml(product.description || '')}</textarea>
-        </div>
-        <div class="form-group">
-            <label for="editProductImage">Imagen del Producto</label>
-            <div class="file-input-container">
-                <input type="file" id="editProductImage" accept="image/*" class="file-input">
-                <label for="editProductImage" class="file-input-label">
-                    <i class="bi bi-cloud-upload"></i>
-                    <span class="file-text">Cambiar imagen</span>
-                </label>
-                ${product.image ? `
-                    <div class="current-image">
-                        <p>Imagen actual:</p>
-                        <img src="${product.image}" alt="Imagen actual" style="max-width: 150px; border-radius: 0.5rem;">
-                    </div>
-                ` : ''}
-                <div class="image-preview" id="editImagePreview" style="display: none;">
-                    <img id="editPreviewImg" src="" alt="Vista previa">
-                    <button type="button" class="remove-image" onclick="removeEditImage()">
-                        <i class="bi bi-x"></i>
-                    </button>
+    try {
+        // Cargar categorías y subcategorías
+        const categories = await getCategories();
+        const allSubcategories = await loadSubcategoriesData();
+        
+        form.innerHTML = `
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editProductName">Nombre del Producto</label>
+                    <input type="text" id="editProductName" value="${escapeHtml(product.name)}" required>
+                </div>
+                <div class="form-group">
+                    <label for="editProductPrice">Precio</label>
+                    <input type="number" id="editProductPrice" step="0.01" value="${product.price}" required>
                 </div>
             </div>
-        </div>
-        <div class="form-actions">
-            <button type="submit" class="btn primary">
-                <i class="bi bi-check"></i> Actualizar Producto
-            </button>
-            <button type="button" class="btn secondary" onclick="cancelEdit()">
-                <i class="bi bi-x"></i> Cancelar
-            </button>
-        </div>
-    `;
-    
-    formContainer.style.display = 'block';
-    
-    // Agregar event listener para el formulario
-    form.onsubmit = (e) => handleEditProduct(e, productId);
-    
-    // Agregar event listener para la vista previa de imagen
-    const editImageInput = document.getElementById('editProductImage');
-    if (editImageInput) {
-        editImageInput.addEventListener('change', handleEditImagePreview);
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editProductStock">Stock</label>
+                    <input type="number" id="editProductStock" value="${product.stock}" required>
+                </div>
+                <div class="form-group">
+                    <label for="editProductStatus">Estado</label>
+                    <select id="editProductStatus" required>
+                        <option value="true" ${product.is_active ? 'selected' : ''}>Activo</option>
+                        <option value="false" ${!product.is_active ? 'selected' : ''}>Inactivo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editProductCategory">Categoría</label>
+                    <select id="editProductCategory" required onchange="loadSubcategoriesForEdit()">
+                        <option value="">Seleccionar categoría</option>
+                        ${categories.map(category => `
+                            <option value="${category.id}" ${product.Subcategory?.Category?.id === category.id ? 'selected' : ''}>
+                                ${category.name}
+                            </option>
+                        `).join('')}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editProductSubcategory">Subcategoría</label>
+                    <select id="editProductSubcategory" required>
+                        <option value="">Seleccionar subcategoría</option>
+                        ${allSubcategories
+                            .filter(sub => sub.category_id === product.Subcategory?.Category?.id)
+                            .map(subcategory => `
+                                <option value="${subcategory.id}" ${product.subcategory_id === subcategory.id ? 'selected' : ''}>
+                                    ${subcategory.name}
+                                </option>
+                            `).join('')}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="editProductDescription">Descripción</label>
+                <textarea id="editProductDescription" rows="3">${escapeHtml(product.description || '')}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="editProductImage">Imagen del Producto</label>
+                <div class="file-input-container">
+                    <input type="file" id="editProductImage" accept="image/*" class="file-input">
+                    <label for="editProductImage" class="file-input-label">
+                        <i class="bi bi-cloud-upload"></i>
+                        <span class="file-text">Cambiar imagen</span>
+                    </label>
+                    ${product.image ? `
+                        <div class="current-image">
+                            <p>Imagen actual:</p>
+                            <img src="${getImageUrl(product.image)}" alt="Imagen actual" style="max-width: 150px; border-radius: 0.5rem;">
+                        </div>
+                    ` : ''}
+                    <div class="image-preview" id="editImagePreview" style="display: none;">
+                        <img id="editPreviewImg" src="" alt="Vista previa">
+                        <button type="button" class="remove-image" onclick="removeEditImage()">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn primary">
+                    <i class="bi bi-check"></i> Actualizar Producto
+                </button>
+                <button type="button" class="btn secondary" onclick="cancelEdit()">
+                    <i class="bi bi-x"></i> Cancelar
+                </button>
+            </div>
+        `;
+        
+        formContainer.style.display = 'block';
+        
+        // Agregar event listener para el formulario
+        form.onsubmit = (e) => handleEditProduct(e, productId);
+        
+        // Agregar event listener para la vista previa de imagen
+        const editImageInput = document.getElementById('editProductImage');
+        if (editImageInput) {
+            editImageInput.addEventListener('change', handleEditImagePreview);
+        }
+        
+    } catch (error) {
+        console.error('Error al cargar categorías y subcategorías:', error);
+        alert('Error al cargar la información de categorías. Inténtalo de nuevo.');
     }
 }
 
@@ -295,33 +409,64 @@ async function editProduct(productId) {
  */
 async function handleEditProduct(e, productId) {
     e.preventDefault();
-    
-    const formData = {
-        name: document.getElementById('editProductName').value,
-        description: document.getElementById('editProductDescription').value,
-        price: parseFloat(document.getElementById('editProductPrice').value),
-        stock: parseInt(document.getElementById('editProductStock').value),
-        subcategory_id: parseInt(document.getElementById('editProductSubcategoryId').value),
-        is_active: document.getElementById('editProductStatus').value === 'true'
-    };
-    
-    // Aquí más adelante agregarás la lógica para la imagen
     const imageFile = document.getElementById('editProductImage').files[0];
-    if (imageFile) {
-        console.log('Nueva imagen seleccionada:', imageFile.name);
-        // Aquí enviarías la imagen al backend
-    }
     
-    try {
-        await updateProduct(productId, formData);
-        alert('Producto actualizado correctamente');
-        cancelEdit();
-        // Recargar productos
-        productsData = [];
-        loadProducts();
-    } catch (error) {
-        console.error('Error al actualizar producto:', error);
-        alert(`Error al actualizar producto: ${error.message}`);
+    // Si hay imagen nueva, usar FormData; si no, usar objeto normal
+    if (imageFile) {
+        // Validar tipos de archivo
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+        if (!allowedTypes.includes(imageFile.type)) {
+            alert('Por favor selecciona una imagen válida (JPG, PNG o WebP)');
+            return;
+        }
+        
+        // Validar tamaño del archivo (max 5MB)
+        if (imageFile.size > 5 * 1024 * 1024) {
+            alert('La imagen no puede superar los 5MB');
+            return;
+        }
+        
+        // Crear FormData cuando hay imagen
+        const formData = new FormData();
+        formData.append('name', document.getElementById('editProductName').value);
+        formData.append('description', document.getElementById('editProductDescription').value);
+        formData.append('price', document.getElementById('editProductPrice').value);
+        formData.append('stock', document.getElementById('editProductStock').value);
+        formData.append('is_active', document.getElementById('editProductStatus').value);
+        formData.append('subcategory_id', document.getElementById('editProductSubcategory').value);
+        formData.append('image', imageFile);
+        
+        try {
+            await updateProduct(productId, formData);
+            alert('Producto actualizado correctamente');
+            cancelEdit();
+            productsData = [];
+            loadProducts();
+        } catch (error) {
+            console.error('Error al actualizar producto:', error);
+            alert(`Error al actualizar producto: ${error.message}`);
+        }
+    } else {
+        // Sin imagen, usar objeto normal
+        const productData = {
+            name: document.getElementById('editProductName').value,
+            description: document.getElementById('editProductDescription').value,
+            price: parseFloat(document.getElementById('editProductPrice').value),
+            stock: parseInt(document.getElementById('editProductStock').value),
+            subcategory_id: parseInt(document.getElementById('editProductSubcategory').value),
+            is_active: document.getElementById('editProductStatus').value === 'true'
+        };
+        
+        try {
+            await updateProduct(productId, productData);
+            alert('Producto actualizado correctamente');
+            cancelEdit();
+            productsData = [];
+            loadProducts();
+        } catch (error) {
+            console.error('Error al actualizar producto:', error);
+            alert(`Error al actualizar producto: ${error.message}`);
+        }
     }
 }
 
@@ -366,3 +511,96 @@ function refreshProducts() {
     productsData = [];
     loadProducts();
 }
+
+/**
+ * Función para cargar subcategorías cuando se selecciona una categoría en el formulario de agregar
+ */
+async function loadSubcategoriesForForm() {
+    const categorySelect = document.getElementById('productCategory');
+    const subcategorySelect = document.getElementById('productSubcategory');
+    
+    if (!categorySelect || !subcategorySelect) return;
+    
+    const categoryId = parseInt(categorySelect.value);
+    
+    if (!categoryId) {
+        subcategorySelect.innerHTML = '<option value="">Primero selecciona una categoría</option>';
+        subcategorySelect.disabled = true;
+        return;
+    }
+    
+    try {
+        subcategorySelect.innerHTML = '<option value="">Cargando...</option>';
+        subcategorySelect.disabled = true;
+        
+        // Cargar datos de subcategorías si no están cargados
+        const allSubcategories = await loadSubcategoriesData();
+        
+        // Filtrar subcategorías por categoría seleccionada
+        const subcategories = allSubcategories.filter(sub => sub.category_id === categoryId);
+        
+        subcategorySelect.innerHTML = '<option value="">Seleccionar subcategoría</option>';
+        subcategories.forEach(subcategory => {
+            const option = document.createElement('option');
+            option.value = subcategory.id;
+            option.textContent = subcategory.name;
+            subcategorySelect.appendChild(option);
+        });
+        
+        subcategorySelect.disabled = false;
+        
+    } catch (error) {
+        console.error('Error al cargar subcategorías:', error);
+        subcategorySelect.innerHTML = '<option value="">Error al cargar subcategorías</option>';
+        subcategorySelect.disabled = true;
+    }
+}
+
+/**
+ * Función para cargar subcategorías cuando se selecciona una categoría en el formulario de editar
+ */
+async function loadSubcategoriesForEdit() {
+    const categorySelect = document.getElementById('editProductCategory');
+    const subcategorySelect = document.getElementById('editProductSubcategory');
+    
+    if (!categorySelect || !subcategorySelect) return;
+    
+    const categoryId = parseInt(categorySelect.value);
+    
+    if (!categoryId) {
+        subcategorySelect.innerHTML = '<option value="">Primero selecciona una categoría</option>';
+        subcategorySelect.disabled = true;
+        return;
+    }
+    
+    try {
+        subcategorySelect.innerHTML = '<option value="">Cargando...</option>';
+        subcategorySelect.disabled = true;
+        
+        // Cargar datos de subcategorías si no están cargados
+        const allSubcategories = await loadSubcategoriesData();
+        
+        // Filtrar subcategorías por categoría seleccionada
+        const subcategories = allSubcategories.filter(sub => sub.category_id === categoryId);
+        
+        subcategorySelect.innerHTML = '<option value="">Seleccionar subcategoría</option>';
+        subcategories.forEach(subcategory => {
+            const option = document.createElement('option');
+            option.value = subcategory.id;
+            option.textContent = subcategory.name;
+            subcategorySelect.appendChild(option);
+        });
+        
+        subcategorySelect.disabled = false;
+        
+    } catch (error) {
+        console.error('Error al cargar subcategorías:', error);
+        subcategorySelect.innerHTML = '<option value="">Error al cargar subcategorías</option>';
+        subcategorySelect.disabled = true;
+    }
+}
+
+// Hacer las funciones disponibles globalmente
+window.loadSubcategoriesForForm = loadSubcategoriesForForm;
+window.loadSubcategoriesForEdit = loadSubcategoriesForEdit;
+window.loadSubcategoriesData = loadSubcategoriesData;

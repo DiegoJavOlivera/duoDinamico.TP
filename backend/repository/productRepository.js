@@ -40,6 +40,12 @@ const getAllProductsById = (ids) => Product.findAll({
     }
 });  
 
+const updateProduct = (id, productData) => Product.update(productData, {
+    where: {
+        id: id
+    }
+});
+
 const reduceStock = (id, quantity) => Product.decrement('stock',{
     by: quantity,
     where: {
@@ -52,5 +58,6 @@ module.exports = {
     getProductById,
     addProduct,
     getAllProductsById,
-    reduceStock
+    reduceStock,
+    updateProduct
 }

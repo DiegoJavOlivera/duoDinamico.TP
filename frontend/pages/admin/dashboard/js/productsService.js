@@ -7,20 +7,38 @@ const API_BASE_URL = 'http://localhost:3000/api';
  * @returns {Promise<Array>} Lista de productos
  */
 async function getProducts() {
-    const response = await authenticatedFetch(`${API_BASE_URL}/products`);
+    const response = await authenticatedFetch(`${API_BASE_URL}/products?all=true`);
     return await response.json();
 }
 
 /**
  * Crear un nuevo producto
- * @param {Object} productData - Datos del producto
+ * @param {FormData} formData - FormData con los datos del producto (incluyendo imagen)
  * @returns {Promise<Object>} Producto creado
  */
-async function createProduct(productData) {
-    const response = await authenticatedFetch(`${API_BASE_URL}/products`, {
+async function createProduct(formData) {
+    const token = getAuthToken();
+    
+    if (!token) {
+        throw new Error('No hay token de autenticación');
+    }
+    
+    // Para FormData, NO especificamos Content-Type para que el navegador configure el boundary automáticamente
+    const response = await fetch(`${API_BASE_URL}/products`, {
         method: 'POST',
-        body: JSON.stringify(productData)
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        body: formData
     });
+    
+    // Si el token ha expirado (401), manejar el error de autenticación
+    if (response.status === 401) {
+        clearAuthData();
+        alert('Sesión expirada. Redirigiendo al login...');
+        window.location.href = '/pages/admin/login/login.html';
+        throw new Error('Token expirado');
+    }
     
     if (!response.ok) {
         const errorData = await response.json();
@@ -33,21 +51,59 @@ async function createProduct(productData) {
 /**
  * Actualizar un producto existente
  * @param {number} productId - ID del producto
- * @param {Object} productData - Datos actualizados del producto
+ * @param {FormData|Object} productData - FormData si incluye imagen, Object si es solo datos
  * @returns {Promise<Object>} Producto actualizado
  */
 async function updateProduct(productId, productData) {
-    const response = await authenticatedFetch(`${API_BASE_URL}/products/${productId}`, {
-        method: 'PUT',
-        body: JSON.stringify(productData)
-    });
+    const token = getAuthToken();
     
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Error al actualizar el producto');
+    if (!token) {
+        throw new Error('No hay token de autenticación');
     }
     
-    return await response.json();
+    let requestConfig;
+    
+    // Si es FormData (incluye imagen), usar fetch manual
+    if (productData instanceof FormData) {
+        requestConfig = {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`
+                // NO especificar Content-Type para FormData
+            },
+            body: productData
+        };
+        
+        const response = await fetch(`${API_BASE_URL}/products/${productId}`, requestConfig);
+        
+        // Manejar autenticación
+        if (response.status === 401) {
+            clearAuthData();
+            alert('Sesión expirada. Redirigiendo al login...');
+            window.location.href = '/pages/admin/login/login.html';
+            throw new Error('Token expirado');
+        }
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Error al actualizar el producto');
+        }
+        
+        return await response.json();
+    } else {
+        // Si es objeto normal (sin imagen), usar authenticatedFetch
+        const response = await authenticatedFetch(`${API_BASE_URL}/products/${productId}`, {
+            method: 'PUT',
+            body: JSON.stringify(productData)
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Error al actualizar el producto');
+        }
+        
+        return await response.json();
+    }
 }
 
 /**
@@ -57,10 +113,50 @@ async function updateProduct(productId, productData) {
  */
 async function deleteProductById(productId) {
     const response = await authenticatedFetch(`${API_BASE_URL}/products/${productId}`, {
-        method: 'DELETE'
+        method: 'PATCH' // Usamos PATCH para cambiar el estado a inactivo
     });
     
     if (!response.ok) {
         throw new Error('Error al eliminar el producto');
     }
+}
+
+/**
+ * Obtener todas las subcategorías con sus categorías incluidas
+ * @returns {Promise<Array>} Lista de subcategorías con información de categoría
+ */
+async function getAllSubcategories() {
+    const response = await authenticatedFetch(`${API_BASE_URL}/subcategories`);
+    return await response.json();
+}
+
+/**
+ * Obtener todas las categorías únicas desde las subcategorías
+ * @returns {Promise<Array>} Lista de categorías únicas
+ */
+async function getCategories() {
+    const subcategories = await getAllSubcategories();
+    
+    // Extraer categorías únicas
+    const categoriesMap = new Map();
+    subcategories.forEach(subcategory => {
+        if (subcategory.Category && !categoriesMap.has(subcategory.Category.id)) {
+            categoriesMap.set(subcategory.Category.id, {
+                id: subcategory.Category.id,
+                name: subcategory.Category.name
+            });
+        }
+    });
+    
+    return Array.from(categoriesMap.values());
+}
+
+/**
+ * Obtener subcategorías filtradas por ID de categoría
+ * @param {number} categoryId - ID de la categoría
+ * @returns {Promise<Array>} Lista de subcategorías de la categoría especificada
+ */
+async function getSubcategoriesByCategory(categoryId) {
+    const allSubcategories = await getAllSubcategories();
+    return allSubcategories.filter(subcategory => subcategory.category_id === parseInt(categoryId));
 }
