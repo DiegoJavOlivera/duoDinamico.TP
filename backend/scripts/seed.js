@@ -52,28 +52,97 @@ async function conditionalSeed() {
     const bebidas = await Category.findOne({ where: { name: 'bebidas' } });
     const accesorios = await Category.findOne({ where: { name: 'accesorios' } });
 
-    // Cargar subcategorías
     const subcategories = await Subcategory.count();
-    if (subcategories === 0) {
-      await Subcategory.bulkCreate([
-        // Bebidas
-        { name: 'Vinos', category_id: bebidas.id },
-        { name: 'Cervezas', category_id: bebidas.id },
-        { name: 'Whiskys', category_id: bebidas.id },
-        { name: 'Gins', category_id: bebidas.id },
-        { name: 'Vodkas', category_id: bebidas.id },
-        { name: 'Tequilas', category_id: bebidas.id },
-        { name: 'Rones', category_id: bebidas.id },
-        { name: 'Licores', category_id: bebidas.id },
-        // Accesorios 
-        { name: 'refrigeracion', category_id: accesorios.id },
-        { name: 'kits', category_id: accesorios.id },
-        { name: 'utensilios', category_id: accesorios.id },
-        { name: 'vasos', category_id: accesorios.id },
-        { name: 'copas', category_id: accesorios.id }
-      ]);
-      console.log('Subcategorías insertadas');
-    }
+if (subcategories === 0) {
+  await Subcategory.bulkCreate([
+    // Bebidas
+    { name: 'Vinos', category_id: bebidas.id },
+    { name: 'Cervezas', category_id: bebidas.id },
+    { name: 'Whiskys', category_id: bebidas.id },
+    { name: 'Vodkas', category_id: bebidas.id },
+    { name: 'Rones', category_id: bebidas.id },
+    // Accesorios
+    { name: 'vasos', category_id: accesorios.id },
+    { name: 'copas', category_id: accesorios.id },
+    { name: 'kits', category_id: accesorios.id }
+  ]);
+  console.log('Subcategorías insertadas');
+}
+
+const subcat = {};
+const allSubcats = await Subcategory.findAll();
+allSubcats.forEach(s => subcat[s.name.toLowerCase()] = s.id);
+
+// Cargar productos
+const products = await Product.count();
+if (products === 0) {
+  await Product.bulkCreate([
+    // Vinos
+    { name: 'Vino Tinto Malbec', description: 'Malbec reserva de Mendoza', price: 2700, stock: 30, is_active: true, subcategory_id: subcat['vinos'] },
+    { name: 'Vino Blanco Chardonnay', description: 'Chardonnay fresco de Patagonia', price: 2500, stock: 20, is_active: true, subcategory_id: subcat['vinos'] },
+    { name: 'Vino Rosado Syrah', description: 'Rosado afrutado de Cuyo', price: 2400, stock: 25, is_active: true, subcategory_id: subcat['vinos'] },
+    { name: 'Vino Cabernet Sauvignon', description: 'Cabernet intenso de Mendoza', price: 2900, stock: 15, is_active: true, subcategory_id: subcat['vinos'] },
+    { name: 'Vino Pinot Noir', description: 'Pinot Noir delicado de Río Negro', price: 3100, stock: 18, is_active: true, subcategory_id: subcat['vinos'] },
+    { name: 'Vino Espumante Brut', description: 'Espumante tradicional argentino', price: 3300, stock: 22, is_active: true, subcategory_id: subcat['vinos'] },
+
+    // Cervezas
+    { name: 'Cerveza IPA Patagonia', description: 'IPA artesanal con lúpulo patagónico', price: 850, stock: 40, is_active: true, subcategory_id: subcat['cervezas'] },
+    { name: 'Cerveza Rubia Lager', description: 'Lager tradicional bien fría', price: 700, stock: 50, is_active: true, subcategory_id: subcat['cervezas'] },
+    { name: 'Cerveza Stout Negra', description: 'Cerveza negra con notas a café', price: 900, stock: 30, is_active: true, subcategory_id: subcat['cervezas'] },
+    { name: 'Cerveza Amber Ale', description: 'Amber Ale con maltas acarameladas', price: 880, stock: 35, is_active: true, subcategory_id: subcat['cervezas'] },
+    { name: 'Cerveza de Trigo', description: 'Blanca refrescante estilo belga', price: 820, stock: 28, is_active: true, subcategory_id: subcat['cervezas'] },
+    { name: 'Cerveza Porter', description: 'Oscura y densa con notas a cacao', price: 950, stock: 25, is_active: true, subcategory_id: subcat['cervezas'] },
+
+    // Whiskys
+    { name: 'Whisky Jameson', description: 'Irlandés suave triple destilado', price: 5800, stock: 18, is_active: true, subcategory_id: subcat['whiskys'] },
+    { name: 'Whisky Chivas Regal 12', description: 'Blend escocés añejado 12 años', price: 7400, stock: 14, is_active: true, subcategory_id: subcat['whiskys'] },
+    { name: 'Whisky Johnnie Walker Black', description: 'Black Label escocés intenso', price: 8100, stock: 12, is_active: true, subcategory_id: subcat['whiskys'] },
+    { name: 'Whisky Jack Daniel’s', description: 'Whisky de Tennessee clásico', price: 7600, stock: 16, is_active: true, subcategory_id: subcat['whiskys'] },
+    { name: 'Whisky Glenfiddich 12', description: 'Single malt escocés', price: 8900, stock: 10, is_active: true, subcategory_id: subcat['whiskys'] },
+    { name: 'Whisky Ballantine’s Finest', description: 'Blend accesible y equilibrado', price: 5600, stock: 20, is_active: true, subcategory_id: subcat['whiskys'] },
+
+    // Vodkas
+    { name: 'Vodka Absolut', description: 'Vodka sueco puro', price: 4900, stock: 22, is_active: true, subcategory_id: subcat['vodkas'] },
+    { name: 'Vodka Smirnoff', description: 'Vodka clásico y versátil', price: 4200, stock: 30, is_active: true, subcategory_id: subcat['vodkas'] },
+    { name: 'Vodka Belvedere', description: 'Premium polaco artesanal', price: 9200, stock: 10, is_active: true, subcategory_id: subcat['vodkas'] },
+    { name: 'Vodka Ciroc', description: 'Destilado de uvas francesas', price: 9700, stock: 8, is_active: true, subcategory_id: subcat['vodkas'] },
+    { name: 'Vodka Skyy', description: 'Vodka americano filtrado cuádruple', price: 4600, stock: 18, is_active: true, subcategory_id: subcat['vodkas'] },
+    { name: 'Vodka Zubrowka', description: 'Vodka polaco con hierba de bisonte', price: 6500, stock: 12, is_active: true, subcategory_id: subcat['vodkas'] },
+
+    // Rones
+    { name: 'Ron Havana Club 7', description: 'Ron cubano añejado', price: 5800, stock: 15, is_active: true, subcategory_id: subcat['rones'] },
+    { name: 'Ron Bacardi Carta Oro', description: 'Ron suave y dorado', price: 4200, stock: 20, is_active: true, subcategory_id: subcat['rones'] },
+    { name: 'Ron Diplomático Reserva', description: 'Ron venezolano premium', price: 8800, stock: 10, is_active: true, subcategory_id: subcat['rones'] },
+    { name: 'Ron Zacapa 23', description: 'Ron guatemalteco de lujo', price: 10500, stock: 8, is_active: true, subcategory_id: subcat['rones'] },
+    { name: 'Ron Captain Morgan Spiced', description: 'Ron especiado estilo caribeño', price: 5100, stock: 18, is_active: true, subcategory_id: subcat['rones'] },
+    { name: 'Ron Brugal Añejo', description: 'Ron dominicano clásico', price: 4700, stock: 16, is_active: true, subcategory_id: subcat['rones'] },
+
+    // Kits
+    { name: 'Kit Bartender Básico', description: 'Incluye coctelera, medidor y colador', price: 6800, stock: 12, is_active: true, subcategory_id: subcat['kits'] },
+    { name: 'Kit de Vinos Deluxe', description: 'Sacacorchos, cortacápsulas y aireador', price: 5900, stock: 14, is_active: true, subcategory_id: subcat['kits'] },
+    { name: 'Kit de Gin Tonic', description: 'Botánicos, cuchara mezcladora y vaso balón', price: 7200, stock: 10, is_active: true, subcategory_id: subcat['kits'] },
+    { name: 'Kit de Cócteles Premium', description: 'Set de 8 piezas con estuche', price: 9400, stock: 8, is_active: true, subcategory_id: subcat['kits'] },
+    { name: 'Kit de Tragos Rápidos', description: 'Todo lo necesario para mezclar bebidas simples', price: 4900, stock: 16, is_active: true, subcategory_id: subcat['kits'] },
+    { name: 'Kit de Cata de Vinos', description: 'Incluye copas, fichas y guía de cata', price: 6700, stock: 10, is_active: true, subcategory_id: subcat['kits'] },
+
+    // Vasos
+    { name: 'Set de 6 Vasos Altos', description: 'Ideales para tragos largos', price: 3200, stock: 20, is_active: true, subcategory_id: subcat['vasos'] },
+    { name: 'Set de 4 Vasos de Whisky', description: 'De vidrio grueso, base ancha', price: 2900, stock: 18, is_active: true, subcategory_id: subcat['vasos'] },
+    { name: 'Set de 6 Vasos de Cerveza', description: 'Forma tradicional para mejor espuma', price: 3500, stock: 15, is_active: true, subcategory_id: subcat['vasos'] },
+    { name: 'Set de Vasos Térmicos', description: 'Mantienen temperatura por más tiempo', price: 4000, stock: 12, is_active: true, subcategory_id: subcat['vasos'] },
+    { name: 'Set de 6 Vasos de Agua', description: 'Diseño simple y funcional', price: 2100, stock: 22, is_active: true, subcategory_id: subcat['vasos'] },
+    { name: 'Set de Vasos de Shot', description: 'Perfectos para licores', price: 1500, stock: 25, is_active: true, subcategory_id: subcat['vasos'] },
+
+    // Copas
+    { name: 'Set de 4 Copas de Vino Tinto', description: 'Cristal fino, boca ancha', price: 4800, stock: 16, is_active: true, subcategory_id: subcat['copas'] },
+    { name: 'Set de 4 Copas de Vino Blanco', description: 'Cuerpo más delgado', price: 4600, stock: 14, is_active: true, subcategory_id: subcat['copas'] },
+    { name: 'Set de Copas de Champagne', description: 'Flauta de cristal', price: 5200, stock: 10, is_active: true, subcategory_id: subcat['copas'] },
+    { name: 'Set de Copas de Cóctel', description: 'Tipo martini, ideal para tragos', price: 5000, stock: 12, is_active: true, subcategory_id: subcat['copas'] },
+    { name: 'Set de Copas Balón', description: 'Perfectas para gin tonic', price: 5400, stock: 9, is_active: true, subcategory_id: subcat['copas'] },
+    { name: 'Set de Copas Vintage', description: 'Diseño retro de colección', price: 5600, stock: 8, is_active: true, subcategory_id: subcat['copas'] }
+  ]);
+  console.log('Productos insertados');
+}
 
     // Cargar usuarios
     const users = await User.count();
@@ -99,64 +168,6 @@ async function conditionalSeed() {
       ]);
       console.log('Usuarios insertados');
     }
-
-    // Cargar productos
-    const products = await Product.count();
-    if (products === 0) {
-      // Bebidas alcohólicas
-      await Product.bulkCreate([
-        { name: 'Vino Tinto Malbec', description: 'Vino tinto malbec de Mendoza', price: 2500.00, stock: 50, is_active: true, subcategory_id: 1 },
-        { name: 'Vino Blanco Chardonnay', description: 'Vino blanco chardonnay de Patagonia', price: 2200.00, stock: 45, is_active: true, subcategory_id: 1 },
-        { name: 'Cerveza IPA', description: 'Cerveza artesanal estilo IPA', price: 800.00, stock: 100, is_active: true, subcategory_id: 1 },
-        { name: 'Whisky Escocés', description: 'Whisky escocés 12 años', price: 4500.00, stock: 30, is_active: true, subcategory_id: 1 },
-        { name: 'Ron Premium', description: 'Ron premium añejado', price: 3500.00, stock: 40, is_active: true, subcategory_id: 1 },
-        { name: 'Vodka Premium', description: 'Vodka premium importado', price: 2800.00, stock: 35, is_active: true, subcategory_id: 1 },
-        { name: 'Gin Tónico', description: 'Gin tónico artesanal', price: 3200.00, stock: 25, is_active: true, subcategory_id: 1 },
-        { name: 'Champagne', description: 'Champagne francés', price: 5500.00, stock: 20, is_active: true, subcategory_id: 1 },
-        { name: 'Tequila Reposado', description: 'Tequila reposado mexicano', price: 3800.00, stock: 30, is_active: true, subcategory_id: 1 },
-        { name: 'Vermut', description: 'Vermut rojo italiano', price: 1800.00, stock: 40, is_active: true, subcategory_id: 1 }
-      ]);
-
-      // Bebidas no alcohólicas
-      await Product.bulkCreate([
-        { name: 'Agua Mineral', description: 'Agua mineral natural', price: 200.00, stock: 200, is_active: true, subcategory_id: 2 },
-        { name: 'Gaseosa Cola', description: 'Gaseosa cola 2L', price: 350.00, stock: 150, is_active: true, subcategory_id: 2 },
-        { name: 'Jugo de Naranja', description: 'Jugo de naranja natural', price: 400.00, stock: 100, is_active: true, subcategory_id: 2 },
-        { name: 'Limonada', description: 'Limonada natural', price: 300.00, stock: 80, is_active: true, subcategory_id: 2 },
-        { name: 'Agua Tónica', description: 'Agua tónica premium', price: 250.00, stock: 120, is_active: true, subcategory_id: 2 },
-        { name: 'Café Frío', description: 'Café frío preparado', price: 450.00, stock: 60, is_active: true, subcategory_id: 2 },
-        { name: 'Té Verde', description: 'Té verde natural', price: 280.00, stock: 90, is_active: true, subcategory_id: 2 },
-        { name: 'Smoothie Frutal', description: 'Smoothie de frutas mixtas', price: 500.00, stock: 70, is_active: true, subcategory_id: 2 },
-        { name: 'Agua de Coco', description: 'Agua de coco natural', price: 350.00, stock: 85, is_active: true, subcategory_id: 2 },
-        { name: 'Limonada de Menta', description: 'Limonada con menta fresca', price: 380.00, stock: 75, is_active: true, subcategory_id: 2 }
-      ]);
-
-      // Utensilios variados
-      await Product.bulkCreate([
-        { name: 'Juego de Copas de Vino', description: 'Set de 6 copas de vino', price: 4500.00, stock: 20, is_active: true, subcategory_id: 7 },
-        { name: 'Coctelera Profesional', description: 'Coctelera de acero inoxidable', price: 2800.00, stock: 15, is_active: true, subcategory_id: 5 },
-        { name: 'Juego de Vasos Térmicos', description: 'Set de 4 vasos térmicos', price: 3200.00, stock: 25, is_active: true, subcategory_id: 6 },
-        { name: 'Kit de Bar Profesional', description: 'Kit completo para bartender', price: 8500.00, stock: 10, is_active: true, subcategory_id: 4 },
-        { name: 'Abrebotellas', description: 'Abrebotellas profesional', price: 800.00, stock: 30, is_active: true, subcategory_id: 5 },
-        { name: 'Juego de Copas de Champagne', description: 'Set de 4 copas de champagne', price: 3800.00, stock: 15, is_active: true, subcategory_id: 7 },
-        { name: 'Vasos de Whisky', description: 'Set de 4 vasos de whisky', price: 2500.00, stock: 20, is_active: true, subcategory_id: 6 },
-        { name: 'Colador de Cócteles', description: 'Colador de acero inoxidable', price: 1200.00, stock: 25, is_active: true, subcategory_id: 5 },
-        { name: 'Kit de Refrigeración', description: 'Set de refrigeración para bebidas', price: 4200.00, stock: 12, is_active: true, subcategory_id: 3 },
-        { name: 'Juego de Copas de Martini', description: 'Set de 4 copas de martini', price: 3500.00, stock: 18, is_active: true, subcategory_id: 7 },
-        { name: 'Vasos de Cerveza', description: 'Set de 6 vasos de cerveza', price: 2800.00, stock: 22, is_active: true, subcategory_id: 6 },
-        { name: 'Molinillo de Hielo', description: 'Molinillo profesional para hielo', price: 1800.00, stock: 15, is_active: true, subcategory_id: 5 },
-        { name: 'Kit de Servicio', description: 'Set completo de servicio', price: 5500.00, stock: 8, is_active: true, subcategory_id: 4 },
-        { name: 'Copas de Vino Blanco', description: 'Set de 4 copas de vino blanco', price: 3200.00, stock: 20, is_active: true, subcategory_id: 7 },
-        { name: 'Vasos de Agua', description: 'Set de 6 vasos de agua', price: 1500.00, stock: 30, is_active: true, subcategory_id: 6 },
-        { name: 'Cuchara Mezcladora', description: 'Cuchara mezcladora profesional', price: 900.00, stock: 25, is_active: true, subcategory_id: 5 },
-        { name: 'Kit de Presentación', description: 'Set de presentación para bebidas', price: 4800.00, stock: 10, is_active: true, subcategory_id: 4 },
-        { name: 'Refrigerador de Vinos', description: 'Refrigerador para 6 botellas', price: 12000.00, stock: 5, is_active: true, subcategory_id: 3 },
-        { name: 'Copas de Cóctel', description: 'Set de 4 copas de cóctel', price: 2800.00, stock: 15, is_active: true, subcategory_id: 7 },
-        { name: 'Vasos de Shot', description: 'Set de 6 vasos de shot', price: 1200.00, stock: 25, is_active: true, subcategory_id: 6 }
-      ]);
-      console.log('Productos insertados');
-    }
-
   } catch (error) {
     console.error('Error al hacer el seed:', error);
   } finally {

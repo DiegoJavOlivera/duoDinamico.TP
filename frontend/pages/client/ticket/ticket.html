@@ -2,10 +2,12 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>DrinkMart | Ticket</title>
+    <title>La vinoteca | Ticket</title>
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/assets/bootstrap-icons.css" />
     <link rel="stylesheet" href="/assets/bootstrap.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link rel="stylesheet" href="ticket.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -21,9 +23,12 @@
         </div>
         <div class="ticket-card-wrapper d-flex flex-column align-items-center">
             <div class="ticket-card bg-dark text-light shadow rounded-4 p-4 mb-2" style="min-width:320px;max-width:400px;width:100%;">
+                <div class="d-flex justify-content-center">
+                    <img src="/images/logo_light.png" alt="La vinoteca" class="logo" style="width: 75px;">
+                </div>
                 <div class="text-center mb-3">
-                    <span class="fw-bold fs-5" style="color:#ffc107;">DRINKMART</span>
-                    <div class="text-secondary small" style="letter-spacing:0.5px;">Autoservicio Premium de Bebidas</div>
+                    <span class="fw-bold fs-5" style="color:#ffc107;">La vinoteca</span>
+                    <div class="text-secondary small" style="letter-spacing:0.5px;">Autoservicio de Bebidas</div>
                 </div>
                 <div class="ticket-info bg-secondary bg-opacity-10 rounded-3 p-3 mb-3">
                     <div class="d-flex justify-content-between mb-1">
@@ -64,7 +69,6 @@
         </div>
     </section>
     <script src="/assets/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="/utils/redirects.js"></script>
     <script src="ticket.js"></script>
 </body>

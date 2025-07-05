@@ -3,6 +3,27 @@ const exit = () => {
     moveToWelcome();
 }
 
+function downloadTicketPDF() {
+    const element = document.querySelector('.ticket-card');
+    const options = {
+        margin: [10, 10, 10, 10],
+        filename: 'ticket.pdf',
+        image: { type: 'jpeg', quality: 0.9 },
+        html2canvas: { 
+            scale: 2,
+            scrollX: 0,
+            scrollY: 0
+        },
+        jsPDF: { 
+            unit: 'mm', 
+            format: 'A4', 
+            orientation: 'portrait' 
+        }
+    };
+    console.log(element);
+    html2pdf().set(options).from(element).save();
+};
+
 // ticket.js - Renderiza el ticket dinámicamente desde localStorage
 document.addEventListener('DOMContentLoaded', () => {
     const ticketData = JSON.parse(localStorage.getItem('ticket'));

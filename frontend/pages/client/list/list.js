@@ -146,6 +146,13 @@ function renderProducts(products, subcategory_name) {
         `;
 
         const btnContainer = card.querySelector('.product-btn-container');
+        console.log("PRODUCT ", product)
+        if (product.stock === 0) {
+            btnContainer.innerHTML = `<div class="no-stock-msg" style="color: var(--primary-orange); font-weight: bold; padding: 0.5em 0;">Agotado</div>`;
+            card.classList.add('no-stock');
+            container.appendChild(card);
+            return;
+        }
         let cartObj = getCart();
         if (!cartObj || !Array.isArray(cartObj.products)) {
             cartObj = { products: [] };
