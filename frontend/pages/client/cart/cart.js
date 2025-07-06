@@ -90,11 +90,21 @@ function renderCart() {
     cartTotal.textContent = '$' + getCartTotal();
 }
 
+const cancel = () => {
+    localStorage.clear();
+    moveToWelcome();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    const USERNAME = localStorage.getItem('userName');
+    document.querySelector('.user-name').textContent = USERNAME;
+
     renderCart();
-    document.getElementById('btn-volver').addEventListener('click', () => {
-        window.history.back();
+
+    document.getElementById('back-to-categories').addEventListener('click', () => {
+        moveToDashboard();
     });
+    
     document.getElementById('btn-finalizar').addEventListener('click', () => {
         const conf = confirm('¿Desea finalizar la compra?');
 

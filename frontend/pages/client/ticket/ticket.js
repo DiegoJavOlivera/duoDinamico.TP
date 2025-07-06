@@ -20,17 +20,16 @@ function downloadTicketPDF() {
             orientation: 'portrait' 
         }
     };
-    console.log(element);
     html2pdf().set(options).from(element).save();
 };
 
 // ticket.js - Renderiza el ticket dinámicamente desde localStorage
 document.addEventListener('DOMContentLoaded', () => {
     const ticketData = JSON.parse(localStorage.getItem('ticket'));
-    const clientName = ticketData?.client || localStorage.getItem('userName') || 'Cliente';
-    const ticketNumber = ticketData?.ticketNumber || Date.now();
+    const clientName = ticketData?.customerName;
+    const ticketNumber = ticketData?.ticketCode;
     const products = ticketData?.products || [];
-    const total = ticketData?.total || 0;
+    const total = ticketData?.total;
     
     const now = new Date();
     const formattedDate = now.toLocaleString('es-AR', {

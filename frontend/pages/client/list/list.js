@@ -35,6 +35,8 @@ function renderSubcategories(subcategories, category_name) {
     const title = document.getElementById('subcategory-title');
     title.textContent = category_name;
 
+    container.innerHTML = '';
+
     subcategories.forEach(subcat => {
         const card = document.createElement('div');
         card.className = 'subcard';
@@ -42,8 +44,11 @@ function renderSubcategories(subcategories, category_name) {
 
         card.innerHTML = `
             <div class="card-body">
-                <div class="subtitle fs-5">${subcat.name}</div>
-                <button class="subbtn btn btn-primary">Ver productos</button>
+                <div class="subtitle fs-5 fw-bold">${subcat.name}</div>
+                <button class="subbtn btn btn-primary w-50">
+                    Ver productos
+                    <i class="bi bi-arrow-right"></i>
+                </button>
             </div>
         `;
         card.querySelector('.subbtn').onclick = () => selectSubcategory(subcat);
@@ -138,21 +143,28 @@ function renderProducts(products, subcategory_name) {
         const card = document.createElement('div');
         card.className = 'product-card';
         card.setAttribute('data-stock', product.stock);
+        const descripcion = "Intenso y frutal, ideal para carnes rojas y quesos maduros";
+        const cart = getCart();
+        const cartItem = cart?.products?.find(item => item.id === product.id);
+        const cantidad = cartItem ? cartItem.quantity : 0;
+        const subtotal = cantidad * product.price;
+
         card.innerHTML = `
             <img class="product-img" src="/images/categories/alcohol.jpg" alt="${product.name}">
-            <div class="product-name">${product.name}</div>
-            <div class="product-price">$${product.price}</div>
+            <div class="product-name text-align-left">${product.name}</div>
+            <div class="product-desc text-align-left">${descripcion}</div>
+            <div class="product-price text-align-left">$${product.price}</div>
             <div class="product-btn-container"></div>
         `;
 
         const btnContainer = card.querySelector('.product-btn-container');
-        console.log("PRODUCT ", product)
         if (product.stock === 0) {
-            btnContainer.innerHTML = `<div class="no-stock-msg" style="color: var(--primary-orange); font-weight: bold; padding: 0.5em 0;">Agotado</div>`;
+            btnContainer.innerHTML = `<div class="no-stock-msg">Agotado</div>`;
             card.classList.add('no-stock');
             container.appendChild(card);
             return;
         }
+
         let cartObj = getCart();
         if (!cartObj || !Array.isArray(cartObj.products)) {
             cartObj = { products: [] };
@@ -161,9 +173,14 @@ function renderProducts(products, subcategory_name) {
 
         if (prodInCart) {
             btnContainer.innerHTML = `
-                <button class="btn btn-sm btn-danger btn-restar" style="margin-right: 5px;">-</button>
-                <span class="cantidad-en-carrito">${prodInCart.quantity}</span>
-                <button class="btn btn-sm btn-success btn-sumar" style="margin-left: 5px;">+</button>
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <div class="d-flex gap-4 align-items-center">
+                        <button class="btn fs-5 fw-bold btn-restar">-</button>
+                        <span class="cantidad-en-carrito fs-5 fw-bold">${prodInCart.quantity}</span>
+                        <button class="btn btn-success fs-5 fw-bold btn-sumar">+</button>
+                    </div>
+                    <div class="product-subtotal text-light fs-5 ms-3">$${subtotal}</div>
+                </div>
             `;
             const btnSumar = btnContainer.querySelector('.btn-sumar');
             const btnRestar = btnContainer.querySelector('.btn-restar');
@@ -197,7 +214,10 @@ function renderProducts(products, subcategory_name) {
         } else {
             // Si no está en el carrito, muestra solo el botón agregar
             btnContainer.innerHTML = `
-                <button class="btn text-light product-btn">+ Agregar</button>
+                <button class="btn text-light product-btn">
+                    <i class="bi bi-cart me-2"></i>
+                    Agregar al carrito
+                </button>
             `;
             const btn = btnContainer.querySelector('.product-btn');
             btn.addEventListener('click', () => {
@@ -207,6 +227,7 @@ function renderProducts(products, subcategory_name) {
                 const prodInCart = cartObj.products.find(p => p.id === product.id);
                 const currentQty = prodInCart ? prodInCart.quantity : 0;
                 const stock = Number(card.getAttribute('data-stock'));
+
                 if (currentQty >= stock) {
                     alert('No hay más stock disponible para este producto');
                     return;

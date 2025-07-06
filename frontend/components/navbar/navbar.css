@@ -10,8 +10,7 @@
   
   /* Navbar general */
   .navbar {
-    background-color: rgba(31, 31, 37, 0.9); /* equivalente a bg-card/90 */
-    backdrop-filter: blur(4px);
+    background: #14171f;
     border-bottom: 1px solid rgba(123, 30, 34, 0.2); /* border-wine-red/20 */
     box-shadow: 0 4px 6px rgba(123, 30, 34, 0.05); /* sombra sutil */
     position: sticky;

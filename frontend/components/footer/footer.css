@@ -6,7 +6,7 @@
   }
   
   .footer {
-    background-color: var(--charcoal);
+    background-color: #14171f;
     border-top: 1px solid rgba(123, 30, 34, 0.2); /* border-wine-red/20 */
     margin-top: auto;
     padding: 1.5rem 1rem;
