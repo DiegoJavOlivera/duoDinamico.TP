@@ -188,9 +188,9 @@ function renderProducts(products) {
                     <i class="bi bi-pencil-square"></i>
                     <span>Editar</span>
                 </button>
-                <button class="action-btn delete-btn" onclick="deleteProduct(${product.id})" title="Eliminar producto">
-                    <i class="bi bi-trash3"></i>
-                    <span>Eliminar</span>
+                <button class="action-btn delete-btn ${product.is_active ? 'active' : 'inactive'}" onclick="deleteProduct(${product.id})" title="${product.is_active ? 'Eliminar producto' : 'Reactivar producto'}">
+                    <i class="bi ${product.is_active ? 'bi-trash3' : 'bi-arrow-clockwise'}"></i>
+                    <span>${product.is_active ? 'Eliminar' : 'Reactivar'}</span>
                 </button>
             </div>
         </div>
@@ -310,19 +310,7 @@ async function editProduct(productId) {
                     <input type="number" id="editProductPrice" step="0.01" value="${product.price}" required>
                 </div>
             </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="editProductStock">Stock</label>
-                    <input type="number" id="editProductStock" value="${product.stock}" required>
-                </div>
-                <div class="form-group">
-                    <label for="editProductStatus">Estado</label>
-                    <select id="editProductStatus" required>
-                        <option value="true" ${product.is_active ? 'selected' : ''}>Activo</option>
-                        <option value="false" ${!product.is_active ? 'selected' : ''}>Inactivo</option>
-                    </select>
-                </div>
-            </div>
+            
             <div class="form-row">
                 <div class="form-group">
                     <label for="editProductCategory">Categoría</label>
@@ -352,6 +340,12 @@ async function editProduct(productId) {
             <div class="form-group">
                 <label for="editProductDescription">Descripción</label>
                 <textarea id="editProductDescription" rows="3">${escapeHtml(product.description || '')}</textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editProductStock">Stock</label>
+                    <input type="number" id="editProductStock" value="${product.stock}" required>
+                </div>
             </div>
             <div class="form-group">
                 <label for="editProductImage">Imagen del Producto</label>
@@ -432,7 +426,6 @@ async function handleEditProduct(e, productId) {
         formData.append('description', document.getElementById('editProductDescription').value);
         formData.append('price', document.getElementById('editProductPrice').value);
         formData.append('stock', document.getElementById('editProductStock').value);
-        formData.append('is_active', document.getElementById('editProductStatus').value);
         formData.append('subcategory_id', document.getElementById('editProductSubcategory').value);
         formData.append('image', imageFile);
         
@@ -454,7 +447,7 @@ async function handleEditProduct(e, productId) {
             price: parseFloat(document.getElementById('editProductPrice').value),
             stock: parseInt(document.getElementById('editProductStock').value),
             subcategory_id: parseInt(document.getElementById('editProductSubcategory').value),
-            is_active: document.getElementById('editProductStatus').value === 'true'
+
         };
         
         try {
@@ -478,11 +471,11 @@ async function deleteProduct(productId) {
     const product = productsData.find(p => p.id === productId);
     if (!product) return;
     
-    if (confirm(`¿Estás seguro de que quieres eliminar "${product.name}"?`)) {
+    if (confirm(`¿Estás seguro de que quieres ${product.is_active? "eliminar": "reactivar"} "${product.name}"?`)) {
         try {
             await deleteProductById(productId);
-            alert('Producto eliminado correctamente');
-            loadProducts(); // Recargar la lista
+            alert(`Producto ${product.name} ${product.is_active? "eliminado": "reactivado"}`);
+            loadProducts();
         } catch (error) {
             console.error('Error al eliminar producto:', error);
             alert(`Error al eliminar producto: ${error.message}`);
@@ -599,6 +592,212 @@ async function loadSubcategoriesForEdit() {
         subcategorySelect.disabled = true;
     }
 }
+
+
+// Variable global para almacenar los movimientos
+let movementsData = [];
+
+/**
+ * Cargar movimientos desde la API
+ */
+async function loadMovements() {
+    const loadingElement = document.getElementById('movements-loading');
+    const listElement = document.getElementById('movementsList');
+    
+    // Verificar que los elementos existan
+    if (!loadingElement || !listElement) {
+        console.log('Elementos del DOM de movimientos no encontrados, reintentando en 500ms...');
+        setTimeout(loadMovements, 500);
+        return;
+    }
+    
+    try {
+        // Mostrar loading
+        loadingElement.style.display = 'flex';
+        listElement.innerHTML = '';
+        
+        console.log('Cargando movimientos desde la API...');
+        console.log('URL de la API:', `${API_BASE_URL || 'http://localhost:3000/api'}/admin/actions?page=1`);
+        
+        // Primero intentar con una sola página para debuggear
+        const response = await getMovements(1);
+        console.log('Respuesta de la API:', response);
+        
+        const movements = response.data || [];
+        movementsData = movements;
+        
+        console.log('Movimientos cargados:', movements.length);
+        if (movements.length > 0) {
+            console.log('Estructura del primer movimiento:', movements[0]);
+        }
+        
+        // Ocultar loading
+        loadingElement.style.display = 'none';
+        
+        // Mostrar movimientos
+        renderMovements(movements);
+        
+    } catch (error) {
+        console.error('Error detallado al cargar movimientos:', error);
+        console.error('Stack trace:', error.stack);
+        
+        // Ocultar loading
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+        
+        if (listElement) {
+            listElement.innerHTML = `
+                <div style="background: #2a1a1a; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #ff4444; color: #ff6666; text-align: center;">
+                    <i class="bi bi-exclamation-triangle" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i> 
+                    <strong>Error al cargar movimientos:</strong><br>
+                    ${error.message}
+                    <br><br>
+                    <button class="btn primary" onclick="loadMovements()" style="margin-top: 1rem;">
+                        <i class="bi bi-arrow-clockwise"></i> Reintentar
+                    </button>
+                </div>
+            `;
+        }
+    }
+}
+
+/**
+ * Renderizar movimientos en el dashboard
+ * @param {Array} movements - Lista de movimientos
+ */
+function renderMovements(movements) {
+    const listElement = document.getElementById('movementsList');
+    
+    if (!movements || movements.length === 0) {
+        listElement.innerHTML = `
+            <div class="coming-soon" style="grid-column: 1 / -1;">
+                No hay movimientos disponibles
+            </div>
+        `;
+        return;
+    }
+    
+    console.log('Renderizando movimientos en cards:', movements.length);
+    
+    // Crear un grid de cards usando las clases CSS
+    listElement.innerHTML = `
+        <div class="movements-grid">
+            ${movements.map(movement => {
+                const date = new Date(movement.created_at).toLocaleString('es-ES', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                // Determinar el icono y clase CSS según el tipo de acción
+                let actionIcon = 'bi-info-circle';
+                let actionClass = 'default';
+                
+                if (movement.Action.name.toLowerCase().includes('crear')) {
+                    actionIcon = 'bi-plus-circle';
+                    actionClass = 'create';
+                } else if (movement.Action.name.toLowerCase().includes('actualizar') || movement.Action.name.toLowerCase().includes('modificar')) {
+                    actionIcon = 'bi-pencil-square';
+                    actionClass = 'update';
+                } else if (movement.Action.name.toLowerCase().includes('eliminar') || movement.Action.name.toLowerCase().includes('inactive')) {
+                    actionIcon = 'bi-trash3';
+                    actionClass = 'delete';
+                } else if (movement.Action.name.toLowerCase().includes('active')) {
+                    actionIcon = 'bi-arrow-clockwise';
+                    actionClass = 'activate';
+                }
+                
+                return `
+                    <div class="movement-card">
+                        <div class="movement-content">
+                            <!-- Icono de acción -->
+                            <div class="movement-icon-container">
+                                <div class="movement-icon ${actionClass}">
+                                    <i class="bi ${actionIcon}"></i>
+                                </div>
+                            </div>
+                            
+                            <!-- Información del movimiento -->
+                            <div class="movement-info">
+                                <div class="movement-header">
+                                    <div class="movement-title-area">
+                                        <h3 class="movement-title">
+                                            ${escapeHtml(movement.Action.name)}
+                                        </h3>
+                                        ${movement.Product ? `
+                                            <p class="movement-description">
+                                                Producto: ${escapeHtml(movement.Product.name)}
+                                            </p>
+                                        ` : `
+                                            <p class="movement-description general">
+                                                Acción general del sistema
+                                            </p>
+                                        `}
+                                    </div>
+                                    <div class="movement-id-area">
+                                        <div class="movement-id">
+                                            ID: ${movement.id}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="movement-details">
+                                    <!-- Primera fila: Fecha -->
+                                    <div class="movement-details-row">
+                                        <div class="movement-info-box">
+                                            <i class="bi bi-calendar-event movement-info-icon"></i>
+                                            <div class="movement-info-content">
+                                                <span class="movement-info-label">Fecha</span>
+                                                <span class="movement-info-value">${date}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Segunda fila: Usuario y Producto -->
+                                    <div class="movement-details-row">
+                                        <div class="movement-info-box">
+                                            <i class="bi bi-person-check movement-info-icon"></i>
+                                            <div class="movement-info-content">
+                                                <span class="movement-info-label">Usuario Responsable</span>
+                                                <span class="movement-info-value">${escapeHtml(movement.User.name)}</span>
+                                            </div>
+                                        </div>
+                                        
+                                        ${movement.Product ? `
+                                            <div class="movement-info-box movement-product-info">
+                                                <i class="bi bi-box movement-info-icon"></i>
+                                                <div class="movement-info-content">
+                                                    <span class="movement-info-label">Producto</span>
+                                                    <div class="movement-product-name">${escapeHtml(movement.Product.name)}</div>
+                                                    <div class="movement-product-id">ID: #${movement.Product.id}</div>
+                                                </div>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `;
+}
+
+/**
+ * Función para refrescar movimientos
+ */
+function refreshMovements() {
+    movementsData = [];
+    loadMovements();
+}
+
+// Hacer las funciones de movimientos disponibles globalmente
+window.loadMovements = loadMovements;
+window.refreshMovements = refreshMovements;
 
 // Hacer las funciones disponibles globalmente
 window.loadSubcategoriesForForm = loadSubcategoriesForForm;

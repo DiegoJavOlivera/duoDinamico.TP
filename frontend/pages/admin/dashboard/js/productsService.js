@@ -160,3 +160,52 @@ async function getSubcategoriesByCategory(categoryId) {
     const allSubcategories = await getAllSubcategories();
     return allSubcategories.filter(subcategory => subcategory.category_id === parseInt(categoryId));
 }
+
+/**
+ * Obtener movimientos/acciones del sistema con paginación
+ * @param {number} page - Página actual (opcional, por defecto 1)
+ * @returns {Promise<Object>} Objeto con total, totalPages, currentPage y data con los movimientos
+ */
+async function getMovements(page = 1) {
+    const response = await authenticatedFetch(`${API_BASE_URL}/admin/actions?page=${page}`);
+    
+    if (!response.ok) {
+        throw new Error('Error al obtener los movimientos');
+    }
+    
+    return await response.json();
+}
+
+/**
+ * Obtener todos los movimientos (carga todas las páginas)
+ * @returns {Promise<Object>} Objeto con todos los movimientos
+ */
+async function getAllMovements() {
+    try {
+        // Primero obtenemos la primera página para saber el total
+        const firstPage = await getMovements(1);
+        let allMovements = [...firstPage.data];
+        
+        // Si hay más de una página, obtenemos el resto
+        if (firstPage.totalPages > 1) {
+            const promises = [];
+            for (let page = 2; page <= firstPage.totalPages; page++) {
+                promises.push(getMovements(page));
+            }
+            
+            const remainingPages = await Promise.all(promises);
+            remainingPages.forEach(pageData => {
+                allMovements = allMovements.concat(pageData.data);
+            });
+        }
+        
+        return {
+            total: firstPage.total,
+            totalPages: firstPage.totalPages,
+            currentPage: 1,
+            data: allMovements
+        };
+    } catch (error) {
+        throw new Error('Error al obtener todos los movimientos: ' + error.message);
+    }
+}

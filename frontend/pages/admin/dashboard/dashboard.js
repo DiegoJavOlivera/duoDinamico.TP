@@ -75,20 +75,103 @@ function logout() {
 }
 
 // Cargar movimientos
-function loadMovements() {
-    const movementsList = document.getElementById('movementsList');
-    movementsList.innerHTML = `
-        <div class="loading">
-            <i class="bi bi-arrow-clockwise spin"></i> Cargando movimientos...
-        </div>
-    `;
+async function loadMovements() {
+    // Llamar directamente a la función que está en productHandlers.js
+    // Evitar usar window.loadMovements para prevenir recursión
     
-    // TODO: Implementar carga desde backend
-    // const response = await authenticatedFetch('http://localhost:3000/api/movements');
+    const loadingElement = document.getElementById('movements-loading');
+    const listElement = document.getElementById('movementsList');
+    
+    // Verificar que los elementos existan
+    if (!loadingElement || !listElement) {
+        console.log('Elementos del DOM de movimientos no encontrados, reintentando en 500ms...');
+        setTimeout(loadMovements, 500);
+        return;
+    }
+    
+    try {
+        // Mostrar loading
+        loadingElement.style.display = 'flex';
+        listElement.innerHTML = '';
+        
+        console.log('Cargando movimientos desde la API...');
+        console.log('URL de la API:', `http://localhost:3000/api/admin/actions?page=1`);
+        
+        // Llamar directamente a la función del service
+        const response = await getMovements(1);
+        console.log('Respuesta de la API:', response);
+        
+        const movements = response.data || [];
+        console.log('Movimientos cargados:', movements.length);
+        
+        // Ocultar loading
+        loadingElement.style.display = 'none';
+        
+        // Llamar a la función de renderizado de productHandlers.js
+        if (typeof renderMovements === 'function') {
+            renderMovements(movements);
+        } else {
+            // Fallback si la función no está disponible
+            if (!movements || movements.length === 0) {
+                listElement.innerHTML = `
+                    <div class="coming-soon">
+                        No hay movimientos disponibles
+                    </div>
+                `;
+                return;
+            }
+            
+            listElement.innerHTML = movements.map(movement => {
+                const date = new Date(movement.created_at).toLocaleString('es-ES', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                const productInfo = movement.Product ? 
+                    `<strong>Producto:</strong> ${movement.Product.name} (ID: ${movement.Product.id})` : 
+                    '';
+                
+                return `
+                    <div style="background: #1a1a1a; padding: 1rem; margin-bottom: 0.5rem; border-radius: 0.5rem; border: 1px solid #333;">
+                        <div style="color: #ffd700; font-weight: bold;">ID: ${movement.id}</div>
+                        <div style="color: #ccc; font-size: 0.9rem; margin: 0.25rem 0;">Fecha: ${date}</div>
+                        <div style="color: #fff; margin: 0.25rem 0;">Usuario: ${movement.User.name}</div>
+                        <div style="color: #fff; margin: 0.25rem 0;">Acción: ${movement.Action.name}</div>
+                        ${productInfo ? `<div style="color: #aaa; font-size: 0.85rem;">${productInfo}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+        
+    } catch (error) {
+        console.error('Error detallado al cargar movimientos:', error);
+        
+        // Ocultar loading
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+        
+        if (listElement) {
+            listElement.innerHTML = `
+                <div style="background: #2a1a1a; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #ff4444; color: #ff6666; text-align: center;">
+                    <i class="bi bi-exclamation-triangle" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i> 
+                    <strong>Error al cargar movimientos:</strong><br>
+                    ${error.message}
+                    <br><br>
+                    <button class="btn primary" onclick="loadMovements()" style="margin-top: 1rem;">
+                        <i class="bi bi-arrow-clockwise"></i> Reintentar
+                    </button>
+                </div>
+            `;
+        }
+    }
 }
 
 // Cargar tickets
-function loadTickets() {
+async function loadTickets() {
     const ticketsList = document.getElementById('ticketsList');
     ticketsList.innerHTML = `
         <div class="loading">
@@ -98,15 +181,6 @@ function loadTickets() {
     
     // TODO: Implementar carga desde backend
     // const response = await authenticatedFetch('http://localhost:3000/api/tickets');
-}
-
-// Filtrar movimientos por fecha
-function filterMovements() {
-    const dateFrom = document.getElementById('dateFrom').value;
-    const dateTo = document.getElementById('dateTo').value;
-    
-    console.log('Filtrar movimientos desde:', dateFrom, 'hasta:', dateTo);
-    // Aquí implementarías la lógica de filtrado
 }
 
 // Exportar tickets

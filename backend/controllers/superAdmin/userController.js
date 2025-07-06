@@ -3,12 +3,14 @@ const {
     returnUser, 
     hashPassword 
 } = require("../../utils/userUtils");
+const { addLog } = require("../../repository/logRepository");
 
 const {create,
     checkEmailExists,
     getAllUsers
 } = require("../../repository/userRepository");
 
+const ACTION_ID_CREATE_USER = 3;
 
 const createUser = async (req, res) => {
     try {
@@ -31,6 +33,12 @@ const createUser = async (req, res) => {
             password: hashedPassword,
             is_active: true
         });
+
+        const logData = {
+            user_id: req.user.dataValues.id,
+            action_id: ACTION_ID_CREATE_USER
+        };
+        await addLog(logData);
 
         res.status(201).json({
             message: "Administrador creado exitosamente",

@@ -22,9 +22,11 @@ async function conditionalSeed() {
     const actions = await Action.count();
     if (actions === 0) {
       await Action.bulkCreate([
-        { name: 'crear' },
-        { name: 'actualizar' },
-        { name: 'remover' }
+        { name: 'crear producto' },
+        { name: 'actualizar o modificar' },
+        { name: 'crear usuario'},
+        { name: 'modificar estado de producto a active'},
+        { name: 'modificar estado de producto a inactive'},      
       ]);
       console.log('Acciones insertadas');
     }

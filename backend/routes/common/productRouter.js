@@ -13,4 +13,8 @@ router.post("/", isAuthenticate, isAdmin, upload, createProduct);
 router.put("/:id", isAuthenticate, isAdmin, uploadOptional, updateProduct);
 router.patch("/:id", isAuthenticate, isAdmin, deleteProduct)
 
+
+
+
 module.exports = router;
+

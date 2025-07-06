@@ -9,7 +9,8 @@ const InvalidIdException = require("../../errors/invalidIdException");
 
 const ACTION_ID_CREATE = 1;
 const ACTION_ID_UPDATE = 2;
-const ACTION_ID_DELETE = 3;
+const ACTION_ID_MODIFY_ACTIVE = 4;
+const ACTION_ID_MODIFY_INACTIVE = 5;
 
 const getProducts = async (req, res) => {
     try {
@@ -57,15 +58,18 @@ const deleteProduct = async (req, res) => {
         if(!isAllValid([product])){
             return res.status(404).json({ message: "Product not found" });
         }
-        const deletedProduct = await updateProductRepository(product_id, { is_active: false });
+        let productStatus = !product.is_active; 
+
+        const deletedProduct = await updateProductRepository(product_id, { is_active: productStatus});
         if(!deletedProduct){
             return res.status(500).json({ message: "Error deleting product" });
         }
         const createLog = await addLog({
             user_id: req.user.dataValues.id,
             product_id: product_id,
-            action_id: ACTION_ID_DELETE, 
+            action_id: productStatus ? ACTION_ID_MODIFY_ACTIVE: ACTION_ID_MODIFY_INACTIVE, 
         });
+
         if(!createLog){
             return res.status(500).json({ message: "Error creating log" });
         }
@@ -78,7 +82,8 @@ const deleteProduct = async (req, res) => {
 
 const createProduct = async (req, res) => {
     try {
-        
+        console.log("Creating product with data:", req.body);
+        console.log("Uploaded file:", req.file);
 
         let {name,
             description,
@@ -171,7 +176,6 @@ const updateProduct = async (req, res) => {
             image: image ? `${imagePath}/${image}` : currentProduct.image,
             price: parseFloat(price),
             stock: parseInt(stock),
-            is_active: is_active,
             subcategory_id: parseInt(subcategory_id)
         };
 
