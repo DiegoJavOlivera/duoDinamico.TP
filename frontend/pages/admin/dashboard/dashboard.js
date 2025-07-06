@@ -208,7 +208,7 @@ function applyUserPermissions() {
     console.log('Aplicando permisos para usuario ID:', user.id);
     
     // Si es admin regular (ID: 2), ocultar funcionalidades restringidas
-    if (user.id === 2) {
+    if (isAdmin()) {
         // Ocultar tabs restringidos
         hideTabButton('add-user');
         hideTabButton('movements'); 
@@ -220,7 +220,7 @@ function applyUserPermissions() {
         hideTabContent('tickets-tab');
         
         console.log('Permisos de admin regular aplicados - funcionalidades restringidas ocultas');
-    } else if (user.id === 1) {
+    } else if (isSuperAdmin()) {
         console.log('Usuario superadmin - acceso completo');
     } else {
         console.warn('ID de usuario no reconocido:', user.id);
