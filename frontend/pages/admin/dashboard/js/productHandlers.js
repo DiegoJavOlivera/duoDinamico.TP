@@ -3,6 +3,9 @@
 // Variable global para almacenar los productos
 let productsData = [];
 
+
+
+
 // Variable global para almacenar las subcategorías (incluye información de categorías)
 let subcategoriesData = [];
 
@@ -70,6 +73,9 @@ async function loadProducts() {
         // Mostrar productos
         renderProducts(products);
         
+        // Cargar filtros de categorías
+        await loadCategoriesForFilter();
+        
     } catch (error) {
         console.error('Error al cargar productos:', error);
         if (loadingElement) {
@@ -81,6 +87,106 @@ async function loadProducts() {
                 </button>
             `;
         }
+    }
+}
+/**
+ * Función para filtrar productos basada en múltiples criterios
+ */
+function filterProducts() {
+    const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+    const statusFilter = document.getElementById('statusFilter').value;
+    const categoryFilter = document.getElementById('categoryFilter').value;
+    const subcategoryFilter = document.getElementById('subcategoryFilter').value;
+    
+    // Usar los productos cargados originalmente
+    let filteredProducts = [...productsData];
+    
+    // Filtrar por nombre
+    if (searchTerm) {
+        filteredProducts = filteredProducts.filter(product => 
+            product.name.toLowerCase().includes(searchTerm) ||
+            (product.description && product.description.toLowerCase().includes(searchTerm))
+        );
+    }
+    
+    // Filtrar por estado
+    if (statusFilter) {
+        const isActive = statusFilter === 'active';
+        filteredProducts = filteredProducts.filter(product => product.is_active === isActive);
+    }
+    
+    // Filtrar por categoría
+    if (categoryFilter) {
+        filteredProducts = filteredProducts.filter(product => 
+            product.Subcategory?.Category?.id === parseInt(categoryFilter)
+        );
+    }
+    
+    // Filtrar por subcategoría
+    if (subcategoryFilter) {
+        filteredProducts = filteredProducts.filter(product => 
+            product.subcategory_id === parseInt(subcategoryFilter)
+        );
+    }
+    
+    // Renderizar productos filtrados
+    renderProducts(filteredProducts);
+}
+
+/**
+ * Cargar categorías para los filtros
+ */
+async function loadCategoriesForFilter() {
+    const categorySelect = document.getElementById('categoryFilter');
+    if (!categorySelect) return;
+    
+    try {
+        const categories = await getCategories();
+        
+        // Limpiar opciones existentes excepto la primera
+        categorySelect.innerHTML = '<option value="">Todas las categorías</option>';
+        
+        // Agregar las categorías obtenidas de la API
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.id;
+            option.textContent = category.name;
+            categorySelect.appendChild(option);
+        });
+        
+    } catch (error) {
+        console.error('Error al cargar categorías para filtros:', error);
+    }
+}
+
+/**
+ * Cargar subcategorías para los filtros basadas en la categoría seleccionada
+ */
+async function loadSubcategoriesForFilter() {
+    const categorySelect = document.getElementById('categoryFilter');
+    const subcategorySelect = document.getElementById('subcategoryFilter');
+    
+    if (!categorySelect || !subcategorySelect) return;
+    
+    const selectedCategoryId = categorySelect.value;
+    
+    try {
+        // Limpiar subcategorías
+        subcategorySelect.innerHTML = '<option value="">Todas las subcategorías</option>';
+        
+        if (selectedCategoryId) {
+            const subcategories = await getSubcategoriesByCategory(selectedCategoryId);
+            
+            subcategories.forEach(subcategory => {
+                const option = document.createElement('option');
+                option.value = subcategory.id;
+                option.textContent = subcategory.name;
+                subcategorySelect.appendChild(option);
+            });
+        }
+        
+    } catch (error) {
+        console.error('Error al cargar subcategorías para filtros:', error);
     }
 }
 
@@ -934,6 +1040,20 @@ window.renderTickets = renderTickets;
 window.toggleTicketProducts = toggleTicketProducts;
 
 // Hacer las funciones disponibles globalmente
+window.filterProducts = filterProducts;
+window.loadCategoriesForFilter = loadCategoriesForFilter;
+window.loadSubcategoriesForFilter = loadSubcategoriesForFilter;
+window.handleCategoryChange = handleCategoryChange;
+
+// Hacer funciones disponibles globalmente
 window.loadSubcategoriesForForm = loadSubcategoriesForForm;
 window.loadSubcategoriesForEdit = loadSubcategoriesForEdit;
 window.loadSubcategoriesData = loadSubcategoriesData;
+
+/**
+ * Función auxiliar para manejar cambio de categoría
+ */
+async function handleCategoryChange() {
+    await loadSubcategoriesForFilter();
+    filterProducts();
+}

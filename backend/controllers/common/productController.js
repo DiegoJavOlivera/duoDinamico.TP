@@ -104,7 +104,7 @@ const createProduct = async (req, res) => {
         }
 
 
-        const imagePath = getConfig("IMAGE_PATH") 
+        const imagePath = getConfig("IMAGE_LOAD") 
 
         const newProduct = {
             name,
@@ -155,7 +155,7 @@ const updateProduct = async (req, res) => {
             return res.status(404).json({ message: "Product not found" });
         }
          
-        const { name, description, price, stock, is_active, subcategory_id } = req.body;
+        const { name, description, price, stock, subcategory_id } = req.body;
         
         // Manejar la imagen: si hay archivo nuevo, usar el nuevo; si no, mantener el actual
         let image;
@@ -168,7 +168,7 @@ const updateProduct = async (req, res) => {
             image = currentImagePath ? currentImagePath.split('/').pop() : null;
         }
 
-        const imagePath = getConfig("IMAGE_PATH");
+        const imagePath = getConfig("IMAGE_LOAD");
 
         const updatedProduct = {
             name,

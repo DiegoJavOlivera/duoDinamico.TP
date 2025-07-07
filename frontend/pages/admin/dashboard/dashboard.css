@@ -1508,15 +1508,6 @@ main {
     align-items: flex-start !important;
   }
   
-  .product-info-item {
-    font-size: 0.7rem !important;
-  }
-  
-  .status-badge {
-    padding: 0.25rem 0.5rem !important;
-    font-size: 0.6rem !important;
-  }
-  
   .product-actions {
     flex-direction: column !important;
     gap: 0.5rem !important;
@@ -1783,5 +1774,58 @@ main {
   
   .product-actions {
     display: none !important;
+  }
+}
+
+/* Estilos para filtros de productos */
+.filters-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: var(--box-shadow);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-group label {
+  font-weight: 600;
+  color: var(--text-main);
+  font-size: 0.9rem;
+}
+
+.search-input, .filter-select {
+  padding: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: var(--input-bg);
+  color: var(--text-main);
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus, .filter-select:focus {
+  outline: none;
+  border-color: var(--hover-color);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+}
+
+.filter-select option {
+  background: var(--input-bg);
+  color: var(--text-main);
+}
+
+/* Responsivo para filtros */
+@media (max-width: 768px) {
+  .filters-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }

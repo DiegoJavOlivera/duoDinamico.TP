@@ -4,6 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <meta name="application-name" content="La vinoteca - Sistema de Gestión">
+  <meta name="author" content="Diego Javier Olivera, Maria Priscilla Escobar">
+  <meta name="description" content="Panel de administración para gestionar productos, usuarios y ventas de La vinoteca - Sistema completo de autoservicio">
+  <meta name="generator" content="Diego Javier Olivera, Maria Priscilla Escobar">
+  <meta name="keywords" content="vinoteca, administración, productos, vinos, bebidas, gestión, dashboard, admin">
   <title>Dashboard Admin - La vinoteca</title>
 
   <link rel="stylesheet" href="../../../components/footer/footer.css" />
@@ -74,6 +79,32 @@
           <div id="products-list-tab" class="tab-pane active">
             <div class="tab-header">
               <h2><i class="bi bi-list-ul"></i> Lista de Productos</h2>
+            </div>
+            <div class="filters-container">
+              <div class="filter-group">
+                <label for="searchInput">Buscar por nombre:</label>
+                <input type="text" id="searchInput" placeholder="Buscar por nombre" class="search-input" onkeyup="filterProducts()">
+              </div>
+              <div class="filter-group">
+                <label for="statusFilter">Estado:</label>
+                <select id="statusFilter" class="filter-select" onchange="filterProducts()">
+                  <option value="">Todos</option>
+                  <option value="active">Activos</option>
+                  <option value="inactive">Inactivos</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label for="categoryFilter">Categoría:</label>
+                <select id="categoryFilter" class="filter-select" onchange="handleCategoryChange()">
+                  <option value="">Todas las categorías</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label for="subcategoryFilter">Subcategoría:</label>
+                <select id="subcategoryFilter" class="filter-select" onchange="filterProducts()">
+                  <option value="">Todas las subcategorías</option>
+                </select>
+              </div>
             </div>
             
             <div class="loading" id="products-loading">
