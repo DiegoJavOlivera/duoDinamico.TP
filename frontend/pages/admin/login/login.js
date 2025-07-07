@@ -5,9 +5,11 @@ function moveToWelcome() {
 const handleLogin = async () => {
     const email = document.getElementById('email').value;
     const pass = document.getElementById('password').value;
+    const errorDiv = document.getElementById('login-error');
+    if(errorDiv) errorDiv.innerHTML = '';
 
     if (!email || !pass) {
-        alert('Por favor, ingresa email y contraseña');
+        errorDiv.innerHTML = `<div class='alert alert-danger mt-3' role='alert'>Por favor, ingresa email y contraseña</div>`;
         return;
     }
 
@@ -32,11 +34,11 @@ const handleLogin = async () => {
             
             window.location.href = '../../../pages/admin/dashboard/dashboard.html';
         } else {
-            alert('Error: Usuario o contraseña incorrectos');
+            errorDiv.innerHTML = `<div class='alert alert-danger mt-3' role='alert'>Usuario o contraseña incorrectos</div>`;
         }
     } catch (error) {
         console.error('Error en el login:', error);
-        alert('Error de conexión. Verifica que el servidor esté ejecutándose.');
+        errorDiv.innerHTML = `<div class='alert alert-danger mt-3' role='alert'>Error de conexión. Verifica que el servidor esté ejecutándose.</div>`;
     }
 }
 
