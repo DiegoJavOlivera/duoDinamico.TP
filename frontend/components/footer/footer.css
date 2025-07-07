@@ -4,9 +4,18 @@
     --charcoal: #1f1f25;
     --muted-foreground: #9ca3af;
   }
+
+.theme-dark {
+  --bg-main: #101010;
+  --text-main: #fff;
+}
+.theme-light {
+  --bg-main: #fff;
+  --text-main: #181316;
+}
   
   .footer {
-    background-color: #14171f;
+    background-color: var(--bg-main);
     border-top: 1px solid rgba(123, 30, 34, 0.2); /* border-wine-red/20 */
     margin-top: auto;
     padding: 1.5rem 1rem;
@@ -19,7 +28,7 @@
   }
   
   .footer-text {
-    color: var(--muted-foreground);
+    color: var(--text-main);
     display: flex;
     align-items: center;
     justify-content: center;

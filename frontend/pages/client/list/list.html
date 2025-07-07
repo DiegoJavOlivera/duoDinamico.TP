@@ -14,8 +14,8 @@
   <header class="header shadow-sm py-2 mb-4">
     <div class="container-fluid d-flex justify-content-between align-items-center">
       <div class="d-flex align-items-center">
-        <img src="/images/logo_light.png" alt="La vinoteca" class="logo" style="width: 85px;">
-        <span class="text-light mt-1 fs-4">Hola, <span class="user-name"></span></span>
+        <img src="/images/logo.png" alt="La vinoteca" class="logo" style="width: 85px;">
+        <span class="hello mt-1 fs-4">Hola, <span class="user-name"></span></span>
       </div>
       <div>
         <button class="btn cancel-btn me-2" onclick="cancel()"><i class="bi bi-x-lg"></i><span class="btn-text">Cancelar Compra</span></button>
@@ -24,6 +24,9 @@
           <span id="cart-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark" style="font-size:0.8em;display:none"></span>
           <span class="btn-text">Ver Carrito</span>
         </button>      
+        <button id="toggle-theme" class="theme-toggle btn btn-danger text-light">
+          <i class="bi bi-moon"></i>
+        </button>
       </div>
     </div>
   </header>
@@ -89,6 +92,7 @@
   <script src="/utils/redirects.js"></script>
   <script src="/api/subcategories.js"></script>
   <script src="/utils/productsStorage.js"></script>
+  <script src="/utils/toggleTheme.js"></script>
   <script src="/api/products.js"></script>
   <script src="/api/fetcher.js"></script>
 </body>

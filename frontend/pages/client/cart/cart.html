@@ -15,11 +15,14 @@
     <header class="header shadow-sm py-2 mb-4">
         <div class="container-fluid d-flex justify-content-between align-items-center">
           <div class="d-flex align-items-center">
-            <img src="/images/logo_light.png" alt="La vinoteca" class="logo" style="width: 85px;">
-            <span class="text-light mt-1 fs-4">Hola, <span class="user-name"></span></span>
+            <img src="/images/logo.png" alt="La vinoteca" class="logo" style="width: 85px;">
+            <span class="hello mt-1 fs-4">Hola, <span class="user-name"></span></span>
           </div>
           <div>
-            <button class="btn cancel-btn me-2" onclick="cancel()"><i class="bi bi-x-lg"></i><span class="btn-text ms-2">Cancelar Compra</span></button> 
+            <button class="btn cancel-btn me-2" onclick="cancel()"><i class="bi bi-x-lg"></i><span class="btn-text ms-2">Cancelar Compra</span></button>
+            <button id="toggle-theme" class="theme-toggle btn btn-danger text-light">
+                <i class="bi bi-moon"></i>
+            </button>
           </div>
         </div>
       </header>
@@ -34,7 +37,7 @@
                 <div id="cart-items"></div>
             </div>
             <div class="col-lg-4">
-                <div class="card bg-dark text-light shadow rounded-4 p-4">
+                <div class="card shadow rounded-4 p-4">
                     <h4 class="fw-bold mb-3" style="color: #ffc107;">Resumen de Compra</h4>
                     <div class="mb-2 d-flex justify-content-between">
                         <span>Cliente:</span>
@@ -71,6 +74,7 @@
     <script src="/api/fetcher.js"></script>
     <script src="/api/ticket.js"></script>
     <script src="/utils/redirects.js"></script>
+    <script src="/utils/toggleTheme.js"></script>
     <script src="cart.js"></script>
 </body>
 </html>

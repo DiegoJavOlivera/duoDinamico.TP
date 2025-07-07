@@ -10,6 +10,7 @@ const categories = {
 };
 
 const USERNAME = localStorage.getItem('userName');
+const THEME = localStorage.getItem('theme');
 
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.user-name').textContent = USERNAME;

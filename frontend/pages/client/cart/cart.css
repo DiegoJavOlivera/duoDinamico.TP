@@ -1,17 +1,51 @@
+.theme-dark {
+    --bg-main: #101010;
+    --text-main: #fff;
+    --card-bg: #1f1f25;
+    --input-bg: #2c2c2c;
+    --box-shadow: none;
+  }
+  .theme-light {
+    --bg-main: #fff;
+    --text-main: #181316;
+    --card-bg: #ffffff;
+    --input-bg: #d4d4d6;
+    --box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
+  
+
 body {
-    background-color: #101010;
+    background-color: var(--bg-main);
     height: 100%;  
     margin: 0;
     font-family: 'Segoe UI', Arial, sans-serif;
-    color: #fff;
+    color: var(--text-main);
     min-height: 100vh;
 }
 
 .header {
     padding: 18px 32px;
-    background: #14171f;
+    background: var(--card-bg);
     gap: 18px;
   }
+
+  .theme-toggle {
+    background: none;
+    border: none;
+    color: var(--gold);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .theme-toggle:hover {
+    transform: rotate(15deg);
+  }
+
+.card {
+    background: var(--card-bg);
+    color: var(--text-main);
+}
 
   /* Botón volver personalizado */
 .back-btn-custom {
@@ -80,7 +114,7 @@ body {
 }
 
 .card.cart-item {
-    background: #18191b;
+    background: var(--card-bg);
     border-radius: 1.5rem;
     border: none;
     margin-bottom: 1.5rem;
@@ -103,7 +137,7 @@ body {
 .cart-item-title {
     font-weight: 600;
     font-size: 1.1rem;
-    color: #fff;
+    color: var(--text-main);
 }
 .cart-item-price {
     color: #ffc107;
@@ -113,16 +147,16 @@ body {
 .cart-item-controls {
     display: flex;
     align-items: center;
-    background: #18191b;
+    background: var(--card-bg);
     border-radius: 0.75rem;
-    border: 1.5px solid #2c070f;
+    box-shadow: var(--box-shadow);
     padding: 0.2rem 0.7rem;
     margin: 0 1.2rem;
 }
 .cart-item-controls button {
     background: none;
     border: none;
-    color: #fff;
+    color: var(--text-main);
     font-size: 1.2rem;
     width: 2.2rem;
     height: 2.2rem;

@@ -1,5 +1,7 @@
+
 window.addEventListener('DOMContentLoaded', function() {
   const adminAccess = document.querySelector('.admin-access');
+
 
   // Mostrar/Ocultar admin-access con atajos
   window.addEventListener('keydown', function(e) {
@@ -22,6 +24,9 @@ window.addEventListener('DOMContentLoaded', function() {
 
   const nameInput = document.getElementById('name');
   const startButton = document.querySelector('.start-button');
+
+  // Permite que toggleTheme.js pueda actualizar el logo tras cambiar el tema
+
   const nameError = document.getElementById('name-error');
 
   function isValidName(name) {

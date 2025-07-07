@@ -1,11 +1,27 @@
+.theme-dark {
+    --bg-main: #101010;
+    --text-main: #fff;
+    --card-bg: #1f1f25;
+    --input-bg: #2c2c2c;
+    --box-shadow: none;
+  }
+  .theme-light {
+    --bg-main: #fff;
+    --text-main: #181316;
+    --card-bg: #ffffff;
+    --input-bg: #d4d4d6;
+    --box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
+
 body, html {
     height: 100%;
     margin: 0;
     font-family: 'Segoe UI', Arial, sans-serif;
-    color: #fff;
+    color: var(--text-main);
     min-height: 100vh;
-    background-color: #101010;
+    background-color: var(--bg-main);
 }
+
 #ticket-bg {
     min-height: 100vh;
     width: 100vw;
@@ -22,7 +38,7 @@ body, html {
     align-items: center;
 }
 .ticket-card {
-    background: #18191b;
+    background: var(--card-bg);
     border-radius: 1.5rem;
     border: none;
     box-shadow: 0 2px 12px 0 #00000055;
@@ -32,7 +48,7 @@ body, html {
     margin-bottom: 0.5rem;
 }
 .ticket-info {
-    background: #2c070f22;
+    background: var(--card-bg);
     border-radius: 1rem;
     padding: 1rem;
     margin-bottom: 1rem;
@@ -45,7 +61,7 @@ body, html {
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
-    background: #23252b;
+    background: var(--card-bg);
     border: 1.2px solid #2c070f;
     border-radius: 1rem;
     padding: 1.1rem 2rem 1.1rem 1.5rem;
@@ -60,7 +76,7 @@ body, html {
 .ticket-product-name {
     font-weight: 600;
     font-size: 0.9rem;
-    color: #fff;
+    color: var(--text-main);
     margin-bottom: 0.2rem;
     display: block;
 }
@@ -77,6 +93,7 @@ body, html {
     margin-left: 1.5rem;
     align-self: center;
 }
+
 @media (max-width: 600px) {
     .ticket-product-item {
         flex-direction: column;
@@ -92,7 +109,7 @@ body, html {
 .ticket-product-name {
     font-weight: 500;
     font-size: 1rem;
-    color: #fff;
+    color: var(--text-main);
 }
 .ticket-product-price {
     color: #ffc107;

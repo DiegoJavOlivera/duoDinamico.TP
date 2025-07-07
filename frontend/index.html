@@ -6,10 +6,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>La vinoteca</title>
-  <link rel="icon" href="images/logo_black.png" type="image/x-icon" />
+  <link rel="icon" href="images/logo.png" type="image/x-icon" />
 
   <link rel="stylesheet" href="./index.css" />
-  <link rel="stylesheet" href="./components/navbar/navbar.css" />
   <link rel="stylesheet" href="./components/footer/footer.css" />
   <link rel="stylesheet" href="colors.css" />
   <link rel="stylesheet" href="assets/bootstrap-icons.css" />
@@ -21,7 +20,21 @@
 </head>
 <body>
   <header>
-    <div data-include="./components/navbar/navbar.html"></div>
+
+    <nav class="navbar">
+      <div class="navbar-container">
+        <div class="navbar-logo" id="go-home">
+          <div class="navbar-icon">
+            <img src="/images/logo.png" alt="La vinoteca" class="logo" style="width: 85px;">
+          </div>
+        </div>
+        <div class="navbar-actions">
+          <button id="toggle-theme" class="theme-toggle btn btn-danger text-light">
+            <i class="bi bi-moon"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
   </header>
 
   <main class="welcome-screen">
@@ -29,7 +42,7 @@
     <div class="glow-gold"></div>
   
     <div class="welcome-container">
-      <img src="/images/logo_light.png" alt="La vinoteca" class="logo" style="width: 120px;">
+      <img src="/images/logo.png" alt="La vinoteca" class="form-logo" style="width: 120px;">
   
       <h1 class="brand-title">La vinoteca</h1>
       <p class="subtitle">Autoservicio de bebidas</p>
@@ -55,5 +68,6 @@
   </main>
   
   <div data-include="./components/footer/footer.html"></div>
+  <script src="utils/toggleTheme.js"></script>
 </body>
 </html>

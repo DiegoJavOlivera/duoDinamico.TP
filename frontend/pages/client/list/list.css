@@ -1,16 +1,42 @@
+.theme-dark {
+  --bg-main: #101010;
+  --text-main: #fff;
+  --card-bg: #1f1f25;
+  --input-bg: #2c2c2c;
+  --box-shadow: none;
+  --subtitle: #d6d6d6;
+}
+.theme-light {
+  --bg-main: #fff;
+  --text-main: #181316;
+  --card-bg: #ffffff;
+  --input-bg: #d4d4d6;
+  --box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  --subtitle: #181316;
+}
+
 body {
-  background-color: #101010;
+  background-color: var(--bg-main);
   height: 100%;  
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
-  color: #fff;
   min-height: 100vh;
 }
 
+h1, .title, #toggle-theme {
+  color: var(--text-main);
+}
+
+
 .header {
   padding: 18px 32px;
-  background: #14171f;
+  background: var(--card-bg);
   gap: 18px;
+}
+
+.hello {
+  color: var(--text-main);
+  font-weight: 600;
 }
 
 .btn {
@@ -82,7 +108,7 @@ body {
 
 .select-product, .select-subcategory {
   font-size: 1.1rem;
-  color: #d6d6d6;
+  color: var(--subtitle);
   margin-bottom: 2rem;
 }
 
@@ -93,8 +119,8 @@ body {
 }
 
 .no-stock-msg {
-  color: #e03c3c;
-  background: rgba(255,255,255,0.85);
+  color: #fff;
+  background: #e03c3c;
   font-weight: bold;
   border-radius: 8px;
   padding: 0.5em 1em;
@@ -112,6 +138,7 @@ body {
   background-position: center;
   border-radius: 18px;
   height: 300px;
+  box-shadow: var(--box-shadow);
 }
 
 .subcard:hover {
@@ -121,6 +148,7 @@ body {
 }
 
 .subtitle {
+  color: #fff;
   font-size: 0.8rem;
   margin-bottom: 1rem;
 }
@@ -132,8 +160,14 @@ body {
 }
 
 #product-title, #subcategory-title {
+  color: var(--text-main);
   font-size: 2rem;
   font-weight: 700;
+}
+
+
+.theme-toggle:hover {
+  transform: rotate(15deg);
 }
 
 /* Botón volver personalizado */
@@ -166,9 +200,10 @@ body {
 
 /* Productos */
 .product-card {
-  background: #232029;
+  background: var(--card-bg);
+  color: var(--text-main);
   border-radius: 20px;
-  box-shadow: 0 4px 24px #00000022;
+  box-shadow: var(--box-shadow);
   width: 100%;
   max-width: 350px;
   min-width: 220px;
@@ -193,18 +228,18 @@ body {
   object-fit: cover;
   border-radius: 14px;
   margin-bottom: 0.7rem;
-  background: #181316;
+  background: var(--card-bg);
 }
 .product-name {
   font-size: 1.18rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-main);
   margin-bottom: 0.25rem;
   /* text-align: center; */
 }
 .product-desc {
   font-size: 1rem;
-  color: #bdbdbd;
+  color: var(--text-main);
   margin-bottom: 0.7rem;
   /* text-align: center; */
   min-height: 38px;
@@ -248,13 +283,16 @@ body {
 }
 
 .btn-restar {
-  border-color: #e03c3c;
-  background: #fff;
+  border: 1px solid #e03c3c;
+  background-color: transparent;
   color: #e03c3c;
 }
 
+.btn-restar:hover {
+  color: #fff;
+}
+
 .btn-qty:hover {
-  background: #ff4949;
   transform: scale(1.08);
 }
 .qty-num {
@@ -329,7 +367,7 @@ body {
 .product-name {
   font-size: 1.1rem;
   font-weight: bold;
-  color: #fff;
+  color: var(--text-main);
   margin-bottom: 0.7rem;
   text-align: center;
 }

@@ -1,4 +1,17 @@
 
+.theme-dark {
+  --bg-main: #101010;
+  --text-main: #fff;
+  --card-bg: #1f1f25;
+  --input-bg: #2c2c2c;
+}
+.theme-light {
+  --bg-main: #fff;
+  --text-main: #181316;
+  --card-bg: #ffffff;
+  --input-bg: #d4d4d6;
+}
+
 html, body {
   height: 100%;
   display: flex;
@@ -8,6 +21,111 @@ html, body {
 
 main {
   flex: 1;
+
+}
+
+/* Variables para colores */
+:host {
+  --wine-red: #7b1e22;
+  --deep-red: #4b0d0f;
+  --gold: #facc15;
+  --muted-foreground: #9ca3af;
+  --foreground: #f3f4f6;
+  --card-bg: #1f1f25;
+}
+
+/* Navbar general */
+.navbar {
+  background: var(--bg-main);
+  color: var(--text-main);
+  border-bottom: 1px solid rgba(123, 30, 34, 0.2); /* border-wine-red/20 */
+  box-shadow: 0 4px 6px rgba(123, 30, 34, 0.05); /* sombra sutil */
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  font-family: sans-serif;
+}
+
+/* Contenedor interno */
+.navbar-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo + nombre */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.navbar-logo:hover {
+  transform: scale(1.05);
+}
+
+.navbar-icon i {
+  color: white;
+  font-size: 1.25rem;
+}
+
+.navbar-title h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--gold);
+}
+
+.navbar-title p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+/* Botones */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  background: transparent;
+  border: 1px solid rgba(123, 30, 34, 0.4);
+  color: var(--foreground);
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.875rem;
+}
+
+.admin-button:hover {
+  background-color: rgba(123, 30, 34, 0.2);
+  border-color: var(--wine-red);
+  color: var(--gold);
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  color: var(--gold);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.theme-toggle:hover {
+  transform: rotate(15deg);
 }
 
   .welcome-screen {
@@ -17,32 +135,10 @@ main {
     padding: 2rem;
     min-height: 100vh;
     position: relative;
-    background-color: #101010;
+    background: var(--bg-main);
+    color: var(--text-main);
   }
   
-  /* Efectos ambientales */
-  .glow-wine {
-    position: absolute;
-    top: 5rem;
-    left: 5rem;
-    width: 8rem;
-    height: 8rem;
-    background-color: rgba(139, 0, 0, 0.1);
-    border-radius: 50%;
-    filter: blur(100px);
-    animation: gentle-glow 6s ease-in-out infinite;
-  }
-  
-  .glow-gold {
-    position: absolute;
-    bottom: 5rem;
-    right: 5rem;
-    width: 6rem;
-    height: 6rem;
-    background-color: rgba(255, 215, 0, 0.05);
-    border-radius: 50%;
-    filter: blur(80px);
-  }
   
   /* Animación sutil */
   @keyframes gentle-glow {
@@ -70,26 +166,6 @@ main {
     }
   }
   
-  /* Logo redondo con ícono */
-  .logo-circle {
-    width: 96px;
-    height: 96px;
-    margin: 0 auto;
-    background: radial-gradient(circle at top left, #8b0000, #4b0000);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 25px rgba(139, 0, 0, 0.3);
-    animation: gentle-glow 6s ease-in-out infinite;
-  }
-  
-  .logo-circle i {
-    font-size: 2rem;
-    color: #fff;
-  }
-  
-  /* Títulos */
   .brand-title {
     font-size: 2rem;
     font-weight: bold;
@@ -111,22 +187,10 @@ main {
     margin: 1rem auto;
   }
   
-  /* Tarjeta central */
-  /* .login-container {
-  background: rgba(30, 28, 38, 0.95);
-  border-radius: 22px;
-  box-shadow: 0 8px 32px #00000033, 0 2px 8px #e03c3c18;
-  padding: 2.5rem 2rem 2.2rem 2rem;
-  margin: 2.5rem auto 2.5rem auto;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-} */
 
 .welcome-card {
-    background: #1a1a1a;
+    background: var(--card-bg);
+    color: var(--text-main);
     padding: 2rem;
     border: 1px solid rgba(139, 0, 0, 0.3);
     border-radius: 0.75rem;
@@ -153,7 +217,7 @@ main {
     text-align: left;
     font-size: 0.85rem;
     margin-bottom: 0.25rem;
-    color: #fff;
+    color: var(--text-main);
   }
   
   .welcome-card input {
@@ -162,13 +226,13 @@ main {
     font-size: 1rem;
     border-radius: 0.5rem;
     border: 1px solid rgba(139, 0, 0, 0.5);
-    background-color: #2c2c2c;
-    color: #fff;
+    background-color: var(--input-bg);
+    color: var(--text-main);
     outline: none;
   }
   
   .welcome-card input::placeholder {
-    color: #888;
+    color: var(--text-main)
   }
   
   /* Botón principal */
