@@ -25,7 +25,7 @@ function renderCart() {
         const volverBtn = document.getElementById('btn-volver-lista');
         if (volverBtn) {
             volverBtn.addEventListener('click', () => {
-                window.location.href = 'pages/client/list/list.html';
+                window.location.href = '../list/list.html';
             });
         }
         return;

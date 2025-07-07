@@ -156,7 +156,7 @@ function renderProducts(products, subcategory_name) {
         const subtotal = cantidad * product.price;
 
         card.innerHTML = `
-            <img class="product-img" src="../../../images/categories/alcohol.jpg" alt="${product.name}">
+            <img class="product-img" src="http://localhost:3000/${product.image}" alt="${product.name}">
             <div class="product-name text-align-left">${product.name}</div>
             <div class="product-desc text-align-left">${descripcion}</div>
             <div class="product-price text-align-left">$${product.price}</div>

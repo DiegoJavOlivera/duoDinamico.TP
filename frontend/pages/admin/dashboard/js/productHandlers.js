@@ -6,25 +6,6 @@ let productsData = [];
 // Variable global para almacenar las subcategorías (incluye información de categorías)
 let subcategoriesData = [];
 
-// Función de respaldo para getImageUrl si no está disponible
-function getImageUrl(imageName) {
-    if (!imageName) return null;
-    
-    // Si la imagen incluye "backend/uploads/img/", remover "backend/" para el frontend
-    if (imageName.startsWith('backend/uploads/img/')) {
-        const imagePath = imageName.replace('backend/', '');
-        return `http://localhost:3000/${imagePath}`;
-    }
-    
-    // Si la imagen ya incluye la ruta completa (como "uploads/img/nombre.png"), usar directamente
-    if (imageName.startsWith('uploads/')) {
-        return `http://localhost:3000/${imageName}`;
-    }
-    
-    // Si es solo el nombre del archivo, agregar la ruta uploads/img
-    return `http://localhost:3000/uploads/img/${imageName}`;
-}
-
 /**
  * Función para cargar subcategorías desde la API (se ejecuta una vez)
  */
@@ -120,7 +101,8 @@ function renderProducts(products) {
     }
     
     gridElement.innerHTML = products.map(product => {
-        const imageUrl = getImageUrl(product.image);
+        console.log("aa", product)
+        const imageUrl = `http://localhost:3000/${product.image}`;
         
         return `
         <div class="product-card">
@@ -358,7 +340,7 @@ async function editProduct(productId) {
                     ${product.image ? `
                         <div class="current-image">
                             <p>Imagen actual:</p>
-                            <img src="${getImageUrl(product.image)}" alt="Imagen actual" style="max-width: 150px; border-radius: 0.5rem;">
+                            <img src="http://localhost:3000/${product.image}" alt="Imagen actual" style="max-width: 150px; border-radius: 0.5rem;">
                         </div>
                     ` : ''}
                     <div class="image-preview" id="editImagePreview" style="display: none;">

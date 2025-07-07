@@ -1,9 +1,8 @@
-function moveToLogin() {
-  window.location.href = '/pages/admin/login/login.html';
-}
+const base = window.location.origin;
+console.log("BASE ", base)
 
-function moveToDashboard() {
-  window.location.href = '/pages/client/list/list.html';
+function moveToLogin() {
+  window.location.href = `${base}/frontend/pages/admin/login/login.html`;
 }
 
 window.addEventListener('DOMContentLoaded', function() {
@@ -62,7 +61,7 @@ window.addEventListener('DOMContentLoaded', function() {
       localStorage.setItem('userName', nameInput.value);
       nameInput.value = '';
       startButton.setAttribute('disabled', 'disabled');
-      window.location.href = '../../../pages/client/list/list.html';
+      window.location.href = './pages/client/list/list.html';
     }
   });
 
@@ -71,7 +70,7 @@ window.addEventListener('DOMContentLoaded', function() {
       localStorage.setItem('userName', nameInput.value);
       nameInput.value = '';
       startButton.setAttribute('disabled', 'disabled');
-      window.location.href = '../../../pages/client/list/list.html';
+      window.location.href = './pages/client/list/list.html';
     }
   });
 });
