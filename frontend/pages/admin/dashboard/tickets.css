@@ -22,6 +22,18 @@
     box-shadow: 0 8px 24px rgba(0, 123, 255, 0.2);
 }
 
+/* Estilos para tema claro */
+.theme-light .ticket-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.theme-light .ticket-card:hover {
+    border-color: #007bff;
+    box-shadow: 0 8px 24px rgba(0, 123, 255, 0.15);
+}
+
 .ticket-header {
     display: flex;
     justify-content: space-between;
@@ -29,6 +41,10 @@
     margin-bottom: 1rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid #333;
+}
+
+.theme-light .ticket-header {
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .ticket-info {
@@ -58,6 +74,10 @@
     font-size: 0.95rem;
 }
 
+.theme-light .ticket-customer {
+    color: #666;
+}
+
 .ticket-customer i {
     color: #28a745;
 }
@@ -78,6 +98,10 @@
     border-radius: 0.5rem;
 }
 
+.theme-light .ticket-meta {
+    background: rgba(0, 0, 0, 0.05);
+}
+
 .ticket-date,
 .ticket-products-count {
     display: flex;
@@ -87,8 +111,17 @@
     font-size: 0.9rem;
 }
 
+.theme-light .ticket-date,
+.theme-light .ticket-products-count {
+    color: #666;
+}
+
 .ticket-date i {
     color: #ffc107;
+}
+
+.theme-light .ticket-date i {
+    color: #8b0000;
 }
 
 .ticket-products-count i {
@@ -152,6 +185,11 @@
     border: 1px solid #333;
 }
 
+.theme-light .products-list {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid #e0e0e0;
+}
+
 .product-item {
     display: flex;
     flex-direction: column;
@@ -164,10 +202,18 @@
     border-bottom: none;
 }
 
+.theme-light .product-item {
+    border-bottom: 1px solid #e0e0e0;
+}
+
 .product-name {
     color: #fff;
     font-weight: 500;
     font-size: 0.95rem;
+}
+
+.theme-light .product-name {
+    color: #333;
 }
 
 .product-details {

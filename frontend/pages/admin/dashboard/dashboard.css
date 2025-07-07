@@ -115,6 +115,10 @@ main {
   font-size: 2rem;
 }
 
+.theme-light .header-info h1 {
+  color: #8b0000;
+}
+
 .header-info p {
   color: var(--subtitle);
   margin-bottom: 0.5rem;
@@ -211,6 +215,10 @@ main {
   gap: 0.5rem;
 }
 
+.theme-light .tab-header h2 {
+  color: #8b0000;
+}
+
 /* Loading */
 .loading {
   text-align: center;
@@ -251,6 +259,14 @@ main {
     0 10px 10px rgba(0, 0, 0, 0.1),
     0 0 0 1px rgba(255, 215, 0, 0.3);
   border-color: rgba(255, 215, 0, 0.5);
+}
+
+.theme-light .product-card:hover {
+  box-shadow: 
+    0 20px 25px rgba(0, 0, 0, 0.1),
+    0 10px 10px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(139, 0, 0, 0.3);
+  border-color: rgba(139, 0, 0, 0.5);
 }
 
 .card-main {
@@ -331,6 +347,10 @@ main {
   line-height: 1.3;
 }
 
+.theme-light .product-title {
+  color: #8b0000;
+}
+
 .product-price {
   color: #ffd700;
   font-size: 1.6rem;
@@ -343,6 +363,14 @@ main {
   -webkit-text-fill-color: transparent;
   text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
   min-width: fit-content;
+}
+
+.theme-light .product-price {
+  background: linear-gradient(135deg, #8b0000, #a52a2a);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 4px rgba(139, 0, 0, 0.3);
 }
 
 .product-description {
@@ -377,6 +405,10 @@ main {
 .info-icon {
   color: #ffd700;
   font-size: 1rem;
+}
+
+.theme-light .info-icon {
+  color: #8b0000;
 }
 
 .info-text {
@@ -661,6 +693,12 @@ main {
   transform: translateY(-1px);
 }
 
+.theme-light .form-group input:focus,
+.theme-light .form-group select:focus,
+.theme-light .form-group textarea:focus {
+  box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+}
+
 .form-group textarea {
   resize: vertical;
   min-height: 100px;
@@ -712,6 +750,18 @@ main {
 .file-input:focus + .file-input-label {
   border-color: #ffd700;
   box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+}
+
+.theme-light .file-input-label:hover {
+  border-color: #8b0000;
+  background: rgba(139, 0, 0, 0.05);
+  color: #8b0000;
+  transform: translateY(-2px);
+}
+
+.theme-light .file-input:focus + .file-input-label {
+  border-color: #8b0000;
+  box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.2);
 }
 
 /* Vista previa de imagen */
@@ -783,6 +833,14 @@ main {
   font-size: 1.2rem;
 }
 
+.theme-light .instruction-card i {
+  color: #8b0000;
+}
+
+.theme-light .instruction-card h3 {
+  color: #8b0000;
+}
+
 .instruction-card p {
   color: var(--text-main);
   margin: 0;
@@ -801,6 +859,10 @@ main {
   font-size: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 2px solid #333;
+}
+
+.theme-light .edit-title {
+  color: #8b0000;
 }
 
 /* Imagen actual */
