@@ -9,6 +9,5 @@ const isAllValid = (arr) => arr.every(Boolean);
 
 module.exports = {
     isValidId,
-
     isAllValid
 };

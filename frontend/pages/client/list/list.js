@@ -1,20 +1,47 @@
-const categories = {
-    drink: {
-        id: 1,
-        name: "Bebidas"
-    },
-    accessories: {
-        id: 2,
-        name: "Accesorios"
-    }
-};
-
 const USERNAME = localStorage.getItem('userName');
 const THEME = localStorage.getItem('theme');
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    if (!USERNAME) {
+        alert('Debe colocar su nombre para acceder a la lista de productos');
+        window.location.href = '../../../index.html';
+    }
     document.querySelector('.user-name').textContent = USERNAME;
+    await renderCategories();
 });
+
+async function renderCategories() {
+    const categoriesContainer = document.getElementById('categories-cards');
+    categoriesContainer.innerHTML = '';
+
+    try {
+        const categories = await getCategories();
+        categories.forEach(category => {
+            const col = document.createElement('div');
+            col.className = 'col-12 col-md-6 col-lg-5 d-lg-flex';
+            col.innerHTML = `
+                <div class="card text-light shadow-sm text-center flex-fill w-100 mb-4 mb-lg-0">
+                    <img src="http://localhost:3000/${category.image}" alt="${category.name}" class="card-img-top"  style="border-radius: 18px;">
+                    <div class="card-body d-flex flex-column justify-content-between h-50">
+                        <div>
+                            <h5 class="card-title fs-5 fw-bold">${category.name}</h5>
+                            <p class="card-text">${category.description || ''}</p>
+                        </div>
+                        <button class="btn btn-primary mt-3 mx-auto w-50" data-category-id="${category.id}">
+                            Explorar ${category.name}
+                            <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            col.querySelector('button').onclick = () => selectCategory(category);
+            categoriesContainer.appendChild(col);
+        });
+    } catch (err) {
+        categoriesContainer.innerHTML = '<div class="text-danger">No se pudieron cargar las categorías.</div>';
+    }
+}
+
 
 function moveToCart() {
     window.location.href = '../../../pages/client/cart/cart.html';
@@ -44,16 +71,19 @@ function renderSubcategories(subcategories, category_name) {
 
     subcategories.forEach(subcat => {
         const card = document.createElement('div');
-        card.className = 'subcard';
-        card.style.position = 'relative'
-
         card.innerHTML = `
-            <div class="card-body">
-                <div class="subtitle fs-5 fw-bold">${subcat.name}</div>
-                <button class="subbtn btn btn-primary w-50">
-                    Ver productos
+            <div class="subcard">
+                <div class="subcard-img-wrap">
+                    <img src="http://localhost:3000/${subcat.image}" alt="${subcat.name}">
+                </div>
+                <div class="subcard-body">
+                    <h5 class="subcard-title fs-5 fw-bold">${subcat.name}</h5>
+                    <p class="subcard-text">${subcat.description}</p>
+                    <button class="subbtn btn btn-primary mx-auto w-50" data-subcategory-id="${subcat.id}">
+                        Ver productos
                     <i class="bi bi-arrow-right"></i>
                 </button>
+                </div>
             </div>
         `;
         card.querySelector('.subbtn').onclick = () => selectSubcategory(subcat);
@@ -149,7 +179,7 @@ function renderProducts(products, subcategory_name) {
         const card = document.createElement('div');
         card.className = 'product-card';
         card.setAttribute('data-stock', product.stock);
-        const descripcion = "Intenso y frutal, ideal para carnes rojas y quesos maduros";
+
         const cart = getCart();
         const cartItem = cart?.products?.find(item => item.id === product.id);
         const cantidad = cartItem ? cartItem.quantity : 0;
@@ -158,7 +188,7 @@ function renderProducts(products, subcategory_name) {
         card.innerHTML = `
             <img class="product-img" src="http://localhost:3000/${product.image}" alt="${product.name}">
             <div class="product-name text-align-left">${product.name}</div>
-            <div class="product-desc text-align-left">${descripcion}</div>
+            <div class="product-desc text-align-left">${product.description}</div>
             <div class="product-price text-align-left">$${product.price}</div>
             <div class="product-btn-container"></div>
         `;
@@ -185,7 +215,7 @@ function renderProducts(products, subcategory_name) {
                         <span class="cantidad-en-carrito fs-5 fw-bold">${prodInCart.quantity}</span>
                         <button class="btn btn-success fs-5 fw-bold btn-sumar">+</button>
                     </div>
-                    <div class="product-subtotal text-light fs-5 ms-3">$${subtotal}</div>
+                    <div class="product-subtotal fs-5 ms-3">$${subtotal}</div>
                 </div>
             `;
             const btnSumar = btnContainer.querySelector('.btn-sumar');

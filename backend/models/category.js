@@ -12,6 +12,14 @@ module.exports = (connection) => {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
+        },
+        description: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        image: {
+            type: DataTypes.STRING,
+            allowNull: true,
         }
     },{
         tableName: 'categories',

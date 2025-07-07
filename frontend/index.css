@@ -12,16 +12,17 @@
   --input-bg: #d4d4d6;
 }
 
-html, body {
+body {
   height: 100%;
   display: flex;
   flex-direction: column;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-main);
+  color: var(--text-main);
 }
 
 main {
-  flex: 1;
-
+  flex: 1 0 auto;
 }
 
 /* Variables para colores */
@@ -115,15 +116,6 @@ main {
   color: var(--gold);
 }
 
-.theme-toggle {
-  background: none;
-  border: none;
-  color: var(--gold);
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
 .theme-toggle:hover {
   transform: rotate(15deg);
 }
@@ -135,8 +127,6 @@ main {
     padding: 2rem;
     min-height: 100vh;
     position: relative;
-    background: var(--bg-main);
-    color: var(--text-main);
   }
   
   

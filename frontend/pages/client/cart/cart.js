@@ -41,7 +41,7 @@ function renderCart() {
         card.className = 'card cart-item d-flex flex-row align-items-center justify-content-between';
         card.innerHTML = `
             <div class="cart-item-img-wrap d-flex align-items-center justify-content-center" style="flex:0 0 64px;">
-                <img class="cart-item-img" src="../../../images/categories/alcohol.jpg" alt="${product.name}">
+                <img class="cart-item-img" src="http://localhost:3000/${product.image}" alt="${product.name}">
             </div>
             <div class="cart-item-info flex-grow-1 px-2">
                 <div class="cart-item-title">${product.name}</div>

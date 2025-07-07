@@ -8,6 +8,9 @@
   <link rel="stylesheet" href="../../../assets/bootstrap-icons.css" />
   <link rel="stylesheet" href="../../../assets/bootstrap.css" />
   <link rel="stylesheet" href="list.css">
+  <link rel="stylesheet" href="../../../components/footer/footer.css">
+  <link rel="stylesheet" href="../../../colors.css">
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
@@ -24,7 +27,7 @@
           <span id="cart-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark" style="font-size:0.8em;display:none"></span>
           <span class="btn-text">Ver Carrito</span>
         </button>      
-        <button id="toggle-theme" class="theme-toggle btn btn-danger text-light">
+        <button id="toggle-theme" class="theme-toggle btn btn-danger">
           <i class="bi bi-moon"></i>
         </button>
       </div>
@@ -36,36 +39,7 @@
     <section class="categories-container">
       <h1 class="fs-1 mb-2 fw-semibold text-center mt-5">¿Qué estás buscando hoy?</h1>
       <p class="title mb-5 fs-5 text-center">Selecciona una categoría para comenzar</p>
-      <div class="row justify-content-center">
-        <div class="col-12 col-md-6 col-lg-5 d-lg-flex">
-          <div class="card bebidas text-light shadow-sm text-center flex-fill w-100 mb-4 mb-lg-0">
-            <div class="card-body d-flex flex-column justify-content-between h-50">
-              <div>
-                <h5 class="card-title">Bebidas</h5>
-                <p class="card-text">Whiskys, Vinos, Cervezas, Vodka, Gaseosas y más</p>
-              </div>
-              <button class="btn btn-primary mt-3 mx-auto w-50" onclick="selectCategory(categories.drink)">
-                Explorar Bebidas
-                <i class="bi bi-arrow-right"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      
-        <div class="col-12 col-md-6 col-lg-5 d-lg-flex">
-          <div class="card acc text-light shadow-sm text-center flex-fill w-100 mb-4 mb-lg-0">
-            <div class="card-body d-flex flex-column justify-content-between h-50">
-              <div>
-                <h5 class="card-title">Accesorios</h5>
-                <p class="card-text">Refrigeración, Kits, Utensilios, Vasos, Copas y más</p>
-              </div>
-              <button class="btn btn-primary mt-3 mx-auto w-50" onclick="selectCategory(categories.accessories)">
-                Explorar Accesorios
-                <i class="bi bi-arrow-right"></i>
-              </button>
-            </div>
-          </div>
-        </div>
+      <div class="row justify-content-center" id="categories-cards">
       </div>      
     </section>
 
@@ -74,7 +48,7 @@
       <button id="back-to-categories" class="btn btn-outline-red back-btn-custom isHidden"><i class="bi bi-arrow-left"></i> Volver</button>
       <h1 class="h4 mb-2" id="subcategory-title"></h1>
       <p class="select-subcategory mb-5">Selecciona una subcategoría para ver los productos</p>
-      <div class="row sub-cards-container subrow"></div>
+      <div class="sub-cards-container subrow"></div>
     </section>
 
     <!-- Productos -->
@@ -86,13 +60,16 @@
       <div class="row product-cards-container productrow"></div>
     </section>
   </main>
-  <!-- Bootstrap JS (opcional, para algunos componentes) -->
+
+  <div data-include="../../../components/footer/footer.html"></div>
   <script src="../../../assets/bootstrap.bundle.min.js"></script>
-  <script src="../../../pages/client/list/list.js"></script>
-  <script src="../../../api/subcategories.js"></script>
   <script src="../../../utils/productsStorage.js"></script>
+  <script src="../../../utils/includeHTML.js"></script>
   <script src="../../../utils/toggleTheme.js"></script>
-  <script src="../../../api/products.js"></script>
   <script src="../../../api/fetcher.js"></script>
+  <script src="../../../api/subcategories.js"></script>
+  <script src="../../../api/products.js"></script>
+  <script src="../../../api/categories.js"></script>
+  <script src="list.js"></script>
 </body>
 </html>

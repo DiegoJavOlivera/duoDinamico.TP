@@ -17,7 +17,7 @@
   .footer {
     background-color: var(--bg-main);
     border-top: 1px solid rgba(123, 30, 34, 0.2); /* border-wine-red/20 */
-    margin-top: auto;
+    margin-top: 2em;
     padding: 1.5rem 1rem;
   }
   

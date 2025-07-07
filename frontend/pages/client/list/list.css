@@ -21,12 +21,17 @@ body {
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
 }
 
 h1, .title, #toggle-theme {
   color: var(--text-main);
 }
-
 
 .header {
   padding: 18px 32px;
@@ -69,8 +74,8 @@ h1, .title, #toggle-theme {
   width: 100%;
   height: 350px;
   transition: transform 0.15s;
-  border-radius: 18px;
   position: relative;
+  border-radius: 18px;
 }
 
 .card-body {
@@ -80,6 +85,7 @@ h1, .title, #toggle-theme {
   padding: 2em;
   width: 100%;
   background: rgba(30, 20, 20, 0.60); 
+  border-radius: 0 0 18px 18px;
 }
 
 .card:hover {
@@ -89,16 +95,10 @@ h1, .title, #toggle-theme {
 }
 
 .bebidas {
-  background-image: url("../../../images/categories/alcohol.jpg");
-  background-size: cover;
-  background-position: center;
   box-shadow: 0 4px 24px #e03c3c22;
 }
 
 .acc {
-  background-image: url("../../../images/categories/tools.jpg");
-  background-size: cover;
-  background-position: center;
   box-shadow: 0 4px 24px #ffd60022;
 }
 
@@ -133,12 +133,27 @@ h1, .title, #toggle-theme {
 }
 
 .subcard {
-  background-image: url("../../../images/categories/imagenes/champagne.webp");
-  background-size: cover;
-  background-position: center;
   border-radius: 18px;
-  height: 300px;
+  height: 450px;
+  max-width: 380px;
   box-shadow: var(--box-shadow);
+  color: var(--text-main);
+  background-color: var(--card-bg);
+}
+
+.subcard-body {
+  padding: 2rem;
+}
+
+.subcard-text {
+  color: var(--subtitle);
+}
+
+.subcard-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 18px 18px 0 0;
 }
 
 .subcard:hover {
@@ -172,10 +187,6 @@ h1, .title, #toggle-theme {
 
 /* Botón volver personalizado */
 .back-btn-custom {
-  /* position: absolute;
-  top: 2rem;
-  left: 2rem;
-  z-index: 20; */
   background: transparent !important;
   border: 2px solid #e03c3c !important;
   color: #e03c3c !important;
