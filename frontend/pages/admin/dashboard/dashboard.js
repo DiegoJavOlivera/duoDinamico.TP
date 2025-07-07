@@ -12,10 +12,15 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Usuario logueado:', user.email);
     }
     
+    // Aplicar permisos según el rol del usuario
+    applyUserPermissions();
+    
     // Intentar cargar productos inmediatamente
     setTimeout(() => {
         loadProducts();
         initializeForms();
+        // Aplicar permisos con un pequeño delay
+        setTimeout(applyUserPermissions, 200);
     }, 100);
     
     // También cargar después de incluir HTML como respaldo
@@ -24,6 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
         loadProducts();
         // Inicializar formularios
         initializeForms();
+        // Aplicar permisos después de cargar el HTML
+        applyUserPermissions();
     });
     
     // Inicializar manejadores de archivos
@@ -61,7 +68,7 @@ function switchTab(tabName) {
             loadMovements();
             break;
         case 'tickets':
-            loadTickets();
+            renderTickets();
             break;
     }
 }
@@ -158,7 +165,7 @@ async function loadMovements() {
             listElement.innerHTML = `
                 <div style="background: #2a1a1a; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #ff4444; color: #ff6666; text-align: center;">
                     <i class="bi bi-exclamation-triangle" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i> 
-                    <strong>Error al cargar movimientos:</strong><br>
+                    <strong>Error al cargar movimientos, puede que no tengas permisos:</strong><br>
                     ${error.message}
                     <br><br>
                     <button class="btn primary" onclick="loadMovements()" style="margin-top: 1rem;">
@@ -187,4 +194,53 @@ async function loadTickets() {
 function exportTickets() {
     console.log('Exportar tickets');
     alert('Funcionalidad de exportación por implementar');
+}
+
+// Aplicar permisos según el rol del usuario
+function applyUserPermissions() {
+    const user = getAuthUser();
+    
+    if (!user) {
+        console.error('No se pudo obtener información del usuario');
+        return;
+    }
+    
+    console.log('Aplicando permisos para usuario ID:', user.id);
+    
+    // Si es admin regular (ID: 2), ocultar funcionalidades restringidas
+    if (user.id === 2) {
+        // Ocultar tabs restringidos
+        hideTabButton('add-user');
+        hideTabButton('movements'); 
+        hideTabButton('tickets');
+        
+        // Ocultar tabs de contenido restringido
+        hideTabContent('add-user-tab');
+        hideTabContent('movements-tab');
+        hideTabContent('tickets-tab');
+        
+        console.log('Permisos de admin regular aplicados - funcionalidades restringidas ocultas');
+    } else if (user.id === 1) {
+        console.log('Usuario superadmin - acceso completo');
+    } else {
+        console.warn('ID de usuario no reconocido:', user.id);
+    }
+}
+
+// Función auxiliar para ocultar botones de tab
+function hideTabButton(tabName) {
+    const button = document.querySelector(`[onclick="switchTab('${tabName}')"]`);
+    if (button) {
+        button.style.display = 'none';
+        console.log(`Tab button '${tabName}' ocultado`);
+    }
+}
+
+// Función auxiliar para ocultar contenido de tab
+function hideTabContent(tabId) {
+    const tabContent = document.getElementById(tabId);
+    if (tabContent) {
+        tabContent.style.display = 'none';
+        console.log(`Tab content '${tabId}' ocultado`);
+    }
 }

@@ -68,3 +68,15 @@ function saveAuthData(token, user) {
     sessionStorage.setItem('adminToken', token);
     sessionStorage.setItem('adminUser', JSON.stringify(user));
 }
+
+// Verificar si el usuario es superadmin
+function isSuperAdmin() {
+    const user = getAuthUser();
+    return user && user.id === 1;
+}
+
+// Verificar si el usuario es admin regular
+function isAdmin() {
+    const user = getAuthUser();
+    return user && user.id === 2;
+}

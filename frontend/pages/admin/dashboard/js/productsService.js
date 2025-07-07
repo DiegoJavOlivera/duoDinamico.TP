@@ -209,3 +209,15 @@ async function getAllMovements() {
         throw new Error('Error al obtener todos los movimientos: ' + error.message);
     }
 }
+
+
+/**
+ * Obtener todos los tickets del backend
+ * @returns {Promise<Array>} Lista de tickets
+ */
+async function getAllTickets() {
+    const response = await authenticatedFetch(`${API_BASE_URL}/ticket`);
+    return await response.json();
+}
+
+

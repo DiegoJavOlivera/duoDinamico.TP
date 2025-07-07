@@ -1,0 +1,225 @@
+/* tickets.css - Estilos para las tarjetas de tickets */
+
+.tickets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem 0;
+}
+
+.ticket-card {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    border: 1px solid #333;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.ticket-card:hover {
+    border-color: #007bff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 123, 255, 0.2);
+}
+
+.ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #333;
+}
+
+.ticket-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ticket-code {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #007bff;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.ticket-code i {
+    font-size: 1.2rem;
+}
+
+.ticket-customer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ccc;
+    font-size: 0.95rem;
+}
+
+.ticket-customer i {
+    color: #28a745;
+}
+
+.ticket-total {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #28a745;
+    text-align: right;
+}
+
+.ticket-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0.5rem;
+}
+
+.ticket-date,
+.ticket-products-count {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.ticket-date i {
+    color: #ffc107;
+}
+
+.ticket-products-count i {
+    color: #6f42c1;
+}
+
+.ticket-actions {
+    margin-bottom: 0.5rem;
+}
+
+.ticket-toggle {
+    width: 100%;
+    background: rgba(0, 123, 255, 0.1);
+    border: 1px solid #007bff;
+    color: #007bff;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.ticket-toggle:hover {
+    background: rgba(0, 123, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.ticket-toggle.expanded {
+    background: rgba(0, 123, 255, 0.2);
+    border-color: #0056b3;
+}
+
+.toggle-icon {
+    transition: transform 0.3s ease;
+}
+
+.ticket-products {
+    margin-top: 1rem;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.products-list {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    border: 1px solid #333;
+}
+
+.product-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #444;
+}
+
+.product-item:last-child {
+    border-bottom: none;
+}
+
+.product-name {
+    color: #fff;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.product-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.quantity {
+    color: #6f42c1;
+    font-weight: 500;
+}
+
+.price {
+    color: #17a2b8;
+}
+
+.subtotal {
+    color: #28a745;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tickets-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .ticket-card {
+        padding: 1rem;
+    }
+    
+    .ticket-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    .ticket-total {
+        text-align: left;
+        font-size: 1.3rem;
+    }
+    
+    .ticket-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .product-details {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+}

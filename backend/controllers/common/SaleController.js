@@ -1,6 +1,6 @@
 
 const {getAllProductsById, reduceStock} = require("../../repository/productRepository");
-const {createSale} = require("../../repository/saleRepository");
+const {createSale, getAllSales} = require("../../repository/saleRepository");
 const {createSaleDetail} = require("../../repository/saleDetailRepository");
 const {nanoid} = require("nanoid");
 
@@ -84,6 +84,36 @@ const createTicket = async (req, res) => {
 };
 
 
+const getTickets = async(req, res) => {
+    try {
+        const tickets = await getAllSales();
+        if (!tickets || tickets.length === 0) {
+            return res.status(404).json({ message: "No tickets found" });
+        }
+        const formattedTickets = tickets.map(ticket => ({
+            ticketCode: ticket.ticket_code,
+            customerName: ticket.customer_name,
+            total: ticket.total,
+            createdAt: ticket.created_at,
+            products: ticket.SaleDetails.map(detail => ({
+                productName: detail.Product.name,
+                quantity: detail.quantity,
+                subtotal: detail.subtotal,
+                price: detail.Product.price
+            }))
+        }));
+
+        res.status(200).json(formattedTickets)        
+    } catch (error) {
+        console.error("Error getting tickets:", error);
+        res.status(500).json({ message: error.message, success: false });
+        
+    }
+}
+
+
+
 module.exports = {
-    createTicket
+    createTicket,
+    getTickets
 }
