@@ -25,7 +25,7 @@ function renderCart() {
         const volverBtn = document.getElementById('btn-volver-lista');
         if (volverBtn) {
             volverBtn.addEventListener('click', () => {
-                window.location.href = '/pages/client/list/list.html';
+                window.location.href = 'pages/client/list/list.html';
             });
         }
         return;
@@ -41,7 +41,7 @@ function renderCart() {
         card.className = 'card cart-item d-flex flex-row align-items-center justify-content-between';
         card.innerHTML = `
             <div class="cart-item-img-wrap d-flex align-items-center justify-content-center" style="flex:0 0 64px;">
-                <img class="cart-item-img" src="/images/categories/alcohol.jpg" alt="${product.name}">
+                <img class="cart-item-img" src="../../../images/categories/alcohol.jpg" alt="${product.name}">
             </div>
             <div class="cart-item-info flex-grow-1 px-2">
                 <div class="cart-item-title">${product.name}</div>
@@ -92,7 +92,7 @@ function renderCart() {
 
 const cancel = () => {
     localStorage.clear();
-    moveToWelcome();
+    window.location.href = '../../../index.html';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCart();
 
     document.getElementById('back-to-categories').addEventListener('click', () => {
-        moveToDashboard();
+        window.location.href = '../../../pages/client/list/list.html';
     });
     
     document.getElementById('btn-finalizar').addEventListener('click', () => {
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
             createTicket(ticketPayload).then((ticketResponse) => {
                 if (ticketResponse && ticketResponse.success) {
                     localStorage.setItem('ticket', JSON.stringify(ticketResponse.ticket));
-                    moveToTicket();
+                    window.location.href = '../../../pages/client/ticket/ticket.html';
                 } else {
                     alert('Ocurrió un error durante la compra. Intenta nuevamente.');
                 }

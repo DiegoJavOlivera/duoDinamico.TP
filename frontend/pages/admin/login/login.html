@@ -5,33 +5,31 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Login - La vinoteca</title>
+
+  <link rel="stylesheet" href="../../../assets/bootstrap-icons.css" />
+  <link rel="stylesheet" href="../../../assets/bootstrap.css" />
   <link rel="stylesheet" href="login.css" />
-  <link rel="stylesheet" href="/colors.css" />
-  <link rel="stylesheet" href="/components/navbar/navbar.css" />
-  <link rel="stylesheet" href="/components/footer/footer.css" />
-  <link rel="stylesheet" href="/assets/bootstrap-icons.css" />
-  <link rel="stylesheet" href="/assets/bootstrap.css" />
+  <link rel="stylesheet" href="../../../colors.css" />
+  <link rel="stylesheet" href="../../../components/footer/footer.css" />
   
-  <script src="/utils/redirects.js"></script>
-  <script src="/utils/includeHTML.js"></script>
-  <script src="/utils/auth.js"></script>
+  <script src="../../../utils/includeHTML.js"></script>
+  <script src="../../../utils/auth.js"></script>
   <script src="./login.js"></script>
 </head>
 
 <body>
   <header>
-    <div data-include="/components/navbar/navbar.html"></div>
+    <div style="width: 50px;">
+      <button id="toggle-theme" class="theme-toggle btn btn-danger text-light mt-2 ms-2">
+        <i class="bi bi-moon"></i>
+      </button>
+    </div>
   </header>
 
-  <div class="login-container">
-    <div class="light wine"></div>
-    <div class="light gold"></div>
-
+  <div class="login-container mb-5">
     <div class="login-content">
-      <div class="icon-circle">
-        <i class="bi bi-shield"></i>
-      </div>
       <div class="login-header">
+        <img src="../../../images/logo.png" alt="La vinoteca" width="80" />
         <h1>Panel de Administración</h1>
         <p>Acceso restringido</p>
         <div class="separator"></div>
@@ -57,5 +55,6 @@
   </div>
 
   <div data-include="../../../components/footer/footer.html"></div>
+  <script src="../../../utils/toggleTheme.js"></script>
 </body>
 </html>

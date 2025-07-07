@@ -1,3 +1,7 @@
+function moveToWelcome() {
+    window.location.href = '../../../index.html';
+}
+
 const handleLogin = async () => {
     const email = document.getElementById('email').value;
     const pass = document.getElementById('password').value;
@@ -26,7 +30,7 @@ const handleLogin = async () => {
             // Guardar token y datos del usuario en sessionStorage
             saveAuthData(data.token, data.user);
             
-            moveToAdminDashboard();
+            window.location.href = '../../../pages/admin/dashboard/dashboard.html';
         } else {
             alert('Error: Usuario o contraseña incorrectos');
         }

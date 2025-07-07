@@ -1,3 +1,10 @@
+function moveToLogin() {
+  window.location.href = '/pages/admin/login/login.html';
+}
+
+function moveToDashboard() {
+  window.location.href = '/pages/client/list/list.html';
+}
 
 window.addEventListener('DOMContentLoaded', function() {
   const adminAccess = document.querySelector('.admin-access');
@@ -55,7 +62,7 @@ window.addEventListener('DOMContentLoaded', function() {
       localStorage.setItem('userName', nameInput.value);
       nameInput.value = '';
       startButton.setAttribute('disabled', 'disabled');
-      moveToDashboard();
+      window.location.href = '../../../pages/client/list/list.html';
     }
   });
 
@@ -64,6 +71,7 @@ window.addEventListener('DOMContentLoaded', function() {
       localStorage.setItem('userName', nameInput.value);
       nameInput.value = '';
       startButton.setAttribute('disabled', 'disabled');
+      window.location.href = '../../../pages/client/list/list.html';
     }
   });
 });

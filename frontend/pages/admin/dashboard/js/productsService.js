@@ -36,7 +36,7 @@ async function createProduct(formData) {
     if (response.status === 401) {
         clearAuthData();
         alert('Sesión expirada. Redirigiendo al login...');
-        window.location.href = '/pages/admin/login/login.html';
+        window.location.href = 'pages/admin/login/login.html';
         throw new Error('Token expirado');
     }
     
@@ -80,7 +80,7 @@ async function updateProduct(productId, productData) {
         if (response.status === 401) {
             clearAuthData();
             alert('Sesión expirada. Redirigiendo al login...');
-            window.location.href = '/pages/admin/login/login.html';
+            window.location.href = 'pages/admin/login/login.html';
             throw new Error('Token expirado');
         }
         

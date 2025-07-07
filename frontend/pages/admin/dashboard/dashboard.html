@@ -5,41 +5,39 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
   <title>Dashboard Admin - La vinoteca</title>
+
+  <link rel="stylesheet" href="../../../components/footer/footer.css" />
+  <link rel="stylesheet" href="../../../assets/bootstrap-icons.css" />
+  <link rel="stylesheet" href="../../../assets/bootstrap.css" />
   <link rel="stylesheet" href="dashboard.css" />
   <link rel="stylesheet" href="movements.css" />
-  <link rel="stylesheet" href="/colors.css" />
-  <link rel="stylesheet" href="/components/navbar/navbar.css" />
-  <link rel="stylesheet" href="/components/footer/footer.css" />
-  <link rel="stylesheet" href="/assets/bootstrap-icons.css" />
-  <link rel="stylesheet" href="/assets/bootstrap.css" />
-  
-  <script src="/utils/redirects.js"></script>
-  <script src="/utils/includeHTML.js"></script>
-  <script src="/utils/auth.js"></script>
-  <script src="/api/fetcher.js"></script>
+  <link rel="stylesheet" href="../../../colors.css" />
+
+  <script src="../../../utils/includeHTML.js"></script>
+  <script src="../../../utils/auth.js"></script>
+  <script src="../../../api/fetcher.js"></script>
   <script src="./js/productsService.js"></script>
   <script src="./js/imagesHandlers.js"></script>
   <script src="./js/productHandlers.js"></script>
   <script src="./js/formInit.js"></script>
-  <script src="./dashboard.js"></script>
+  <script src="dashboard.js"></script>
 </head>
 
 <body>
   <header>
-    <div data-include="/components/navbar/navbar.html"></div>
+    <button id="toggle-theme" class="theme-toggle btn btn-danger text-light mt-2 ms-2">
+      <i class="bi bi-moon"></i>
+    </button>
   </header>
 
   <div class="dashboard-container">
     <div class="light wine"></div>
     <div class="light gold"></div>
 
-    <div class="dashboard-content">
-      <div class="icon-circle">
-        <i class="bi bi-gear"></i>
-      </div>
-      
+    <div class="dashboard-content">      
       <div class="dashboard-header">
         <div class="header-info">
+          <img src="../../../images/logo.png" alt="Logo" class="logo" width="80">
           <h1>Panel de Administración</h1>
           <p>Gestiona tu autoservicio</p>
         </div>
@@ -268,5 +266,6 @@
   </div>
 
   <div data-include="../../../components/footer/footer.html"></div>
+  <script src="../../../utils/toggleTheme.js"></script>
 </body>
 </html>

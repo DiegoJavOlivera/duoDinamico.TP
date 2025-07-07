@@ -1,6 +1,6 @@
 const exit = () => {
     localStorage.clear();
-    moveToWelcome();
+    window.location.href = '../../../index.html';
 }
 
 function downloadTicketPDF() {

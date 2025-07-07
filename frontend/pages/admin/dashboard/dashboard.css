@@ -1,6 +1,30 @@
+.theme-dark {
+  --bg-main: #101010;
+  --text-main: #fff;
+  --card-bg: #1f1f25;
+  --input-bg: #2c2c2c;
+  --box-shadow: box-shadow: 0 0 30px rgba(139, 0, 0, 0.2);
+  --subtitle: #d6d6d6;
+  --hover-color: #ffd700;
+  --hover-bg: rgba(139, 0, 0, 0.1);
+  --bg-gradient-card: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+}
+.theme-light {
+  --bg-main: #fff;
+  --text-main: #181316;
+  --card-bg: #ffffff;
+  --input-bg: #d4d4d6;
+  --box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  --subtitle: #181316;
+  --hover-color: #181316;
+  --hover-bg: #8c888833;
+  --bg-gradient-card: linear-gradient(145deg, #fff 80%, #ffeaea 100%);
+}
+
+
 /* dashboard.css */
-html, body {
-  background-image: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='29' height='33.487' patternTransform='scale(2) rotate(145)'><rect x='0' y='0' width='100%' height='100%' fill='%230c0b0bff'/><path d='M29 20.928v14.813M14.5 12.56v16.745M29-2.559v6.744l-14.5 8.374L0 4.189v-6.745m29 6.742l14.5 8.37m0 16.745L29 20.928l-14.5 8.376L0 20.931l-14.5 8.376m0-16.744L0 4.189m0 31.487V20.931'  stroke-width='1' stroke='%232c070fff' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(-64,-96)' fill='url(%23a)'/></svg>");
+body {
+  background-color: var(--bg-main);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -19,6 +43,10 @@ main {
   position: relative;
   padding: 6rem 1rem 2rem 1rem;
   margin-top: 2rem;
+}
+
+.theme-toggle:hover {
+  transform: rotate(15deg);
 }
 
 .light {
@@ -62,29 +90,15 @@ main {
 }
 
 .dashboard-content {
-  background: #222;
+  background: var(--card-bg);
   padding: 2rem;
   border-radius: 1rem;
-  box-shadow: 0 0 30px rgba(139, 0, 0, 0.2);
+  box-shadow: var(--box-shadow);
   z-index: 10;
   width: 100%;
   max-width: 1200px;
   text-align: center;
   position: relative;
-}
-
-.icon-circle {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 1rem;
-  border-radius: 50%;
-  background: linear-gradient(45deg, #8b0000, #5a0000);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  color: white;
-  box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
 }
 
 .dashboard-header {
@@ -102,7 +116,7 @@ main {
 }
 
 .header-info p {
-  color: #ccc;
+  color: var(--subtitle);
   margin-bottom: 0.5rem;
   font-size: 1.1rem;
 }
@@ -129,7 +143,7 @@ main {
 .tab-buttons {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  background: #1a1a1a;
+  background: var(--bg-gradient-card);
   border-bottom: 1px solid #333;
 }
 
@@ -138,7 +152,7 @@ main {
   padding: 1rem 0.5rem;
   background: transparent;
   border: none;
-  color: #ccc;
+  color: var(--subtitle);
   cursor: pointer;
   transition: all 0.3s ease;
   border-bottom: 3px solid transparent;
@@ -156,17 +170,18 @@ main {
 }
 
 .tab-btn:hover {
-  background: rgba(139, 0, 0, 0.1);
-  color: #ffd700;
+  background: var(--hover-bg);
+  color: var(--hover-color);
 }
 
 .tab-btn.active {
-  background: rgba(139, 0, 0, 0.2);
-  color: #ffd700;
+  background: var(--hover-bg);
+  color: var(--hover-color);
   border-bottom-color: #ffd700;
 }
 
 .tab-content {
+  background: var(--bg-main);
   padding: 2rem;
 }
 
@@ -217,7 +232,7 @@ main {
 }
 
 .product-card {
-  background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+  background: var(--bg-gradient-card);
   border-radius: 1.2rem;
   overflow: hidden;
   border: 1px solid #3a3a3a;
@@ -279,6 +294,11 @@ main {
   object-fit: cover;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+.btn, .secondary {
+  color: var(--text-main);
+}
+
 
 .product-card:hover .product-image img {
   transform: scale(1.1);
@@ -349,7 +369,7 @@ main {
   gap: 0.5rem;
   flex: 1;
   padding: 0.75rem;
-  background: linear-gradient(145deg, #111, #1f1f1f);
+  background: var(--bg-gradient-card);
   border-radius: 0.75rem;
   border: 1px solid #2a2a2a;
 }
@@ -374,7 +394,7 @@ main {
 }
 
 .info-value {
-  color: #fff;
+  color: var(--text-main);
   font-size: 0.9rem;
   font-weight: 600;
 }
@@ -559,18 +579,19 @@ main {
 }
 
 .btn.primary:hover {
+  color: white;
   background: linear-gradient(45deg, #a00000, #700000);
 }
 
 .btn.back {
   background: transparent;
-  color: #aaa;
+  color: var(--subtitle);
   margin-top: 2rem;
 }
 
 .btn.back:hover {
-  color: #ffd700;
-  background: rgba(139, 0, 0, 0.1);
+  color: var(--hover-color);
+  background: var(--hover-bg);
 }
 
 .coming-soon {
@@ -583,7 +604,7 @@ main {
 
 /* Formularios */
 .form-container {
-  background: #1a1a1a;
+  background: var(--card-bg);
   border-radius: 0.75rem;
   padding: 2rem;
   margin-top: 1rem;
@@ -610,7 +631,7 @@ main {
   text-align: left;
   margin: 0 0 0.75rem 0;
   font-size: 1rem;
-  color: #eee;
+  color: var(--text-main);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -622,9 +643,9 @@ main {
   width: 100%;
   padding: 0.875rem 1rem;
   border-radius: 0.6rem;
-  border: 2px solid #333;
-  background: #111;
-  color: white;
+  border: 2px solid var(--input-bg);
+  background: var(--card-bg);
+  color: var(--text-main);
   outline: none;
   font-size: 0.95rem;
   transition: all 0.3s ease;
@@ -634,8 +655,8 @@ main {
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  border-color: #ffd700;
-  background: #1a1a1a;
+  border-color: var(--hover-color);
+  background: var(--card-bg);
   box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
   transform: translateY(-1px);
 }
@@ -666,10 +687,10 @@ main {
   justify-content: center;
   gap: 0.75rem;
   padding: 1rem;
-  border: 2px dashed #333;
+  border: 2px dashed var(--input-bg);
   border-radius: 0.75rem;
-  background: #1a1a1a;
-  color: #ccc;
+  background: var(--card-bg);
+  color: var(--text-main);
   cursor: pointer;
   transition: all 0.3s ease;
   min-height: 60px;
@@ -743,7 +764,7 @@ main {
   align-items: flex-start;
   gap: 1rem;
   padding: 1.5rem;
-  background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+  background: var(--bg-gradient-card);
   border-radius: 1rem;
   border: 1px solid #333;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
@@ -763,13 +784,13 @@ main {
 }
 
 .instruction-card p {
-  color: #ccc;
+  color: var(--text-main);
   margin: 0;
   line-height: 1.5;
 }
 
 .instruction-card strong {
-  color: #fff;
+  color: var(--text-main);
 }
 
 /* Título de edición */

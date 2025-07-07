@@ -23,7 +23,7 @@ function clearAuthData() {
 function checkAuthentication() {
     if (!isAuthenticated()) {
         alert('Sesión expirada. Redirigiendo al login...');
-        window.location.href = '/pages/admin/login/login.html';
+        window.location.href = 'pages/admin/login/login.html';
         return false;
     }
     return true;
@@ -56,7 +56,7 @@ async function authenticatedFetch(url, options = {}) {
     if (response.status === 401) {
         clearAuthData();
         alert('Sesión expirada. Redirigiendo al login...');
-        window.location.href = '/pages/admin/login/login.html';
+        window.location.href = 'pages/admin/login/login.html';
         throw new Error('Token expirado');
     }
     

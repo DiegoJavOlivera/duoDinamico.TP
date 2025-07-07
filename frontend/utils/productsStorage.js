@@ -56,5 +56,5 @@ function getCartTotal() {
 }
 
 function getCartCount() {
-    return getCart().products.reduce((acc, p) => acc + p.quantity, 0);
+    return getCart().products?.reduce((acc, p) => acc + p.quantity, 0);
 }
