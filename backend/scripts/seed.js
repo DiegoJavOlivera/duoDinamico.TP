@@ -42,8 +42,8 @@ async function conditionalSeed() {
     const categories = await Category.count();
     if (categories === 0) {
       await Category.bulkCreate([
-        { name: 'bebidas', image: 'uploads/alcohol.jpg' },
-        { name: 'accesorios', image: 'uploads/tools.jpg' }
+        { name: 'bebidas', image: 'uploads/alcohol.jpg', description: 'Las mejores bebidas para cada celebración.' },
+        { name: 'accesorios', image: 'uploads/tools.jpg', description: 'Accesorios ideales para potenciar tus momentos.' }
       ]);
       console.log('Categorías insertadas');
     }
@@ -55,15 +55,15 @@ async function conditionalSeed() {
 if (subcategories === 0) {
   await Subcategory.bulkCreate([
     // Bebidas
-    { name: 'Vinos', category_id: bebidas.id, image: 'uploads/vino.jpg' },
-    { name: 'Cervezas', category_id: bebidas.id, image: 'uploads/cerveza.jpg' },
-    { name: 'Whiskys', category_id: bebidas.id, image: 'uploads/whisky.jpg' },
-    { name: 'Vodkas', category_id: bebidas.id, image: 'uploads/vodka.jpg' },
-    { name: 'Rones', category_id: bebidas.id, image: 'uploads/ron.jpg' },
+    { name: 'Vinos', category_id: bebidas.id, image: 'uploads/vino.jpg', description: 'Descubrí los mejores vinos para cada ocasión.' },
+    { name: 'Cervezas', category_id: bebidas.id, image: 'uploads/cerveza.jpg', description: 'Cervezas artesanales y clásicas para todos los gustos.' },
+    { name: 'Whiskys', category_id: bebidas.id, image: 'uploads/whisky.jpg', description: 'Whiskys premium de las mejores destilerías.' },
+    { name: 'Vodkas', category_id: bebidas.id, image: 'uploads/vodka.jpg', description: 'Vodkas puros y sofisticados para tus tragos.' },
+    { name: 'Rones', category_id: bebidas.id, image: 'uploads/ron.jpg', description: 'Rones caribeños y añejos para paladares exigentes.' },
     // Accesorios
-    { name: 'vasos', category_id: accesorios.id, image: 'uploads/vasos.jpg' },
-    { name: 'copas', category_id: accesorios.id, image: 'uploads/copas.jpg' },
-    { name: 'kits', category_id: accesorios.id, image: 'uploads/kits.jpg' }
+    { name: 'vasos', category_id: accesorios.id, image: 'uploads/vasos.jpg', description: 'Vasos para cada tipo de bebida y ocasión.' },
+    { name: 'copas', category_id: accesorios.id, image: 'uploads/copas.jpg', description: 'Copas elegantes para realzar tus brindis.' },
+    { name: 'kits', category_id: accesorios.id, image: 'uploads/kits.jpg', description: 'Kits completos para bartenders y aficionados.' }
   ]);
   console.log('Subcategorías insertadas');
 }

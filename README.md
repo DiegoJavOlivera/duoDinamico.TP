@@ -124,8 +124,17 @@ Ajusta los valores según tu entorno y necesidades.
    ```bash
    npm install
    ```
-2. Ejecuta migraciones y seeders si es necesario (ver scripts abajo).
-3. Inicia el backend:
+2. Ejecuta el script de sincronización de la base de datos:
+   ```bash
+   npm run db:sync
+   ```
+
+3. Ejecuta el script de relleno de la base de datos:
+   ```bash
+   npm run db:seed
+   ```
+
+4. Inicia el backend:
    ```bash
    npm run dev
    ```

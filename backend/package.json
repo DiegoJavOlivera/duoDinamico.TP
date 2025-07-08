@@ -9,7 +9,8 @@
     "debug": "nodemon --inspect --watch . ./index.js",
     "db:sync": "node ./scripts/sync.js",
     "db:seed": "node ./scripts/seed.js",
-    "db:drop": "node ./scripts/drop.js"
+    "db:drop": "node ./scripts/drop.js",
+    "db:init": "npm run db:drop && npm run db:sync && npm run db:seed"
   },
   "engines": {
     "node": ">=22.0.0"
