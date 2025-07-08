@@ -39,6 +39,11 @@ h1, .title, #toggle-theme {
   gap: 18px;
 }
 
+.banner {
+  width: 100%;
+  border-radius: 20px;
+}
+
 .hello {
   color: var(--text-main);
   font-weight: 600;
