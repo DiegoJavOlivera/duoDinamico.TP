@@ -20,14 +20,14 @@ async function renderCategories() {
             const col = document.createElement('div');
             col.className = 'col-12 col-md-6 col-lg-5 d-lg-flex';
             col.innerHTML = `
-                <div class="card text-light shadow-sm text-center flex-fill w-100 mb-4 mb-lg-0">
-                    <img src="http://localhost:3000/${category.image}" alt="${category.name}" class="card-img-top"  style="border-radius: 18px;">
-                    <div class="card-body d-flex flex-column justify-content-between h-50">
+                <div class="card text-light shadow-sm text-center flex-fill w-100 mb-4 h-100">
+                    <img src="http://localhost:3000/${category.image}" alt="${category.name}" class="card-img-top img-fluid rounded-top" style="object-fit: cover; max-height: 300px;">
+                    <div class="card-body d-flex flex-column justify-content-between">
                         <div>
                             <h5 class="card-title fs-5 fw-bold">${category.name}</h5>
-                            <p class="card-text">${category.description || ''}</p>
+                            <p class="card-text small">${category.description || ''}</p>
                         </div>
-                        <button class="btn btn-primary mt-3 mx-auto w-50" data-category-id="${category.id}">
+                        <button class="btn btn-primary mt-3 w-100" data-category-id="${category.id}">
                             Explorar ${category.name}
                             <i class="bi bi-arrow-right"></i>
                         </button>

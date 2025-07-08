@@ -41,7 +41,76 @@ h1, .title, #toggle-theme {
 
 .banner {
   width: 100%;
+  max-width: 1100px;
+  margin: 2.5rem auto 2rem auto;
   border-radius: 20px;
+  display: block;
+  box-shadow: 0 2px 16px #0002;
+  object-fit: cover;
+  height: auto;
+}
+
+.categories-container {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+#categories-cards {
+  gap: 2rem 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 991px) {
+  .banner {
+    max-width: 95vw;
+    margin: 1.5rem auto 1.2rem auto;
+    border-radius: 14px;
+  }
+  .categories-container {
+    margin-top: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+  #categories-cards {
+    gap: 1.2rem 0.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .banner {
+    max-width: 99vw;
+    margin: 1.1rem auto 0.8rem auto;
+    border-radius: 10px;
+  }
+  .categories-container {
+    margin-top: 0.8rem;
+    margin-bottom: 1.2rem;
+  }
+  #categories-cards {
+    gap: 0.7rem 0.2rem;
+  }
+  .categories-container h1 {
+    font-size: 1.5rem !important;
+  }
+  .title {
+    font-size: 1rem !important;
+  }
+  .back-btn-custom {
+    min-width: 90px;
+    font-size: 0.93rem;
+    padding: 0.22rem 0.7rem;
+    border-radius: 6px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+  .subcategories-container,
+  .products-container {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .hello {
@@ -120,8 +189,22 @@ h1, .title, #toggle-theme {
 .sub-cards-container {
   display: grid;
   gap: 1rem;
-  grid-template-columns: 1fr; 
+  grid-template-columns: 1fr;
+  justify-items: center;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 410px;
 }
+
+@media (min-width: 850px) {
+  .sub-cards-container {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 100%;
+    margin: 0;
+    justify-items: stretch;
+  }
+}
+
 
 .no-stock-msg {
   color: #fff;
@@ -186,9 +269,18 @@ h1, .title, #toggle-theme {
 }
 
 
-.theme-toggle:hover {
-  transform: rotate(15deg);
+@media (min-width: 851px) {
+  .theme-toggle:hover {
+    transform: rotate(15deg);
+  }
 }
+
+@media (max-width: 850px) {
+  .theme-toggle:hover {
+    transform: none;
+  }
+}
+
 
 /* Botón volver personalizado */
 .back-btn-custom {
@@ -246,19 +338,18 @@ h1, .title, #toggle-theme {
   margin-bottom: 0.7rem;
   background: var(--card-bg);
 }
+
 .product-name {
   font-size: 1.18rem;
   font-weight: 700;
   color: var(--text-main);
   margin-bottom: 0.25rem;
-  /* text-align: center; */
 }
+
 .product-desc {
   font-size: 1rem;
   color: var(--text-main);
   margin-bottom: 0.7rem;
-  /* text-align: center; */
-  min-height: 38px;
 }
 .product-price {
   font-size: 1.4rem;

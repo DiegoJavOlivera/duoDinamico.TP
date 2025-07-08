@@ -28,19 +28,18 @@
   <script src="index.js" defer></script>
 </head>
 <body>
-  <header>
-    <nav class="navbar">
-      <div class="navbar-container">
-        <div class="navbar-logo" id="go-home">
-          <div class="navbar-icon">
-            <img src="images/logo.png" alt="La vinoteca" class="logo" style="width: 85px;">
-          </div>
-        </div>
-        <div class="navbar-actions">
-          <button id="toggle-theme" class="theme-toggle btn btn-danger">
-            <i class="bi bi-moon"></i>
-          </button>
-        </div>
+  <header class="text-white py-2">
+    <nav class="navbar navbar-expand d-flex justify-content-between align-items-center container-fluid px-3">
+      <!-- Logo -->
+      <div class="d-flex align-items-center" id="go-home">
+        <img src="images/logo.png" alt="La vinoteca" class="logo img-fluid" style="max-width: 80px; height: auto;">
+      </div>
+  
+      <!-- Botón de cambio de tema -->
+      <div class="d-flex">
+        <button id="toggle-theme" class="btn btn-sm btn-danger d-flex align-items-center justify-content-center" title="Cambiar tema">
+          <i class="bi bi-moon fs-5"></i>
+        </button>
       </div>
     </nav>
   </header>
