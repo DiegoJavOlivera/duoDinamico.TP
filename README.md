@@ -558,11 +558,13 @@ erDiagram
         int sale_id FK
     }
 
-    PRODUCT }o--|| SUBCATEGORY : ""
-    USER }o--|| ROLE : ""
-    USER_ACTION_LOG }o--|| USER : ""
-    USER_ACTION_LOG }o--|| ACTION : ""
-    USER_ACTION_LOG }o--|| PRODUCT : ""
+    CATEGORY ||--o{ SUBCATEGORY : ""
+    SUBCATEGORY ||--o{ PRODUCT : ""
+    ROLE ||--o{ USER : ""
+    USER ||--o{ USER_ACTION_LOG : ""
+    ACTION ||--o{ USER_ACTION_LOG : ""
+    PRODUCT ||--o{ USER_ACTION_LOG : ""
+    PRODUCT ||--o{ SALE_DETAIL : ""
     SALE ||--o{ SALE_DETAIL : ""
     SALE_DETAIL }o--|| PRODUCT : ""
 ```
