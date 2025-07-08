@@ -4,6 +4,13 @@ const {createSale, getAllSales} = require("../../repository/saleRepository");
 const {createSaleDetail} = require("../../repository/saleDetailRepository");
 const {nanoid} = require("nanoid");
 
+/**
+ * Crea un ticket de venta a partir de los productos y datos del cliente.
+ *
+ * @param {import('express').Request} req - Request HTTP (requiere body con productos, total, nameCostumer)
+ * @param {import('express').Response} res - Response HTTP
+ * @returns {Promise<void>} Responde con 201 y ticket creado, 400/404/500 si hay error
+ */
 const createTicket = async (req, res) => {
     try {
         const { nameCostumer,

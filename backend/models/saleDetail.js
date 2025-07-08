@@ -1,5 +1,16 @@
+/**
+ * @fileoverview Modelo Sequelize para la tabla 'sale_details'.
+ * Representa el detalle de cada producto vendido en una venta.
+ *
+ * Campos:
+ * - id: Identificador único, entero, autoincremental.
+ * - quantity: Cantidad de productos vendidos.
+ * - subtotal: Subtotal por este producto.
+ * - created_at: Fecha de creación del detalle.
+ * - product_id: Relación con producto vendido.
+ * - sale_id: Relación con la venta.
+ */
 const {DataTypes} = require('sequelize');
-
 
 module.exports = (connection) => {
     return connection.define('SaleDetail',{

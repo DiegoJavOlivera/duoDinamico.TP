@@ -1,3 +1,14 @@
+/**
+ * @fileoverview Modelo Sequelize para la tabla 'user_action_logs'.
+ * Registra cada acción realizada por un usuario sobre un producto.
+ *
+ * Campos:
+ * - id: Identificador único, entero, autoincremental.
+ * - user_id: Relación con el usuario que ejecutó la acción.
+ * - product_id: Relación con el producto (opcional).
+ * - action_id: Relación con la acción realizada.
+ * - created_at: Fecha y hora de la acción.
+ */
 const {DataTypes} = require('sequelize');
 
 module.exports = (connection) => {

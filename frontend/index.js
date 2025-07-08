@@ -1,44 +1,43 @@
-const base = window.location.origin;
+
+  const nameInput = document.getElementById('name');
+  const startButton = document.querySelector('.start-button');
+  const nameError = document.getElementById('name-error');
 
 function moveToLogin() {
-  window.location.href = `${base}/frontend/pages/admin/login/login.html`;
+  window.location.href = './pages/admin/login/login.html';
 }
 
-window.addEventListener('DOMContentLoaded', function() {
+function handleStart() {
+  if (isValidName(nameInput.value)) {
+    localStorage.setItem('userName', nameInput.value);
+    nameInput.value = '';
+    startButton.setAttribute('disabled', 'disabled');
+    window.location.href = './pages/client/list/list.html';
+  }
+}
+
+function isValidName(name) {
+  return /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+$/.test(name);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
   const adminAccess = document.querySelector('.admin-access');
 
-
-  // Mostrar/Ocultar admin-access con atajos
-  window.addEventListener('keydown', function(e) {
-    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+  // Mostrar/Ocultar boton admin-access con atajos
+  window.addEventListener('keydown', (e) => {
     // Mostrar con A
-    if (
-      (isMac && e.metaKey && e.shiftKey && e.key.toLowerCase() === 'a') ||
-      (!isMac && e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a')
-    ) {
+    if ( e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') {
+      e.preventDefault();
       adminAccess.classList.remove('d-none');
     }
     // Ocultar con Q
-    if (
-      (isMac && e.metaKey && e.shiftKey && e.key.toLowerCase() === 'z') ||
-      (!isMac && e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'z')
-    ) {
+    if ( e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'z') {
+      e.preventDefault();
       adminAccess.classList.add('d-none');
     }
   });
 
-  const nameInput = document.getElementById('name');
-  const startButton = document.querySelector('.start-button');
-
-  // Permite que toggleTheme.js pueda actualizar el logo tras cambiar el tema
-
-  const nameError = document.getElementById('name-error');
-
-  function isValidName(name) {
-    return /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+$/.test(name);
-  }
-
-  nameInput.addEventListener('input', function() {
+  nameInput.addEventListener('input', () => {
     if (nameInput.value === '') {
       nameInput.classList.remove('is-invalid');
       nameError.style.display = 'none';
@@ -55,21 +54,11 @@ window.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  nameInput.addEventListener('keyup', function(evt) {
+  nameInput.addEventListener('keyup', (evt) => {
     if (evt.key === 'Enter' && isValidName(nameInput.value)) {
-      localStorage.setItem('userName', nameInput.value);
-      nameInput.value = '';
-      startButton.setAttribute('disabled', 'disabled');
-      window.location.href = './pages/client/list/list.html';
+      handleStart();
     }
   });
 
-  startButton.addEventListener('click', function() {
-    if (isValidName(nameInput.value)) {
-      localStorage.setItem('userName', nameInput.value);
-      nameInput.value = '';
-      startButton.setAttribute('disabled', 'disabled');
-      window.location.href = './pages/client/list/list.html';
-    }
-  });
+  startButton.addEventListener('click', handleStart);
 });

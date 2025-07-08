@@ -1,3 +1,14 @@
+/**
+ * @fileoverview Modelo Sequelize para la tabla 'sales'.
+ * Representa una venta realizada en el sistema.
+ *
+ * Campos:
+ * - id: Identificador único, entero, autoincremental.
+ * - ticket_code: Código único del ticket de venta.
+ * - customer_name: Nombre del cliente.
+ * - total: Total de la venta.
+ * - created_at: Fecha de creación de la venta.
+ */
 const {DataTypes} = require('sequelize');
 
 module.exports = (connection) =>{

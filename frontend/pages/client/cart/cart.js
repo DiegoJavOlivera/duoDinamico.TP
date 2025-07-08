@@ -1,6 +1,15 @@
 // Renderiza productos del carrito
 const USERNAME = localStorage.getItem('userName');
 
+/**
+ * Renderiza los productos del carrito en la página.
+ * Muestra botones para modificar cantidades o eliminar productos.
+ * 
+ * @description Esta función se encarga de renderizar los productos del carrito en la página,
+ *              mostrando botones para modificar cantidades o eliminar productos.
+ * 
+ * @returns {void}
+ */
 function renderCart() {
     const cartItemsContainer = document.getElementById('cart-items');
     const cartCount = document.getElementById('cart-count');
@@ -95,6 +104,10 @@ const cancel = () => {
     window.location.href = '../../../index.html';
 }
 
+/**
+ * Inicializa la vista del carrito al cargar la página.
+ * Renderiza los productos en el carrito y muestra el total.
+ */
 document.addEventListener('DOMContentLoaded', () => {
     const USERNAME = localStorage.getItem('userName');
     document.querySelector('.user-name').textContent = USERNAME;

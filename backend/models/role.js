@@ -1,4 +1,12 @@
-// models/role.js
+/**
+ * @fileoverview Modelo Sequelize para la tabla 'roles'.
+ * Representa los roles de usuario en el sistema (admin, super admin, etc).
+ *
+ * Campos:
+ * - id: Identificador único, entero, autoincremental.
+ * - name: Nombre del rol.
+ */
+
 const { DataTypes } = require('sequelize');
 
 module.exports = (connection) => {

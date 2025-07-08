@@ -10,8 +10,26 @@ const {create,
     getAllUsers
 } = require("../../repository/userRepository");
 
+/**
+ * @fileoverview Controlador de usuarios para el módulo SuperAdmin.
+ * Permite crear nuevos administradores y listar todos los usuarios.
+ */
+
 const ACTION_ID_CREATE_USER = 3;
 
+/**
+ * Crea un nuevo usuario administrador.
+ *
+ * - Valida los datos recibidos en el body.
+ * - Verifica que el email no esté registrado.
+ * - Hashea la contraseña y crea el usuario activo.
+ * - Registra la acción en el log.
+ * - Devuelve el usuario creado (sin contraseña).
+ *
+ * @param {import('express').Request} req - Request HTTP (requiere body con datos de usuario)
+ * @param {import('express').Response} res - Response HTTP
+ * @returns {Promise<void>} Responde con 201 y usuario creado, o error 400/500
+ */
 const createUser = async (req, res) => {
     try {
         console.log("Creating user with data:", req.body);
@@ -50,6 +68,13 @@ const createUser = async (req, res) => {
     }
 };
 
+/**
+ * Obtiene todos los usuarios del sistema.
+ *
+ * @param {import('express').Request} req - Request HTTP
+ * @param {import('express').Response} res - Response HTTP
+ * @returns {Promise<void>} Responde con 200 y array de usuarios
+ */
 const getUsers = async (req, res) => {
     const users = await getAllUsers();
     res.status(200).json(users);

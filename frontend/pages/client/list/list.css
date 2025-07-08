@@ -138,6 +138,11 @@ h1, .title, #toggle-theme {
   color: #fff;
 }
 
+.card-img-top {
+  object-fit: cover;
+  max-height: 300px;
+}
+
 .user-name {
   color: #ffd600;
   font-weight: bold;

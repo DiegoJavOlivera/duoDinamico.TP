@@ -1,6 +1,21 @@
 
+/**
+ * @fileoverview Controlador de acciones para el módulo SuperAdmin.
+ * Permite obtener acciones de usuario paginadas para auditoría o administración.
+ */
+
 const { getPaginatedActions } = require("../../repository/logRepository");
 
+/**
+ * Obtiene un listado paginado de acciones de usuario del sistema.
+ *
+ * - Permite filtrar por página (query param 'page').
+ * - Devuelve total de acciones, total de páginas, página actual y los datos.
+ *
+ * @param {import('express').Request} req - Request HTTP (puede incluir ?page=N)
+ * @param {import('express').Response} res - Response HTTP
+ * @returns {Promise<void>} Responde con 200 y datos paginados, o error 404/500
+ */
 const getActions = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;

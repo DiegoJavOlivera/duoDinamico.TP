@@ -1,8 +1,18 @@
 
 const { findUserByEmail } = require("../../repository/authRepository");
-const { isValidPassword } = require("../../utils/password");
+const { isValidPassword } = require("../../utils/userUtils");
 const { generateToken } = require("../../utils/jwtUtils");
 
+/**
+ * Inicia sesión de usuario.
+ *
+ * - Verifica email y contraseña.
+ * - Devuelve token JWT si es correcto.
+ *
+ * @param {import('express').Request} req - Request HTTP (requiere body con email y password)
+ * @param {import('express').Response} res - Response HTTP
+ * @returns {Promise<void>} Responde con 200 y token, 400/404/500 si hay error
+ */
 const signIn = async (req, res) => {
   try {
     const { email, password } = req.body;

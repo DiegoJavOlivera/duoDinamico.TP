@@ -1,6 +1,12 @@
+/**
+ * @fileoverview Modelo Sequelize para la tabla 'actions'.
+ * Representa una acción que puede realizar un usuario en el sistema (ej: crear producto, modificar estado, etc).
+ *
+ * Campos:
+ * - id: Identificador único, entero, autoincremental.
+ * - name: Nombre único de la acción.
+ */
 const {DataTypes} = require('sequelize');
-
-
 
 module.exports = (connection) => {
     return connection.define('Action', {

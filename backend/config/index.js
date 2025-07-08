@@ -1,4 +1,7 @@
 
+/**
+ * Exporta función para obtener variables de entorno de forma segura.
+ */
 const getConfig = (key) => {
     if(!(key in process.env)) {
         throw new Error(`La variable de entorno ${key} no está definida. Leer el README.md para el .env`);

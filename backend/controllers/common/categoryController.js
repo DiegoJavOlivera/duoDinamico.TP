@@ -1,6 +1,13 @@
 const { getAllCategories } = require("../../repository/categoryRepository.js");
 const { isAllValid } = require("../../utils/commons");
 
+/**
+ * Obtiene todas las categorías disponibles.
+ *
+ * @param {import('express').Request} req - Request HTTP
+ * @param {import('express').Response} res - Response HTTP
+ * @returns {Promise<void>} Responde con 200 y array de categorías, 404 si no hay, 500 si hay error
+ */
 const getCategories = async (req, res) => {
     try {
         const categories = await getAllCategories();

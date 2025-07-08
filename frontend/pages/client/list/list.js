@@ -1,15 +1,33 @@
 const USERNAME = localStorage.getItem('userName');
 const THEME = localStorage.getItem('theme');
 
+// Navegación por steps
+let step = 1; // 1: categorías, 2: subcategorías, 3: productos
+let currentCategory = null;
+let currentSubcategory = null;
+let lastSubcategories = [];
+
 document.addEventListener('DOMContentLoaded', async () => {
     if (!USERNAME) {
         alert('Debe colocar su nombre para acceder a la lista de productos');
         window.location.href = '../../../index.html';
     }
     document.querySelector('.user-name').textContent = USERNAME;
+    // Función para inicializar vista
+    renderStep();
+
+    // Función para actualizar el badge del carrito
+    updateCartBadge();
+    
     await renderCategories();
 });
 
+// Función para renderizar categorías
+/**
+ * Renderiza las tarjetas de categorías en la vista principal.
+ * Obtiene las categorías desde la API y las muestra dinámicamente.
+ * Muestra un mensaje de error si no se pueden cargar.
+ */
 async function renderCategories() {
     const categoriesContainer = document.getElementById('categories-cards');
     categoriesContainer.innerHTML = '';
@@ -18,14 +36,15 @@ async function renderCategories() {
         const categories = await getCategories();
         categories.forEach(category => {
             const col = document.createElement('div');
+            // Columna de categorías responsive
             col.className = 'col-12 col-md-6 col-lg-5 d-lg-flex';
             col.innerHTML = `
                 <div class="card text-light shadow-sm text-center flex-fill w-100 mb-4 h-100">
-                    <img src="http://localhost:3000/${category.image}" alt="${category.name}" class="card-img-top img-fluid rounded-top" style="object-fit: cover; max-height: 300px;">
+                    <img src="http://localhost:3000/${category.image}" alt="${category.name}" class="card-img-top img-fluid rounded-top">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <div>
                             <h5 class="card-title fs-5 fw-bold">${category.name}</h5>
-                            <p class="card-text small">${category.description || ''}</p>
+                            <p class="card-text small">${category.description}</p>
                         </div>
                         <button class="btn btn-primary mt-3 w-100" data-category-id="${category.id}">
                             Explorar ${category.name}
@@ -42,11 +61,19 @@ async function renderCategories() {
     }
 }
 
-
+// Función para moverse al carrito
+/**
+ * Redirige al usuario a la página del carrito de compras.
+ */
 function moveToCart() {
     window.location.href = '../../../pages/client/cart/cart.html';
 }
 
+// Función para actualizar el badge del carrito
+/**
+ * Actualiza el badge (contador) del carrito en la interfaz.
+ * Muestra el número de productos y cambia el estilo si hay productos.
+ */
 function updateCartBadge() {
     const badge = document.getElementById('cart-badge');
     const count = getCartCount();
@@ -58,10 +85,13 @@ function updateCartBadge() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    updateCartBadge();
-});
-
+// Función para renderizar subcategorías
+/**
+ * Renderiza las tarjetas de subcategorías para una categoría seleccionada.
+ *
+ * @param {Array} subcategories - Lista de subcategorías a mostrar.
+ * @param {string} category_name - Nombre de la categoría seleccionada.
+ */
 function renderSubcategories(subcategories, category_name) {
     const container = document.querySelector('.sub-cards-container');
     const title = document.getElementById('subcategory-title');
@@ -86,17 +116,17 @@ function renderSubcategories(subcategories, category_name) {
                 </div>
             </div>
         `;
+
         card.querySelector('.subbtn').onclick = () => selectSubcategory(subcat);
         container.appendChild(card);
     });
 }
 
-// Navegación por steps
-let step = 1; // 1: categorías, 2: subcategorías, 3: productos
-let currentCategory = null;
-let currentSubcategory = null;
-let lastSubcategories = [];
 
+/**
+ * Controla la navegación por pasos (categorías, subcategorías, productos).
+ * Muestra u oculta los contenedores según el paso actual y renderiza el contenido correspondiente.
+ */
 async function renderStep() {
     // Ocultar todo
     document.querySelector('.categories-container').classList.add('isHidden');
@@ -110,37 +140,61 @@ async function renderStep() {
     } else if (step === 2) {
         document.querySelector('.subcategories-container').classList.remove('isHidden');
         document.getElementById('back-to-categories').classList.remove('isHidden');
+
         // Render subcategorías
         const subcategories = await getSubcategoryByCategoryId(currentCategory.id);
         lastSubcategories = subcategories;
+
         renderSubcategories(subcategories, currentCategory.name);
     } else if (step === 3) {
         document.querySelector('.products-container').classList.remove('isHidden');
         document.getElementById('back-to-subcategories').classList.remove('isHidden');
+
         // Render productos
         const products = await getProducts({subcategory: currentSubcategory.id, all: false});
         renderProducts(products, currentSubcategory.name);
     }
 }
 
+// Función para seleccionar categoría
+/**
+ * Selecciona una categoría y avanza al paso de subcategorías.
+ *
+ * @param {Object} category - Categoría seleccionada.
+ */
 window.selectCategory = (category) => {
     currentCategory = category;
     step = 2;
     renderStep();
 };
 
+// Función para seleccionar subcategoría
+/**
+ * Selecciona una subcategoría y avanza al paso de productos.
+ *
+ * @param {Object} subcategory - Subcategoría seleccionada.
+ */
 window.selectSubcategory = (subcategory) => {
     currentSubcategory = subcategory;
     step = 3;
     renderStep();
 };
 
+// Función para volver a categorías
+/**
+ * Vuelve al paso de categorías y limpia las subcategorías mostradas.
+ */
 document.getElementById('back-to-categories').onclick = () => {
     step = 1;
     renderStep();
     // Limpiar subcategorías
     document.querySelector('.sub-cards-container').innerHTML = '';
 };
+
+// Función para volver a subcategorías
+/**
+ * Vuelve al paso de subcategorías y limpia los productos mostrados.
+ */
 document.getElementById('back-to-subcategories').onclick = () => {
     step = 2;
     renderStep();
@@ -148,10 +202,11 @@ document.getElementById('back-to-subcategories').onclick = () => {
     document.querySelector('.product-cards-container').innerHTML = '';
 };
 
-// Inicializar vista
-renderStep();
 
 // Lógica botón Cancelar Compra
+/**
+ * Cancela la compra, limpia el localStorage y redirige al inicio.
+ */
 const cancel = () => {
     localStorage.clear();
     window.location.href = '../../../index.html';
@@ -159,6 +214,13 @@ const cancel = () => {
 
 
 // Render product cards
+/**
+ * Renderiza las tarjetas de productos para una subcategoría seleccionada.
+ * Muestra los botones para agregar, sumar/restar cantidad y el estado de stock.
+ *
+ * @param {Array} products - Lista de productos a mostrar.
+ * @param {string} subcategory_name - Nombre de la subcategoría seleccionada.
+ */
 function renderProducts(products, subcategory_name) {
     const container = document.querySelector('.product-cards-container');
     const noProducts = document.querySelector('.no-products');
@@ -220,7 +282,6 @@ function renderProducts(products, subcategory_name) {
             `;
             const btnSumar = btnContainer.querySelector('.btn-sumar');
             const btnRestar = btnContainer.querySelector('.btn-restar');
-            const cantidadSpan = btnContainer.querySelector('.cantidad-en-carrito');
 
             btnSumar.addEventListener('click', () => {
                 const currentQty = prodInCart.quantity;

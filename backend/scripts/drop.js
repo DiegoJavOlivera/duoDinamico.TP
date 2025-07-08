@@ -1,6 +1,13 @@
+/**
+ * Script para eliminar todas las tablas de la base de datos.
+ * Uso: node scripts/drop.js
+ */
 require('dotenv').config();
 const { connection } = require('../models');
 
+/**
+ * Elimina todas las tablas de la base de datos.
+ */
 async function clearDatabase() {
   try {
     await connection.drop(); 

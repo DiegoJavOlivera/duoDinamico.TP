@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Inicialización y asociación de modelos Sequelize.
+ * Este archivo importa, inicializa y relaciona todos los modelos del sistema.
+ * Exporta los modelos y la conexión para su uso en el resto de la aplicación.
+ */
 const connection = require('../config/db');
 
 const UserModel = require('./user');

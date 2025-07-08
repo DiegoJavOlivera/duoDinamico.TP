@@ -1,4 +1,15 @@
-// models/user.js
+/**
+ * @fileoverview Modelo Sequelize para la tabla 'users'.
+ * Representa un usuario del sistema.
+ *
+ * Campos:
+ * - id: Identificador único, entero, autoincremental.
+ * - name: Nombre del usuario.
+ * - email: Email único del usuario.
+ * - password: Contraseña hasheada.
+ * - is_active: Estado de actividad del usuario.
+ * - role_id: Relación con el rol del usuario.
+ */
 const { DataTypes } = require('sequelize');
 
 module.exports = (connection) => {

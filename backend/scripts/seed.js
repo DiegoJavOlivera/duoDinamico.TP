@@ -6,10 +6,7 @@ const {
     Product, 
     Category,
     Subcategory,
-    Action,
-    Sale,
-    SaleDetail,
-    UserActionLog
+    Action
 } = require('../models');
 
 const { hashPassword } = require('../utils/userUtils');
@@ -45,28 +42,28 @@ async function conditionalSeed() {
     const categories = await Category.count();
     if (categories === 0) {
       await Category.bulkCreate([
-        { name: 'Bebidas', image: 'uploads/alcohol.jpg', description: 'Gran variedad de bebidas alcohólicas exquisitas.' },
-        { name: 'Accesorios', image: 'uploads/tools.jpg', description: 'Accesorios y utensilios para tu bar o cocina.' }
+        { name: 'bebidas', image: 'uploads/alcohol.jpg' },
+        { name: 'accesorios', image: 'uploads/tools.jpg' }
       ]);
       console.log('Categorías insertadas');
     }
 
-    const bebidas = await Category.findOne({ where: { name: 'Bebidas' } });
-    const accesorios = await Category.findOne({ where: { name: 'Accesorios' } });
+    const bebidas = await Category.findOne({ where: { name: 'bebidas' } });
+    const accesorios = await Category.findOne({ where: { name: 'accesorios' } });
 
     const subcategories = await Subcategory.count();
 if (subcategories === 0) {
   await Subcategory.bulkCreate([
     // Bebidas
-    { name: 'Vinos', category_id: bebidas.id, image: 'uploads/vino.jpg', description: 'Tintos, blancos y rosados de distintas regiones.' },
-    { name: 'Cervezas', category_id: bebidas.id, image: 'uploads/cerveza.jpg', description: 'Cervezas rubias, negras y artesanales.' },
-    { name: 'Whiskys', category_id: bebidas.id, image: 'uploads/whisky.jpg', description: 'Whisky escocés, irlandés y blends.' },
-    { name: 'Vodkas', category_id: bebidas.id, image: 'uploads/vodka.jpg', description: 'Vodkas clásicos y premium.' },
-    { name: 'Rones', category_id: bebidas.id, image: 'uploads/ron.jpg', description: 'Rones añejos y especiados.' },
+    { name: 'Vinos', category_id: bebidas.id, image: 'uploads/vino.jpg' },
+    { name: 'Cervezas', category_id: bebidas.id, image: 'uploads/cerveza.jpg' },
+    { name: 'Whiskys', category_id: bebidas.id, image: 'uploads/whisky.jpg' },
+    { name: 'Vodkas', category_id: bebidas.id, image: 'uploads/vodka.jpg' },
+    { name: 'Rones', category_id: bebidas.id, image: 'uploads/ron.jpg' },
     // Accesorios
-    { name: 'Vasos', category_id: accesorios.id, image: 'uploads/vasos.jpg', description: 'Vasos para tragos, whisky y más.' },
-    { name: 'Copas', category_id: accesorios.id, image: 'uploads/copas.jpg', description: 'Copas para vino, champagne y cócteles.' },
-    { name: 'Kits', category_id: accesorios.id, image: 'uploads/kits.jpg', description: 'Kits de bar y sets para coctelería.' }
+    { name: 'vasos', category_id: accesorios.id, image: 'uploads/vasos.jpg' },
+    { name: 'copas', category_id: accesorios.id, image: 'uploads/copas.jpg' },
+    { name: 'kits', category_id: accesorios.id, image: 'uploads/kits.jpg' }
   ]);
   console.log('Subcategorías insertadas');
 }

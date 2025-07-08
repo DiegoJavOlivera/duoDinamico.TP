@@ -13,6 +13,7 @@ Sistema web fullstack para la gestión y venta de productos en una vinoteca. Per
 - **MySQL** (desarrollo) / **MySQL** (producción, opcional)
 - **jsonwebtoken** (JWT para autenticación)
 - **bcryptjs** (hash de contraseñas)
+- **nanoid** (generación de códigos únicos)
 - **multer** (subida de imágenes)
 - **dotenv** (variables de entorno)
 - **cors** (CORS middleware)

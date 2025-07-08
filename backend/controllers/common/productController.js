@@ -12,6 +12,13 @@ const ACTION_ID_UPDATE = 2;
 const ACTION_ID_MODIFY_ACTIVE = 4;
 const ACTION_ID_MODIFY_INACTIVE = 5;
 
+/**
+ * Obtiene todos los productos, opcionalmente filtrados por subcategoría o todos.
+ *
+ * @param {import('express').Request} req - Request HTTP (puede incluir query all/subcategory)
+ * @param {import('express').Response} res - Response HTTP
+ * @returns {Promise<void>} Responde con 200 y array de productos, 404 si no hay, 500 si hay error
+ */
 const getProducts = async (req, res) => {
     try {
         const { all, subcategory } = req.query;
@@ -29,6 +36,13 @@ const getProducts = async (req, res) => {
     }
 };
 
+/**
+ * Obtiene un producto por su ID.
+ *
+ * @param {import('express').Request} req - Request HTTP (requiere param id)
+ * @param {import('express').Response} res - Response HTTP
+ * @returns {Promise<void>} Responde con 200 y producto, 404 si no existe, 400/500 si hay error
+ */
 const getProduct = async (req, res) => {
     try {
         const { id } = req.params;
@@ -46,6 +60,13 @@ const getProduct = async (req, res) => {
     }
 };
 
+/**
+ * Elimina un producto por su ID.
+ *
+ * @param {import('express').Request} req - Request HTTP (requiere param id)
+ * @param {import('express').Response} res - Response HTTP
+ * @returns {Promise<void>} Responde con 200 y mensaje de éxito, 404 si no existe, 400/500 si hay error
+ */
 const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
@@ -80,6 +101,19 @@ const deleteProduct = async (req, res) => {
     }
 }
 
+/**
+ * Crea un nuevo producto.
+ *
+ * - Valida los datos recibidos en el body.
+ * - Verifica que la subcategoría exista.
+ * - Almacena la imagen en el servidor y crea el producto.
+ * - Registra la acción en el log.
+ * - Devuelve el producto creado (sin contraseña).
+ *
+ * @param {import('express').Request} req - Request HTTP (requiere body con datos del producto)
+ * @param {import('express').Response} res - Response HTTP
+ * @returns {Promise<void>} Responde con 201 y producto creado, o error 400/500
+ */
 const createProduct = async (req, res) => {
     try {
         console.log("Creating product with data:", req.body);
@@ -138,6 +172,19 @@ const createProduct = async (req, res) => {
 
 }
 
+/**
+ * Actualiza un producto por su ID.
+ *
+ * - Valida los datos recibidos en el body.
+ * - Verifica que el producto exista y la subcategoría sea válida.
+ * - Si hay una nueva imagen, la almacena y actualiza el producto.
+ * - Registra la acción en el log.
+ * - Devuelve el producto actualizado (sin contraseña).
+ *
+ * @param {import('express').Request} req - Request HTTP (requiere param id y body con datos del producto)
+ * @param {import('express').Response} res - Response HTTP
+ * @returns {Promise<void>} Responde con 200 y producto actualizado, 404 si no existe, 400/500 si hay error
+ */
 const updateProduct = async (req, res) => {
     try {
 

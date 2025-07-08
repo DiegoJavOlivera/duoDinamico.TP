@@ -1,3 +1,7 @@
+/**
+ * Configura y exporta la conexión a la base de datos usando Sequelize.
+ * Lee las variables de entorno para los datos de acceso.
+ */
 const { Sequelize } = require('sequelize');
 const { getConfig } = require('./index');
 

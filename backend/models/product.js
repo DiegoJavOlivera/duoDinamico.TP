@@ -1,3 +1,17 @@
+/**
+ * @fileoverview Modelo Sequelize para la tabla 'products'.
+ * Representa un producto del catálogo.
+ *
+ * Campos:
+ * - id: Identificador único, entero, autoincremental.
+ * - name: Nombre único del producto.
+ * - description: Descripción del producto.
+ * - image: Ruta de la imagen del producto.
+ * - price: Precio del producto.
+ * - stock: Stock disponible.
+ * - is_active: Estado de disponibilidad (activo/inactivo).
+ * - subcategory_id: Relación con la subcategoría.
+ */
 const { DataTypes} = require('sequelize');
 
 module.exports = (connection) => {
