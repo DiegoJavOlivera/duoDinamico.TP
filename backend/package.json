@@ -15,10 +15,23 @@
   "engines": {
     "node": ">=22.0.0"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["express","sequelize","mysql","api","backend","nodejs","ejs","auth","multer","jwt"],
+  "author": "Priscilla Escobar",
+  "contributors": ["Diego Olivera", "Priscilla Escobar"],
   "license": "ISC",
-  "description": "",
+  "description": "Backend de Duo Dinámico: API RESTful para gestión de productos, usuarios, autenticación y carrito de compras.",
+  "techStack": [
+    "Node.js",
+    "Express.js",
+    "Sequelize",
+    "MySQL",
+    "JWT (jsonwebtoken)",
+    "Multer",
+    "EJS",
+    "dotenv",
+    "bcrypt",
+    "Nodemon"
+  ],
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
