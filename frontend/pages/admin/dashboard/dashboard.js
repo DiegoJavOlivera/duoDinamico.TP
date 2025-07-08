@@ -82,17 +82,18 @@ function logout() {
 }
 
 // Cargar movimientos
-async function loadMovements() {
+async function loadMovements(page = 1) {
     // Llamar directamente a la función que está en productHandlers.js
     // Evitar usar window.loadMovements para prevenir recursión
     
     const loadingElement = document.getElementById('movements-loading');
     const listElement = document.getElementById('movementsList');
+    const paginationElement = document.getElementById('movements-pagination');
     
     // Verificar que los elementos existan
     if (!loadingElement || !listElement) {
         console.log('Elementos del DOM de movimientos no encontrados, reintentando en 500ms...');
-        setTimeout(loadMovements, 500);
+        setTimeout(() => loadMovements(page), 500);
         return;
     }
     
@@ -102,32 +103,51 @@ async function loadMovements() {
         listElement.innerHTML = '';
         
         console.log('Cargando movimientos desde la API...');
-        console.log('URL de la API:', `http://localhost:3000/api/admin/actions?page=1`);
+        console.log('URL de la API:', `http://localhost:3000/api/admin/actions?page=${page}`);
         
         // Llamar directamente a la función del service
-        const response = await getMovements(1);
+        const response = await getMovements(page);
         console.log('Respuesta de la API:', response);
+        
+        // Ocultar loading
+        loadingElement.style.display = 'none';
+        
+        // Verificar si la respuesta es válida
+        if (!response || typeof response !== 'object') {
+            listElement.innerHTML = `
+                <div class="coming-soon">
+                    No hay movimientos disponibles
+                </div>
+            `;
+            // Ocultar paginación si no hay datos
+            if (paginationElement) {
+                paginationElement.style.display = 'none';
+            }
+            return;
+        }
         
         const movements = response.data || [];
         console.log('Movimientos cargados:', movements.length);
         
-        // Ocultar loading
-        loadingElement.style.display = 'none';
+        // Verificar si no hay movimientos
+        if (!movements || movements.length === 0) {
+            listElement.innerHTML = `
+                <div class="coming-soon">
+                    No hay movimientos disponibles
+                </div>
+            `;
+            // Ocultar paginación si no hay datos
+            if (paginationElement) {
+                paginationElement.style.display = 'none';
+            }
+            return;
+        }
         
         // Llamar a la función de renderizado de productHandlers.js
         if (typeof renderMovements === 'function') {
             renderMovements(movements);
         } else {
             // Fallback si la función no está disponible
-            if (!movements || movements.length === 0) {
-                listElement.innerHTML = `
-                    <div class="coming-soon">
-                        No hay movimientos disponibles
-                    </div>
-                `;
-                return;
-            }
-            
             listElement.innerHTML = movements.map(movement => {
                 const date = new Date(movement.created_at).toLocaleString('es-ES', {
                     year: 'numeric',
@@ -153,6 +173,9 @@ async function loadMovements() {
             }).join('');
         }
         
+        // Renderizar paginación
+        renderMovementsPagination(response.currentPage, response.totalPages, response.total);
+        
     } catch (error) {
         console.error('Error detallado al cargar movimientos:', error);
         
@@ -161,18 +184,38 @@ async function loadMovements() {
             loadingElement.style.display = 'none';
         }
         
+        // Verificar si el error es por falta de datos (no es un error real)
+        if (error.message && (error.message.includes('404') || error.message.includes('No se encontraron'))) {
+            listElement.innerHTML = `
+                <div class="coming-soon">
+                    No hay movimientos disponibles
+                </div>
+            `;
+            // Ocultar paginación si no hay datos
+            if (paginationElement) {
+                paginationElement.style.display = 'none';
+            }
+            return;
+        }
+        
+        // Solo mostrar error si es un error real (permisos, red, etc.)
         if (listElement) {
             listElement.innerHTML = `
                 <div style="background: #2a1a1a; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #ff4444; color: #ff6666; text-align: center;">
                     <i class="bi bi-exclamation-triangle" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i> 
-                    <strong>Error al cargar movimientos, puede que no tengas permisos:</strong><br>
+                    <strong>Error al cargar movimientos:</strong><br>
                     ${error.message}
                     <br><br>
-                    <button class="btn primary" onclick="loadMovements()" style="margin-top: 1rem;">
+                    <button class="btn primary" onclick="loadMovements(${page})" style="margin-top: 1rem;">
                         <i class="bi bi-arrow-clockwise"></i> Reintentar
                     </button>
                 </div>
             `;
+        }
+        
+        // Ocultar paginación en caso de error
+        if (paginationElement) {
+            paginationElement.style.display = 'none';
         }
     }
 }
@@ -243,4 +286,50 @@ function hideTabContent(tabId) {
         tabContent.style.display = 'none';
         console.log(`Tab content '${tabId}' ocultado`);
     }
+}
+
+// Renderizar paginación de movimientos
+function renderMovementsPagination(currentPage, totalPages, totalItems) {
+    const paginationElement = document.getElementById('movements-pagination');
+    
+    if (!paginationElement) {
+        console.log('Elemento de paginación no encontrado');
+        return;
+    }
+    
+    // Mostrar información de paginación
+    const startItem = totalItems === 0 ? 0 : (currentPage - 1) * 10 + 1;
+    const endItem = Math.min(currentPage * 10, totalItems);
+    
+    let paginationHTML = `
+        <div class="pagination-info">
+            <span>Mostrando ${startItem} a ${endItem} de ${totalItems} movimientos</span>
+        </div>
+    `;
+    
+    // Solo mostrar botones de paginación si hay más de una página
+    if (totalPages > 1) {
+        paginationHTML += `
+            <div class="pagination-buttons">
+                <button class="btn ${currentPage === 1 ? 'disabled' : ''}" 
+                        onclick="loadMovements(${currentPage - 1})" 
+                        ${currentPage === 1 ? 'disabled' : ''}>
+                    <i class="bi bi-chevron-left"></i> Anterior
+                </button>
+                
+                <span class="page-info">
+                    Página ${currentPage} de ${totalPages}
+                </span>
+                
+                <button class="btn ${currentPage === totalPages ? 'disabled' : ''}" 
+                        onclick="loadMovements(${currentPage + 1})" 
+                        ${currentPage === totalPages ? 'disabled' : ''}>
+                    Siguiente <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
+        `;
+    }
+    
+    paginationElement.innerHTML = paginationHTML;
+    paginationElement.style.display = 'block';
 }

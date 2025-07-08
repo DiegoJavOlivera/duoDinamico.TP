@@ -911,7 +911,18 @@ async function renderTickets() {
         const tickets = await getAllTickets();
         console.log('Tickets cargados:', tickets.length);
         
-        if (!tickets || tickets.length === 0) {
+        // Verificar si la respuesta es válida
+        if (!tickets || !Array.isArray(tickets)) {
+            listElement.innerHTML = `
+                <div class="coming-soon" style="grid-column: 1 / -1;">
+                    No hay tickets disponibles
+                </div>
+            `;
+            return;
+        }
+        
+        // Verificar si no hay tickets
+        if (tickets.length === 0) {
             listElement.innerHTML = `
                 <div class="coming-soon" style="grid-column: 1 / -1;">
                     No hay tickets disponibles
@@ -990,6 +1001,17 @@ async function renderTickets() {
     } catch (error) {
         console.error('Error al cargar tickets:', error);
         
+        // Verificar si el error es por falta de datos (no es un error real)
+        if (error.message && (error.message.includes('404') || error.message.includes('No se encontraron'))) {
+            listElement.innerHTML = `
+                <div class="coming-soon" style="grid-column: 1 / -1;">
+                    No hay tickets disponibles
+                </div>
+            `;
+            return;
+        }
+        
+        // Solo mostrar error si es un error real (permisos, red, etc.)
         if (listElement) {
             listElement.innerHTML = `
                 <div style="background: #2a1a1a; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #ff4444; color: #ff6666; text-align: center;">

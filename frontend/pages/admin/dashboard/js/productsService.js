@@ -169,6 +169,16 @@ async function getSubcategoriesByCategory(categoryId) {
 async function getMovements(page = 1) {
     const response = await authenticatedFetch(`${API_BASE_URL}/admin/actions?page=${page}`);
     
+    // Si es 404, significa que no hay movimientos, no es un error
+    if (response.status === 404) {
+        return {
+            data: [],
+            total: 0,
+            totalPages: 0,
+            currentPage: page
+        };
+    }
+    
     if (!response.ok) {
         throw new Error('Error al obtener los movimientos');
     }
@@ -217,6 +227,16 @@ async function getAllMovements() {
  */
 async function getAllTickets() {
     const response = await authenticatedFetch(`${API_BASE_URL}/ticket`);
+    
+    // Si es 404, significa que no hay tickets, no es un error
+    if (response.status === 404) {
+        return [];
+    }
+    
+    if (!response.ok) {
+        throw new Error('Error al obtener los tickets');
+    }
+    
     return await response.json();
 }
 
