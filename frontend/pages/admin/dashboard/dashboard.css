@@ -1,593 +1,761 @@
+/*
+============================================================================
+                    DASHBOARD CSS - SISTEMA DE ADMINISTRACIÓN
+============================================================================
+
+DESCRIPCIÓN GENERAL:
+Este archivo contiene todos los estilos para el dashboard de administración
+de una aplicación de gestión de productos (vinoteca/licorería).
+
+ESTRUCTURA DEL ARCHIVO:
+1. Variables CSS para temas (claro/oscuro)
+2. Estilos básicos del dashboard
+3. Efectos visuales y animaciones
+4. Contenedor principal
+5. Sistema de pestañas (navegación)
+6. Cuadrícula de productos
+7. Tarjetas de productos individuales
+8. Sistema de botones y acciones
+9. Formularios y inputs
+10. Responsive design (móvil, tablet, desktop)
+11. Filtros y búsquedas
+
+CARACTERÍSTICAS PRINCIPALES:
+- Tema dual (claro/oscuro) con variables CSS
+- Diseño responsive completo
+- Animaciones suaves y efectos hover
+- Cuadrícula adaptable de productos
+- Sistema de pestañas para navegación
+- Botones contextuales según estado del producto
+- Formularios estilizados
+- Luces de ambiente decorativas
+
+COLORES PRINCIPALES:
+- Dorado (#ffd700) - Elementos destacados en tema oscuro
+- Rojo vino (#8b0000) - Elementos destacados en tema claro
+- Gradientes suaves para tarjetas y botones
+- Sistema de sombras contextual
+
+USO:
+Este CSS se aplica específicamente a las páginas del dashboard de
+administración ubicadas en /frontend/pages/admin/dashboard/
+============================================================================
+*/
+
+/* ============ VARIABLES CSS PARA TEMAS ============ */
+/* Define las variables de color para el tema oscuro y claro del dashboard */
+
+/* TEMA OSCURO - Colores principales para el modo dark */
 .theme-dark {
-  --bg-main: #101010;
-  --text-main: #fff;
-  --card-bg: #1f1f25;
-  --input-bg: #2c2c2c;
-  --box-shadow: box-shadow: 0 0 30px rgba(139, 0, 0, 0.2);
-  --subtitle: #d6d6d6;
-  --hover-color: #ffd700;
-  --hover-bg: rgba(139, 0, 0, 0.1);
-  --bg-gradient-card: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+  --bg-main: #101010;                                          /* Fondo principal oscuro */
+  --text-main: #fff;                                           /* Texto principal blanco */
+  --card-bg: #1f1f25;                                          /* Fondo de tarjetas oscuro */
+  --input-bg: #2c2c2c;                                         /* Fondo de inputs oscuro */
+  --box-shadow: box-shadow: 0 0 30px rgba(139, 0, 0, 0.2);    /* Sombra con tono rojizo */
+  --subtitle: #d6d6d6;                                         /* Color de subtítulos gris claro */
+  --hover-color: #ffd700;                                      /* Color dorado para hover */
+  --hover-bg: rgba(139, 0, 0, 0.1);                          /* Fondo hover con tono rojizo */
+  --bg-gradient-card: linear-gradient(145deg, #1a1a1a, #2a2a2a); /* Gradiente para tarjetas */
 }
+
+/* TEMA CLARO - Colores principales para el modo light */
 .theme-light {
-  --bg-main: #fff;
-  --text-main: #181316;
-  --card-bg: #ffffff;
-  --input-bg: #d4d4d6;
-  --box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  --subtitle: #181316;
-  --hover-color: #181316;
-  --hover-bg: #8c888833;
-  --bg-gradient-card: linear-gradient(145deg, #fff 80%, #ffeaea 100%);
+  --bg-main: #fff;                                             /* Fondo principal blanco */
+  --text-main: #181316;                                        /* Texto principal oscuro */
+  --card-bg: #ffffff;                                          /* Fondo de tarjetas blanco */
+  --input-bg: #d4d4d6;                                         /* Fondo de inputs gris claro */
+  --box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;             /* Sombra suave negra */
+  --subtitle: #181316;                                         /* Color de subtítulos oscuro */
+  --hover-color: #181316;                                      /* Color oscuro para hover */
+  --hover-bg: #8c888833;                                       /* Fondo hover gris translúcido */
+  --bg-gradient-card: linear-gradient(145deg, #fff 80%, #ffeaea 100%); /* Gradiente suave */
 }
 
 
-/* dashboard.css */
+/* ============ ESTILOS BÁSICOS DEL DASHBOARD ============ */
+/* Configuración principal del layout del dashboard */
+
+/* Configuración del body principal */
 body {
-  background-color: var(--bg-main);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-main);                           /* Usa el color de fondo del tema activo */
+  height: 100%;                                               /* Altura completa de la ventana */
+  display: flex;                                              /* Layout flexbox */
+  flex-direction: column;                                     /* Disposición vertical */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente del sistema */
 }
 
+/* Contenedor principal que ocupa el espacio restante */
 main {
-  flex: 1;
+  flex: 1;                                                    /* Toma todo el espacio disponible */
 }
 
+/* Contenedor principal del dashboard - Centro la página */
 .dashboard-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-  position: relative;
-  padding: 6rem 1rem 2rem 1rem;
-  margin-top: 2rem;
+  display: flex;                                              /* Layout flexbox */
+  justify-content: center;                                    /* Centra horizontalmente */
+  align-items: flex-start;                                    /* Alinea al inicio verticalmente */
+  min-height: 100vh;                                          /* Altura mínima de toda la ventana */
+  position: relative;                                         /* Para posicionar elementos absolutos */
+  padding: 6rem 1rem 2rem 1rem;                             /* Espaciado interno (top, sides, bottom) */
+  margin-top: 2rem;                                          /* Margen superior */
 }
 
+/* ============ EFECTOS VISUALES Y ANIMACIONES ============ */
+/* Efectos de hover, luces de ambiente y animaciones */
+
+/* Efecto de rotación para el botón de cambio de tema */
 .theme-toggle:hover {
-  transform: rotate(15deg);
+  transform: rotate(15deg);                                   /* Rotación suave al hacer hover */
 }
 
+/* Luces de ambiente decorativas de fondo */
 .light {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.3;
-  z-index: 0;
+  position: absolute;                                         /* Posicionamiento absoluto */
+  border-radius: 50%;                                         /* Forma circular */
+  filter: blur(80px);                                         /* Efecto de desenfoque fuerte */
+  opacity: 0.3;                                              /* Transparencia */
+  z-index: 0;                                                /* Detrás de otros elementos */
 }
 
+/* Luz decorativa color vino (rojo oscuro) */
 .light.wine {
-  width: 150px;
-  height: 150px;
-  top: 10%;
-  left: 10%;
-  background-color: #8b0000;
-  animation: pulse 5s infinite;
+  width: 150px;                                              /* Ancho de la luz */
+  height: 150px;                                             /* Alto de la luz */
+  top: 10%;                                                  /* Posición desde arriba */
+  left: 10%;                                                 /* Posición desde la izquierda */
+  background-color: #8b0000;                                 /* Color rojo vino */
+  animation: pulse 5s infinite;                              /* Animación de pulso infinita */
 }
 
+/* Luz decorativa color dorado */
 .light.gold {
-  width: 120px;
-  height: 120px;
-  bottom: 10%;
-  right: 10%;
-  background-color: #ffd700;
-  animation: pulse 6s infinite;
+  width: 120px;                                              /* Ancho de la luz */
+  height: 120px;                                             /* Alto de la luz */
+  bottom: 10%;                                               /* Posición desde abajo */
+  right: 10%;                                                /* Posición desde la derecha */
+  background-color: #ffd700;                                 /* Color dorado */
+  animation: pulse 6s infinite;                              /* Animación de pulso con duración diferente */
 }
 
+/* Animación de pulso para las luces de ambiente */
 @keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 0.3; }
-  50% { transform: scale(1.1); opacity: 0.5; }
+  0%, 100% { transform: scale(1); opacity: 0.3; }           /* Estado inicial y final */
+  50% { transform: scale(1.1); opacity: 0.5; }              /* Estado intermedio (más grande y visible) */
 }
 
+/* Animación de rotación continua */
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% { transform: rotate(0deg); }                            /* Rotación inicial */
+  100% { transform: rotate(360deg); }                        /* Rotación completa */
 }
 
+/* Clase para aplicar la animación de rotación */
 .spin {
-  animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;                        /* Rotación continua de 1 segundo */
 }
 
+/* ============ CONTENEDOR PRINCIPAL DEL DASHBOARD ============ */
+/* Estilo del contenedor central donde se muestra todo el contenido */
+
+/* Tarjeta principal que contiene todo el contenido del dashboard */
 .dashboard-content {
-  background: var(--card-bg);
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: var(--box-shadow);
-  z-index: 10;
-  width: 100%;
-  max-width: 1200px;
-  text-align: center;
-  position: relative;
+  background: var(--card-bg);                                 /* Fondo de tarjeta según el tema */
+  padding: 2rem;                                              /* Espaciado interno generoso */
+  border-radius: 1rem;                                        /* Bordes redondeados */
+  box-shadow: var(--box-shadow);                             /* Sombra según el tema */
+  z-index: 10;                                               /* Por encima de las luces de fondo */
+  width: 100%;                                               /* Ancho completo disponible */
+  max-width: 1200px;                                         /* Ancho máximo para pantallas grandes */
+  text-align: center;                                        /* Texto centrado por defecto */
+  position: relative;                                        /* Para posicionar elementos internos */
 }
 
+/* ============ ENCABEZADO DEL DASHBOARD ============ */
+/* Sección superior con título y información principal */
+
+/* Contenedor del encabezado principal */
 .dashboard-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 1rem;
-  text-align: center;
+  display: flex;                                             /* Layout flexbox */
+  justify-content: center;                                   /* Centra el contenido */
+  align-items: center;                                       /* Alinea verticalmente */
+  margin-bottom: 1rem;                                       /* Espacio inferior */
+  text-align: center;                                        /* Texto centrado */
 }
 
+/* Título principal del dashboard */
 .header-info h1 {
-  color: #ffd700;
-  margin-bottom: 0.3rem;
-  font-size: 2rem;
+  color: #ffd700;                                           /* Color dorado en tema oscuro */
+  margin-bottom: 0.3rem;                                    /* Pequeño margen inferior */
+  font-size: 2rem;                                          /* Tamaño de fuente grande */
 }
 
+/* Título en tema claro */
 .theme-light .header-info h1 {
-  color: #8b0000;
+  color: #8b0000;                                           /* Color rojo vino en tema claro */
 }
 
+/* Párrafo de descripción/información */
 .header-info p {
-  color: var(--subtitle);
-  margin-bottom: 0.5rem;
-  font-size: 1.1rem;
+  color: var(--subtitle);                                   /* Color de subtítulo según tema */
+  margin-bottom: 0.5rem;                                    /* Margen inferior */
+  font-size: 1.1rem;                                        /* Tamaño de fuente mediano */
 }
 
+/* Separador visual decorativo */
 .separator {
-  width: 50px;
-  height: 4px;
-  background: linear-gradient(to right, #8b0000, #ffd700);
-  margin: 1rem auto 2rem auto;
-  border-radius: 2px;
+  width: 50px;                                              /* Ancho del separador */
+  height: 4px;                                              /* Altura del separador */
+  background: linear-gradient(to right, #8b0000, #ffd700); /* Gradiente rojo a dorado */
+  margin: 1rem auto 2rem auto;                             /* Centrado con márgenes */
+  border-radius: 2px;                                       /* Bordes ligeramente redondeados */
 }
 
-/* Tabs */
+/* ============ SISTEMA DE PESTAÑAS (TABS) ============ */
+/* Navegación por pestañas para diferentes secciones del dashboard */
+
+/* Contenedor principal de las pestañas */
 .dashboard-tabs {
-  margin-top: 0;
-  background: #111;
-  border-radius: 0.75rem;
-  box-shadow: 0 0 15px rgba(139, 0, 0, 0.3);
-  overflow: hidden;
-  position: relative;
-  z-index: 5;
+  margin-top: 0;                                             /* Sin margen superior */
+  background: #111;                                          /* Fondo oscuro */
+  border-radius: 0.75rem;                                    /* Bordes redondeados */
+  box-shadow: 0 0 15px rgba(139, 0, 0, 0.3);               /* Sombra rojiza */
+  overflow: hidden;                                          /* Oculta contenido que sobresale */
+  position: relative;                                        /* Para posicionamiento interno */
+  z-index: 5;                                               /* Nivel de apilamiento */
 }
 
+/* Contenedor de los botones de pestañas */
 .tab-buttons {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  background: var(--bg-gradient-card);
-  border-bottom: 1px solid #333;
+  display: grid;                                             /* Layout de cuadrícula */
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Columnas adaptables */
+  background: var(--bg-gradient-card);                      /* Fondo con gradiente */
+  border-bottom: 1px solid #333;                           /* Borde inferior sutil */
 }
 
+/* Estilo individual de cada botón de pestaña */
 .tab-btn {
-  flex: 1;
-  padding: 1rem 0.5rem;
-  background: transparent;
-  border: none;
-  color: var(--subtitle);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border-bottom: 3px solid transparent;
-  font-size: 0.85rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  min-height: 70px;
+  flex: 1;                                                   /* Toma espacio disponible */
+  padding: 1rem 0.5rem;                                     /* Espaciado interno */
+  background: transparent;                                   /* Fondo transparente inicial */
+  border: none;                                             /* Sin borde */
+  color: var(--subtitle);                                   /* Color de texto según tema */
+  cursor: pointer;                                          /* Cursor de puntero */
+  transition: all 0.3s ease;                               /* Transición suave */
+  border-bottom: 3px solid transparent;                     /* Borde inferior transparente */
+  font-size: 0.85rem;                                      /* Tamaño de fuente pequeño */
+  display: flex;                                            /* Layout flexbox */
+  flex-direction: column;                                   /* Disposición vertical */
+  align-items: center;                                      /* Centra elementos */
+  justify-content: center;                                  /* Centra contenido */
+  gap: 0.25rem;                                            /* Espacio entre elementos */
+  min-height: 70px;                                        /* Altura mínima */
 }
 
+/* Icono dentro del botón de pestaña */
 .tab-btn i {
-  font-size: 1.2rem;
+  font-size: 1.2rem;                                        /* Tamaño del icono */
 }
 
+/* Estado hover del botón de pestaña */
 .tab-btn:hover {
-  background: var(--hover-bg);
-  color: var(--hover-color);
+  background: var(--hover-bg);                              /* Fondo de hover según tema */
+  color: var(--hover-color);                                /* Color de hover según tema */
 }
 
+/* Estado activo del botón de pestaña */
 .tab-btn.active {
-  background: var(--hover-bg);
-  color: var(--hover-color);
-  border-bottom-color: #ffd700;
+  background: var(--hover-bg);                              /* Fondo activo */
+  color: var(--hover-color);                                /* Color activo */
+  border-bottom-color: #ffd700;                            /* Borde inferior dorado */
 }
 
+/* Contenido de las pestañas */
 .tab-content {
-  background: var(--bg-main);
-  padding: 2rem;
+  background: var(--bg-main);                               /* Fondo principal según tema */
+  padding: 2rem;                                            /* Espaciado interno generoso */
 }
 
+/* Panel individual de cada pestaña (oculto por defecto) */
 .tab-pane {
-  display: none;
+  display: none;                                            /* Oculto por defecto */
 }
 
+/* Panel activo (visible) */
 .tab-pane.active {
-  display: block;
+  display: block;                                           /* Mostrar cuando está activo */
 }
 
+/* ============ ENCABEZADOS DE PESTAÑAS ============ */
+/* Encabezado de cada sección de pestaña con título y acciones */
+
+/* Contenedor del encabezado de pestaña */
 .tab-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 1rem;
+  display: flex;                                             /* Layout flexbox */
+  justify-content: space-between;                            /* Espacio entre elementos */
+  align-items: center;                                       /* Alineación vertical centrada */
+  margin-bottom: 2rem;                                       /* Margen inferior generoso */
+  flex-wrap: wrap;                                          /* Permite que los elementos se envuelvan */
+  gap: 1rem;                                                /* Espacio entre elementos envueltos */
 }
 
+/* Título del encabezado de pestaña */
 .tab-header h2 {
-  color: #ffd700;
-  margin: 0;
-  font-size: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  color: #ffd700;                                           /* Color dorado por defecto */
+  margin: 0;                                                /* Sin margen */
+  font-size: 1.5rem;                                        /* Tamaño de fuente grande */
+  display: flex;                                            /* Layout flexbox */
+  align-items: center;                                      /* Alineación vertical */
+  gap: 0.5rem;                                             /* Espacio entre texto e icono */
 }
 
+/* Título en tema claro */
 .theme-light .tab-header h2 {
-  color: #8b0000;
+  color: #8b0000;                                           /* Color rojo vino en tema claro */
 }
 
-/* Loading */
+/* ============ ESTADO DE CARGA ============ */
+/* Indicador visual mientras se cargan los datos */
+
+/* Contenedor del mensaje de carga */
 .loading {
-  text-align: center;
-  color: #ccc;
-  padding: 2rem;
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+  text-align: center;                                        /* Texto centrado */
+  color: #ccc;                                              /* Color gris */
+  padding: 2rem;                                            /* Espaciado interno */
+  font-size: 1.1rem;                                        /* Tamaño de fuente mediano */
+  display: flex;                                            /* Layout flexbox */
+  align-items: center;                                      /* Alineación vertical */
+  justify-content: center;                                  /* Centra horizontalmente */
+  gap: 0.5rem;                                             /* Espacio entre elementos */
 }
 
-/* Products Grid */
+/* ============ CUADRÍCULA DE PRODUCTOS ============ */
+/* Sistema de layout para mostrar productos en tarjetas */
+
+/* Contenedor principal de la cuadrícula de productos */
 .products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 2rem;
-  margin-top: 1.5rem;
+  display: grid;                                             /* Layout de cuadrícula CSS */
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); /* Columnas adaptables, mínimo 400px */
+  gap: 2rem;                                                /* Espacio entre tarjetas */
+  margin-top: 1.5rem;                                       /* Margen superior */
 }
 
+/* ============ TARJETAS DE PRODUCTOS ============ */
+/* Diseño de cada tarjeta individual de producto */
+
+/* Contenedor principal de cada tarjeta de producto */
 .product-card {
-  background: var(--bg-gradient-card);
-  border-radius: 1.2rem;
-  overflow: hidden;
-  border: 1px solid #3a3a3a;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
-    0 4px 6px rgba(0, 0, 0, 0.3),
-    0 1px 3px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
+  background: var(--bg-gradient-card);                       /* Fondo con gradiente según tema */
+  border-radius: 1.2rem;                                     /* Bordes muy redondeados */
+  overflow: hidden;                                          /* Oculta contenido que sobresale */
+  border: 1px solid #3a3a3a;                                /* Borde sutil gris */
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);       /* Transición suave con curva personalizada */
+  box-shadow:                                                /* Sombra múltiple */
+    0 4px 6px rgba(0, 0, 0, 0.3),                          /* Sombra principal */
+    0 1px 3px rgba(0, 0, 0, 0.2);                          /* Sombra secundaria */
+  display: flex;                                             /* Layout flexbox */
+  flex-direction: column;                                    /* Disposición vertical */
 }
 
+/* Efecto hover de la tarjeta de producto */
 .product-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 
-    0 20px 25px rgba(0, 0, 0, 0.25),
-    0 10px 10px rgba(0, 0, 0, 0.1),
-    0 0 0 1px rgba(255, 215, 0, 0.3);
-  border-color: rgba(255, 215, 0, 0.5);
+  transform: translateY(-8px);                               /* Eleva la tarjeta */
+  box-shadow:                                                /* Sombra más intensa */
+    0 20px 25px rgba(0, 0, 0, 0.25),                        /* Sombra principal grande */
+    0 10px 10px rgba(0, 0, 0, 0.1),                         /* Sombra intermedia */
+    0 0 0 1px rgba(255, 215, 0, 0.3);                       /* Borde dorado brillante */
+  border-color: rgba(255, 215, 0, 0.5);                     /* Borde dorado */
 }
 
+/* Efecto hover en tema claro */
 .theme-light .product-card:hover {
-  box-shadow: 
-    0 20px 25px rgba(0, 0, 0, 0.1),
-    0 10px 10px rgba(0, 0, 0, 0.05),
-    0 0 0 1px rgba(139, 0, 0, 0.3);
-  border-color: rgba(139, 0, 0, 0.5);
+  box-shadow:                                                /* Sombras más suaves */
+    0 20px 25px rgba(0, 0, 0, 0.1),                         /* Sombra principal suave */
+    0 10px 10px rgba(0, 0, 0, 0.05),                        /* Sombra intermedia muy suave */
+    0 0 0 1px rgba(139, 0, 0, 0.3);                         /* Borde rojizo */
+  border-color: rgba(139, 0, 0, 0.5);                       /* Borde rojo vino */
 }
 
+/* ============ ESTRUCTURA INTERNA DE TARJETAS ============ */
+/* Layout interno de cada tarjeta de producto */
+
+/* Contenedor principal interno de la tarjeta */
 .card-main {
-  display: flex;
-  flex: 1;
-  gap: 1.5rem;
-  padding: 1.5rem;
+  display: flex;                                             /* Layout flexbox */
+  flex: 1;                                                   /* Toma espacio disponible */
+  gap: 1.5rem;                                              /* Espacio entre secciones */
+  padding: 1.5rem;                                          /* Espaciado interno */
 }
 
+/* ============ SECCIÓN DE IMAGEN DEL PRODUCTO ============ */
+/* Área dedicada a mostrar la imagen del producto */
+
+/* Contenedor de la sección de imagen */
 .product-image-section {
-  flex-shrink: 0;
-  width: 140px;
+  flex-shrink: 0;                                           /* No se encoge */
+  width: 140px;                                             /* Ancho fijo */
 }
 
+/* Contenedor de la imagen del producto */
 .product-image {
-  width: 100%;
-  height: 140px;
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(145deg, #111, #1f1f1f);
-  border-radius: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #333;
+  width: 100%;                                              /* Ancho completo del contenedor */
+  height: 140px;                                            /* Altura fija */
+  position: relative;                                       /* Para posicionamiento interno */
+  overflow: hidden;                                         /* Oculta contenido que sobresale */
+  background: linear-gradient(145deg, #111, #1f1f1f);      /* Gradiente de fondo oscuro */
+  border-radius: 1rem;                                      /* Bordes redondeados */
+  display: flex;                                            /* Layout flexbox */
+  align-items: center;                                      /* Centra verticalmente */
+  justify-content: center;                                  /* Centra horizontalmente */
+  border: 1px solid #333;                                  /* Borde sutil */
 }
 
+/* Estado cuando no hay imagen */
 .product-image.no-image {
-  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-  color: #666;
+  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);   /* Gradiente diferente */
+  color: #666;                                              /* Color de texto gris */
 }
 
+/* Icono cuando no hay imagen */
 .product-image.no-image i {
-  font-size: 2.5rem;
-  opacity: 0.5;
+  font-size: 2.5rem;                                        /* Tamaño grande del icono */
+  opacity: 0.5;                                             /* Semi-transparente */
 }
 
+/* Imagen real del producto */
 .product-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;                                              /* Ancho completo */
+  height: 100%;                                             /* Altura completa */
+  object-fit: cover;                                        /* Recorta para ajustar */
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Transición suave */
 }
 
-.btn, .secondary {
-  color: var(--text-main);
-}
-
-
+/* Efecto de zoom en la imagen al hacer hover en la tarjeta */
 .product-card:hover .product-image img {
-  transform: scale(1.1);
+  transform: scale(1.1);                                    /* Agranda la imagen */
 }
 
+/* ============ SECCIÓN DE DETALLES DEL PRODUCTO ============ */
+/* Área con información textual y detalles del producto */
+
+/* Contenedor principal de los detalles */
 .product-details-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  flex: 1;                                                   /* Toma todo el espacio restante */
+  display: flex;                                             /* Layout flexbox */
+  flex-direction: column;                                    /* Disposición vertical */
+  justify-content: space-between;                            /* Distribuye espacio entre elementos */
 }
 
+/* Encabezado del producto (título y precio) */
 .product-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  display: flex;                                             /* Layout flexbox */
+  justify-content: space-between;                            /* Espacio entre título y precio */
+  align-items: flex-start;                                   /* Alinea al inicio */
+  gap: 1rem;                                                /* Espacio entre elementos */
+  margin-bottom: 1rem;                                       /* Margen inferior */
 }
 
+/* Área del título del producto */
 .product-title-area {
-  flex: 1;
+  flex: 1;                                                   /* Toma espacio disponible */
 }
 
+/* Título del producto */
 .product-title {
-  color: #ffd700;
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin: 0 0 0.5rem 0;
-  line-height: 1.3;
+  color: #ffd700;                                           /* Color dorado */
+  font-size: 1.4rem;                                        /* Tamaño de fuente grande */
+  font-weight: 700;                                         /* Peso de fuente extra bold */
+  margin: 0 0 0.5rem 0;                                     /* Solo margen inferior */
+  line-height: 1.3;                                         /* Altura de línea compacta */
 }
 
+/* Título en tema claro */
 .theme-light .product-title {
-  color: #8b0000;
+  color: #8b0000;                                           /* Color rojo vino */
 }
 
+/* Precio del producto */
 .product-price {
-  color: #ffd700;
-  font-size: 1.6rem;
-  font-weight: 800;
-  margin: 0;
-  text-align: right;
-  background: linear-gradient(135deg, #ffd700, #ffed4e);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
-  min-width: fit-content;
+  color: #ffd700;                                           /* Color dorado */
+  font-size: 1.6rem;                                        /* Tamaño de fuente muy grande */
+  font-weight: 800;                                         /* Peso de fuente máximo */
+  margin: 0;                                                /* Sin margen */
+  text-align: right;                                        /* Alineado a la derecha */
+  background: linear-gradient(135deg, #ffd700, #ffed4e);    /* Gradiente dorado */
+  background-clip: text;                                     /* Aplica gradiente al texto */
+  -webkit-background-clip: text;                             /* Compatibilidad WebKit */
+  -webkit-text-fill-color: transparent;                     /* Hace el texto transparente */
+  text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);          /* Sombra dorada */
+  min-width: fit-content;                                   /* Ancho mínimo del contenido */
 }
 
+/* Precio en tema claro */
 .theme-light .product-price {
-  background: linear-gradient(135deg, #8b0000, #a52a2a);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 2px 4px rgba(139, 0, 0, 0.3);
+  background: linear-gradient(135deg, #8b0000, #a52a2a);    /* Gradiente rojizo */
+  background-clip: text;                                     /* Aplica gradiente al texto */
+  -webkit-background-clip: text;                             /* Compatibilidad WebKit */
+  -webkit-text-fill-color: transparent;                     /* Hace el texto transparente */
+  text-shadow: 0 2px 4px rgba(139, 0, 0, 0.3);             /* Sombra rojiza */
 }
 
+/* Descripción del producto */
 .product-description {
-  color: #ccc;
-  font-size: 0.9rem;
-  line-height: 1.4;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  color: #ccc;                                              /* Color gris claro */
+  font-size: 0.9rem;                                        /* Tamaño de fuente pequeño */
+  line-height: 1.4;                                         /* Altura de línea cómoda */
+  margin: 0;                                                /* Sin margen */
+  display: -webkit-box;                                     /* Box para truncar texto */
+  -webkit-line-clamp: 2;                                    /* Máximo 2 líneas */
+  line-clamp: 2;                                            /* Estándar para líneas */
+  -webkit-box-orient: vertical;                             /* Orientación vertical */
+  overflow: hidden;                                         /* Oculta texto excedente */
 }
 
+/* ============ INFORMACIÓN ADICIONAL DEL PRODUCTO ============ */
+/* Sección con detalles como categoría, stock, etc. */
+
+/* Fila de información del producto */
 .product-info-row {
-  display: flex;
-  gap: 1.5rem;
-  margin-bottom: 1rem;
+  display: flex;                                             /* Layout flexbox */
+  gap: 1.5rem;                                              /* Espacio entre elementos */
+  margin-bottom: 1rem;                                       /* Margen inferior */
 }
 
+/* Elemento individual de información */
 .info-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex: 1;
-  padding: 0.75rem;
-  background: var(--bg-gradient-card);
-  border-radius: 0.75rem;
-  border: 1px solid #2a2a2a;
+  display: flex;                                             /* Layout flexbox */
+  align-items: center;                                       /* Centra verticalmente */
+  gap: 0.5rem;                                              /* Espacio entre icono y texto */
+  flex: 1;                                                   /* Toma espacio equitativo */
+  padding: 0.75rem;                                         /* Espaciado interno */
+  background: var(--bg-gradient-card);                      /* Fondo con gradiente */
+  border-radius: 0.75rem;                                   /* Bordes redondeados */
+  border: 1px solid #2a2a2a;                               /* Borde sutil */
 }
 
+/* Icono de información */
 .info-icon {
-  color: #ffd700;
-  font-size: 1rem;
+  color: #ffd700;                                           /* Color dorado */
+  font-size: 1rem;                                          /* Tamaño del icono */
 }
 
+/* Icono en tema claro */
 .theme-light .info-icon {
-  color: #8b0000;
+  color: #8b0000;                                           /* Color rojo vino */
 }
 
+/* Contenedor de texto de información */
 .info-text {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
+  display: flex;                                             /* Layout flexbox */
+  flex-direction: column;                                    /* Disposición vertical */
+  gap: 0.1rem;                                              /* Espacio pequeño entre etiqueta y valor */
 }
 
+/* Etiqueta de información (ej: "Categoría") */
 .info-label {
-  color: #888;
-  font-size: 0.7rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: #888;                                              /* Color gris */
+  font-size: 0.7rem;                                        /* Tamaño de fuente muy pequeño */
+  font-weight: 500;                                         /* Peso de fuente medio */
+  text-transform: uppercase;                                 /* Texto en mayúsculas */
+  letter-spacing: 0.5px;                                    /* Espaciado entre letras */
 }
 
+/* Valor de información (ej: "Vinos") */
 .info-value {
-  color: var(--text-main);
-  font-size: 0.9rem;
-  font-weight: 600;
+  color: var(--text-main);                                  /* Color de texto principal */
+  font-size: 0.9rem;                                        /* Tamaño de fuente pequeño */
+  font-weight: 600;                                         /* Peso de fuente semi-bold */
 }
 
+/* ============ ACCIONES Y ESTADO DEL PRODUCTO ============ */
+/* Botones de acción y indicadores de estado */
+
+/* Contenedor de botones de acción */
 .product-actions {
-  display: flex;
-  gap: 0.75rem;
-  padding: 0 1.5rem 1.5rem 1.5rem;
-  margin-top: auto;
+  display: flex;                                             /* Layout flexbox */
+  gap: 0.75rem;                                             /* Espacio entre botones */
+  padding: 0 1.5rem 1.5rem 1.5rem;                         /* Espaciado interno */
+  margin-top: auto;                                         /* Se posiciona al final */
 }
 
+/* Icono cuando no hay imagen (repetido para especificidad) */
 .product-image.no-image i {
-  font-size: 3rem;
-  opacity: 0.5;
+  font-size: 3rem;                                          /* Tamaño muy grande del icono */
+  opacity: 0.5;                                             /* Semi-transparente */
 }
 
+/* Imagen del producto (repetido para especificidad) */
 .product-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;                                              /* Ancho completo */
+  height: 100%;                                             /* Altura completa */
+  object-fit: cover;                                        /* Ajusta la imagen */
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Transición suave */
 }
 
+/* Efecto zoom en imagen al hover (repetido para especificidad) */
 .product-card:hover .product-image img {
-  transform: scale(1.1);
+  transform: scale(1.1);                                    /* Agranda la imagen */
 }
 
+/* ============ INDICADOR DE ESTADO DEL PRODUCTO ============ */
+/* Overlay que muestra si el producto está activo o inactivo */
+
+/* Contenedor del indicador de estado */
 .product-status-overlay {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  position: absolute;                                        /* Posicionamiento absoluto */
+  top: 8px;                                                 /* Distancia desde arriba */
+  right: 8px;                                               /* Distancia desde la derecha */
+  padding: 0.25rem 0.5rem;                                  /* Espaciado interno pequeño */
+  border-radius: 0.4rem;                                    /* Bordes redondeados */
+  display: flex;                                            /* Layout flexbox */
+  align-items: center;                                      /* Centra verticalmente */
+  justify-content: center;                                  /* Centra horizontalmente */
+  font-size: 0.7rem;                                        /* Tamaño de fuente muy pequeño */
+  font-weight: 700;                                         /* Peso de fuente extra bold */
+  letter-spacing: 0.5px;                                    /* Espaciado entre letras */
+  backdrop-filter: blur(10px);                              /* Efecto de desenfoque de fondo */
+  border: 1px solid rgba(255, 255, 255, 0.2);              /* Borde translúcido */
+  transition: all 0.3s ease;                                /* Transición suave */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);              /* Sombra de texto */
 }
 
+/* Estado activo (producto disponible) */
 .product-status-overlay.active {
-  background: rgba(0, 128, 10, 0.9);
-  color: #90ee90;
-  box-shadow: 
-    0 0 15px rgba(0, 128, 10, 0.6),
-    inset 0 0 8px rgba(144, 238, 144, 0.3);
-  border-color: #90ee90;
+  background: rgba(0, 128, 10, 0.9);                        /* Fondo verde translúcido */
+  color: #90ee90;                                           /* Texto verde claro */
+  box-shadow:                                               /* Sombra verde brillante */
+    0 0 15px rgba(0, 128, 10, 0.6),                         /* Sombra exterior */
+    inset 0 0 8px rgba(144, 238, 144, 0.3);                 /* Sombra interior */
+  border-color: #90ee90;                                    /* Borde verde claro */
 }
 
+/* Estado inactivo (producto no disponible) */
 .product-status-overlay.inactive {
-  background: rgba(139, 0, 0, 0.9);
-  color: #ff6b6b;
-  box-shadow: 
-    0 0 15px rgba(139, 0, 0, 0.6),
-    inset 0 0 8px rgba(255, 107, 107, 0.3);
-  border-color: #ff6b6b;
+  background: rgba(139, 0, 0, 0.9);                         /* Fondo rojo translúcido */
+  color: #ff6b6b;                                           /* Texto rojo claro */
+  box-shadow:                                               /* Sombra roja brillante */
+    0 0 15px rgba(139, 0, 0, 0.6),                          /* Sombra exterior */
+    inset 0 0 8px rgba(255, 107, 107, 0.3);                 /* Sombra interior */
+  border-color: #ff6b6b;                                    /* Borde rojo claro */
 }
 
+/* ============ SISTEMA DE BOTONES ============ */
+/* Estilos para todos los botones del dashboard */
+
+/* Botón base genérico */
 .action-btn {
-  flex: 1;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 0.75rem;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  text-transform: none;
-  letter-spacing: 0.3px;
-  backdrop-filter: blur(10px);
+  flex: 1;                                                   /* Toma espacio equitativo */
+  padding: 0.75rem;                                         /* Espaciado interno */
+  border: none;                                             /* Sin borde */
+  border-radius: 0.75rem;                                   /* Bordes redondeados */
+  cursor: pointer;                                          /* Cursor de puntero */
+  font-size: 0.9rem;                                        /* Tamaño de fuente */
+  font-weight: 600;                                         /* Peso de fuente semi-bold */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);       /* Transición suave */
+  display: flex;                                            /* Layout flexbox */
+  align-items: center;                                      /* Centra verticalmente */
+  justify-content: center;                                  /* Centra horizontalmente */
+  gap: 0.5rem;                                             /* Espacio entre icono y texto */
+  text-transform: none;                                     /* Sin transformación de texto */
+  letter-spacing: 0.3px;                                   /* Espaciado entre letras */
+  backdrop-filter: blur(10px);                             /* Efecto de desenfoque */
 }
 
+/* ============ BOTONES DE EDICIÓN ============ */
+/* Botones para editar productos */
+
+/* Botón de edición pequeño */
 .btn-small.edit {
-  background: linear-gradient(135deg, #ffd700, #ffed4e);
-  color: #1a1a1a;
-  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+  background: linear-gradient(135deg, #ffd700, #ffed4e);    /* Gradiente dorado */
+  color: #1a1a1a;                                          /* Texto oscuro */
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);          /* Sombra dorada */
 }
 
+/* Hover del botón de edición pequeño */
 .btn-small.edit:hover {
-  background: linear-gradient(135deg, #ffed4e, #ffd700);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+  background: linear-gradient(135deg, #ffed4e, #ffd700);    /* Gradiente invertido */
+  transform: translateY(-2px);                              /* Eleva el botón */
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);          /* Sombra más intensa */
 }
 
-.btn-small.delete {
-  background: linear-gradient(135deg, #ff4757, #ff3742);
-  color: white;
-  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
-}
-
-.btn-small.delete:hover {
-  background: linear-gradient(135deg, #ff3742, #ff4757);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4);
-}
-
+/* Botón de edición normal */
 .edit-btn {
-  background: linear-gradient(135deg, #ffd700, #ffed4e);
-  color: #1a1a1a;
-  border: 1px solid #ffd700;
-  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+  background: linear-gradient(135deg, #ffd700, #ffed4e);    /* Gradiente dorado */
+  color: #1a1a1a;                                          /* Texto oscuro */
+  border: 1px solid #ffd700;                               /* Borde dorado */
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);          /* Sombra dorada */
 }
 
+/* Hover del botón de edición normal */
 .edit-btn:hover {
-  background: linear-gradient(135deg, #ffed4e, #ffd700);
-  border-color: #ffed4e;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+  background: linear-gradient(135deg, #ffed4e, #ffd700);    /* Gradiente invertido */
+  border-color: #ffed4e;                                   /* Borde más claro */
+  transform: translateY(-2px);                              /* Eleva el botón */
+  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);          /* Sombra más intensa */
 }
 
+/* ============ BOTONES DE ELIMINACIÓN/REACTIVACIÓN ============ */
+/* Botones que cambian según el estado del producto */
+
+/* Botón de eliminación pequeño */
+.btn-small.delete {
+  background: linear-gradient(135deg, #ff4757, #ff3742);    /* Gradiente rojo */
+  color: white;                                             /* Texto blanco */
+  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);          /* Sombra roja */
+}
+
+/* Hover del botón de eliminación pequeño */
+.btn-small.delete:hover {
+  background: linear-gradient(135deg, #ff3742, #ff4757);    /* Gradiente invertido */
+  transform: translateY(-2px);                              /* Eleva el botón */
+  box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4);          /* Sombra más intensa */
+}
+
+/* Botón de eliminación normal */
 .delete-btn {
-  background: linear-gradient(135deg, #ff4757, #ff3742);
-  color: white;
-  border: 1px solid #ff4757;
-  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+  background: linear-gradient(135deg, #ff4757, #ff3742);    /* Gradiente rojo */
+  color: white;                                             /* Texto blanco */
+  border: 1px solid #ff4757;                               /* Borde rojo */
+  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);          /* Sombra roja */
 }
 
+/* Hover del botón de eliminación normal */
 .delete-btn:hover {
-  background: linear-gradient(135deg, #ff3742, #ff4757);
-  border-color: #ff3742;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255, 71, 87, 0.4);
+  background: linear-gradient(135deg, #ff3742, #ff4757);    /* Gradiente invertido */
+  border-color: #ff3742;                                   /* Borde más oscuro */
+  transform: translateY(-2px);                              /* Eleva el botón */
+  box-shadow: 0 8px 25px rgba(255, 71, 87, 0.4);          /* Sombra más intensa */
 }
 
 /* Botón eliminar para productos activos (rojo suave) */
 .delete-btn.active {
-  background: linear-gradient(135deg, #dc3545, #c82333);
-  color: white;
-  border: 1px solid #dc3545;
-  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+  background: linear-gradient(135deg, #dc3545, #c82333);    /* Gradiente rojo Bootstrap */
+  color: white;                                             /* Texto blanco */
+  border: 1px solid #dc3545;                               /* Borde rojo */
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);          /* Sombra roja */
 }
 
+/* Hover del botón eliminar activo */
 .delete-btn.active:hover {
-  background: linear-gradient(135deg, #c82333, #dc3545);
-  border-color: #c82333;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+  background: linear-gradient(135deg, #c82333, #dc3545);    /* Gradiente invertido */
+  border-color: #c82333;                                   /* Borde más oscuro */
+  transform: translateY(-2px);                              /* Eleva el botón */
+  box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);          /* Sombra más intensa */
 }
 
-/* Botón reactivar para productos inactivos (verde suave) */
+/* Botón reactivar para productos inactivos (verde) */
 .delete-btn.inactive {
-  background: linear-gradient(135deg, #28a745, #20c997);
-  color: white;
-  border: 1px solid #28a745;
-  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+  background: linear-gradient(135deg, #28a745, #20c997);    /* Gradiente verde */
+  color: white;                                             /* Texto blanco */
+  border: 1px solid #28a745;                               /* Borde verde */
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);          /* Sombra verde */
 }
 
+/* Hover del botón reactivar */
 .delete-btn.inactive:hover {
-  background: linear-gradient(135deg, #20c997, #28a745);
-  border-color: #20c997;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+  background: linear-gradient(135deg, #20c997, #28a745);    /* Gradiente invertido */
+  border-color: #20c997;                                   /* Borde más claro */
+  transform: translateY(-2px);                              /* Eleva el botón */
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);          /* Sombra más intensa */
 }
 
 /* Buttons */
@@ -634,75 +802,86 @@ main {
   font-size: 1.2rem;
 }
 
-/* Formularios */
+/* ============ SISTEMA DE FORMULARIOS ============ */
+/* Estilos para formularios de creación y edición de productos/usuarios */
+
+/* Contenedor principal del formulario */
 .form-container {
-  background: var(--card-bg);
-  border-radius: 0.75rem;
-  padding: 2rem;
-  margin-top: 1rem;
+  background: var(--card-bg);                               /* Fondo de tarjeta según tema */
+  border-radius: 0.75rem;                                   /* Bordes redondeados */
+  padding: 2rem;                                            /* Espaciado interno generoso */
+  margin-top: 1rem;                                         /* Margen superior */
 }
 
+/* Formularios específicos para productos y usuarios */
 .product-form, .user-form {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 800px;                                         /* Ancho máximo */
+  margin: 0 auto;                                           /* Centrado horizontal */
 }
 
+/* Fila de formulario (dos columnas) */
 .form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  display: grid;                                            /* Layout de cuadrícula */
+  grid-template-columns: 1fr 1fr;                          /* Dos columnas iguales */
+  gap: 1rem;                                               /* Espacio entre columnas */
+  margin-bottom: 1rem;                                     /* Margen inferior */
 }
 
+/* Grupo individual de campo de formulario */
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;                                    /* Margen inferior */
 }
 
+/* Etiquetas de los campos */
 .form-group label {
-  display: block;
-  text-align: left;
-  margin: 0 0 0.75rem 0;
-  font-size: 1rem;
-  color: var(--text-main);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  display: block;                                           /* Elemento de bloque */
+  text-align: left;                                         /* Alineado a la izquierda */
+  margin: 0 0 0.75rem 0;                                   /* Solo margen inferior */
+  font-size: 1rem;                                         /* Tamaño de fuente estándar */
+  color: var(--text-main);                                 /* Color de texto principal */
+  font-weight: 600;                                        /* Peso semi-bold */
+  text-transform: uppercase;                                /* Mayúsculas */
+  letter-spacing: 0.5px;                                   /* Espaciado entre letras */
 }
 
+/* Campos de entrada (input, select, textarea) */
 .form-group input,
 .form-group select,
 .form-group textarea {
-  width: 100%;
-  padding: 0.875rem 1rem;
-  border-radius: 0.6rem;
-  border: 2px solid var(--input-bg);
-  background: var(--card-bg);
-  color: var(--text-main);
-  outline: none;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  font-weight: 500;
+  width: 100%;                                             /* Ancho completo */
+  padding: 0.875rem 1rem;                                  /* Espaciado interno */
+  border-radius: 0.6rem;                                   /* Bordes redondeados */
+  border: 2px solid var(--input-bg);                       /* Borde según tema */
+  background: var(--card-bg);                              /* Fondo según tema */
+  color: var(--text-main);                                 /* Color de texto según tema */
+  outline: none;                                           /* Sin outline por defecto */
+  font-size: 0.95rem;                                      /* Tamaño de fuente */
+  transition: all 0.3s ease;                               /* Transición suave */
+  font-weight: 500;                                        /* Peso de fuente medio */
 }
 
+/* Estado focus de los campos */
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  border-color: var(--hover-color);
-  background: var(--card-bg);
-  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
-  transform: translateY(-1px);
+  border-color: var(--hover-color);                        /* Borde de color destacado */
+  background: var(--card-bg);                              /* Mantiene el fondo */
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);          /* Sombra dorada en tema oscuro */
+  transform: translateY(-1px);                             /* Eleva ligeramente */
 }
 
+/* Focus en tema claro */
 .theme-light .form-group input:focus,
 .theme-light .form-group select:focus,
 .theme-light .form-group textarea:focus {
-  box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+  box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);            /* Sombra rojiza en tema claro */
 }
 
+/* Área de texto específica */
 .form-group textarea {
-  resize: vertical;
-  min-height: 100px;
-  font-family: inherit;
+  resize: vertical;                                         /* Solo redimensión vertical */
+  min-height: 100px;                                       /* Altura mínima */
+  font-family: inherit;                                    /* Hereda la fuente */
 }
 
 /* Input de archivo personalizado */
@@ -916,7 +1095,25 @@ main {
   }
 }
 
-/* Responsive Design Completo */
+/* ============ DISEÑO RESPONSIVE COMPLETO ============ */
+/*
+SISTEMA DE BREAKPOINTS PARA ADAPTABILIDAD:
+- 1400px+ : Pantallas extra grandes (monitores grandes)
+- 1200-1399px : Desktop estándar
+- 992-1199px : Laptop/Desktop pequeño
+- 768-991px : Tablet horizontal
+- 576-767px : Tablet vertical/Móvil grande
+- 375-575px : Móvil estándar
+- <374px : Móvil pequeño
+
+ADAPTACIONES PRINCIPALES:
+- Cuadrícula de productos (de 3 columnas a 1 columna)
+- Sistema de pestañas (de 5 botones a 2 botones)
+- Formularios (de 2 columnas a 1 columna)
+- Espaciados y tamaños de fuente
+- Altura de botones para mejor accesibilidad táctil
+- Reorganización de elementos en móviles
+*/
 /* ============ RESPONSIVE DESIGN BREAKPOINTS ============ */
 
 /* Large Desktop - 1400px+ */
@@ -1078,7 +1275,7 @@ main {
   }
   
   .dashboard-header p {
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
   
   .separator {
@@ -1207,41 +1404,6 @@ main {
     font-size: 0.95rem;
     width: 100%;
   }
-  
-  .btn.back {
-    margin-top: 1rem;
-    padding: 1rem;
-  }
-  
-  .file-input-label {
-    padding: 1rem;
-    font-size: 0.9rem;
-  }
-  
-  .image-preview img {
-    max-width: 100%;
-    max-height: 160px;
-  }
-  
-  .instruction-card {
-    padding: 1.2rem;
-    flex-direction: column;
-    text-align: center;
-    gap: 0.8rem;
-  }
-  
-  .instruction-card i {
-    font-size: 2.2rem;
-  }
-  
-  .instruction-card h3 {
-    font-size: 1.2rem;
-  }
-  
-  .date-input, .filter-select {
-    padding: 0.8rem;
-    font-size: 0.95rem;
-  }
 }
 
 /* Mobile - 375px to 575px */
@@ -1350,11 +1512,6 @@ main {
   .product-price {
     align-self: flex-start;
     font-size: 1.2rem;
-  }
-  
-  .product-description {
-    font-size: 0.8rem;
-    line-height: 1.4;
   }
   
   .product-info-row {
@@ -1839,55 +1996,63 @@ main {
   }
 }
 
-/* Estilos para filtros de productos */
+/* ============ SISTEMA DE FILTROS DE PRODUCTOS ============ */
+/* Controles para filtrar y buscar productos en el dashboard */
+
+/* Contenedor principal de los filtros */
 .filters-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  background: var(--card-bg);
-  border-radius: 12px;
-  box-shadow: var(--box-shadow);
+  display: grid;                                             /* Layout de cuadrícula */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Columnas adaptables */
+  gap: 1rem;                                                /* Espacio entre filtros */
+  margin-bottom: 2rem;                                       /* Margen inferior */
+  padding: 1.5rem;                                          /* Espaciado interno */
+  background: var(--card-bg);                               /* Fondo de tarjeta */
+  border-radius: 12px;                                      /* Bordes redondeados */
+  box-shadow: var(--box-shadow);                            /* Sombra según tema */
 }
 
+/* Grupo individual de filtro */
 .filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  display: flex;                                            /* Layout flexbox */
+  flex-direction: column;                                   /* Disposición vertical */
+  gap: 0.5rem;                                             /* Espacio entre elementos */
 }
 
+/* Etiqueta del filtro */
 .filter-group label {
-  font-weight: 600;
-  color: var(--text-main);
-  font-size: 0.9rem;
+  font-weight: 600;                                        /* Peso semi-bold */
+  color: var(--text-main);                                 /* Color de texto principal */
+  font-size: 0.9rem;                                       /* Tamaño de fuente pequeño */
 }
 
+/* Campos de búsqueda y selección */
 .search-input, .filter-select {
-  padding: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  background: var(--input-bg);
-  color: var(--text-main);
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
+  padding: 0.75rem;                                        /* Espaciado interno */
+  border: 1px solid rgba(255, 255, 255, 0.1);             /* Borde translúcido */
+  border-radius: 8px;                                      /* Bordes redondeados */
+  background: var(--input-bg);                             /* Fondo de input según tema */
+  color: var(--text-main);                                 /* Color de texto según tema */
+  font-size: 0.9rem;                                       /* Tamaño de fuente */
+  transition: all 0.3s ease;                               /* Transición suave */
 }
 
+/* Estado focus de los filtros */
 .search-input:focus, .filter-select:focus {
-  outline: none;
-  border-color: var(--hover-color);
-  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+  outline: none;                                           /* Sin outline */
+  border-color: var(--hover-color);                        /* Borde del color destacado */
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);          /* Sombra dorada */
 }
 
+/* Opciones del select */
 .filter-select option {
-  background: var(--input-bg);
-  color: var(--text-main);
+  background: var(--input-bg);                             /* Fondo según tema */
+  color: var(--text-main);                                 /* Color de texto según tema */
 }
 
-/* Responsivo para filtros */
+/* Responsive para filtros - En móviles se apilan en una columna */
 @media (max-width: 768px) {
   .filters-container {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    grid-template-columns: 1fr;                            /* Una sola columna */
+    gap: 1rem;                                             /* Espacio reducido */
   }
 }
