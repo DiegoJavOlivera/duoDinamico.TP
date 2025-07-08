@@ -1,6 +1,16 @@
+
 function moveToWelcome() {
     window.location.href = '../../../index.html';
 }
+
+/**
+ * Maneja el inicio de sesión del administrador.
+ * Obtiene el email y la contraseña de los campos de entrada, valida que no estén vacíos,
+ * y realiza una solicitud POST al servidor para autenticar al usuario.
+ * Si la autenticación es exitosa, guarda el token y los datos del usuario en sessionStorage
+ * y redirige al usuario al panel de administración.
+ * Si hay un error, muestra un mensaje de error en la página.   
+ */
 
 const handleLogin = async () => {
     const email = document.getElementById('email').value;
@@ -42,7 +52,20 @@ const handleLogin = async () => {
     }
 }
 
-const fillDemo = () => {
+/**
+ * Rellena los campos de email y contraseña con datos de un administrador de demostración.
+ */
+
+const fillDemoAdmin = () => {
     document.getElementById('email').value = 'profesor@example.com';
     document.getElementById('password').value = 'admin123';
 }
+
+/**
+ * Rellena los campos de email y contraseña con datos de un super administrador de demostración.
+ */
+const fillDemoSuperAdmin = () => {
+    document.getElementById('email').value = 'superadmin@example.com';
+    document.getElementById('password').value = 'superadmin123';
+}
+

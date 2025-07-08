@@ -3,9 +3,6 @@
 // Variable global para almacenar los productos
 let productsData = [];
 
-
-
-
 // Variable global para almacenar las subcategorías (incluye información de categorías)
 let subcategoriesData = [];
 
@@ -395,7 +392,7 @@ async function editProduct(productId) {
                 </div>
                 <div class="form-group">
                     <label for="editProductPrice">Precio</label>
-                    <input type="number" id="editProductPrice" step="0.01" value="${product.price}" required>
+                    <input type="number" id="editProductPrice" step="0.01" min="0" value="${product.price}" required>
                 </div>
             </div>
             
@@ -432,7 +429,7 @@ async function editProduct(productId) {
             <div class="form-row">
                 <div class="form-group">
                     <label for="editProductStock">Stock</label>
-                    <input type="number" id="editProductStock" value="${product.stock}" required>
+                    <input type="number" min="0" id="editProductStock" value="${product.stock}" required>
                 </div>
             </div>
             <div class="form-group">
@@ -585,13 +582,7 @@ function cancelEdit() {
     }
 }
 
-/**
- * Función para refrescar productos
- */
-function refreshProducts() {
-    productsData = [];
-    loadProducts();
-}
+
 
 /**
  * Función para cargar subcategorías cuando se selecciona una categoría en el formulario de agregar
@@ -682,73 +673,6 @@ async function loadSubcategoriesForEdit() {
 }
 
 
-// Variable global para almacenar los movimientos
-let movementsData = [];
-
-/**
- * Cargar movimientos desde la API
- */
-async function loadMovements() {
-    const loadingElement = document.getElementById('movements-loading');
-    const listElement = document.getElementById('movementsList');
-    
-    // Verificar que los elementos existan
-    if (!loadingElement || !listElement) {
-        console.log('Elementos del DOM de movimientos no encontrados, reintentando en 500ms...');
-        setTimeout(loadMovements, 500);
-        return;
-    }
-    
-    try {
-        // Mostrar loading
-        loadingElement.style.display = 'flex';
-        listElement.innerHTML = '';
-        
-        console.log('Cargando movimientos desde la API...');
-        console.log('URL de la API:', `${API_BASE_URL || 'http://localhost:3000/api'}/admin/actions?page=1`);
-        
-        // Primero intentar con una sola página para debuggear
-        const response = await getMovements(1);
-        console.log('Respuesta de la API:', response);
-        
-        const movements = response.data || [];
-        movementsData = movements;
-        
-        console.log('Movimientos cargados:', movements.length);
-        if (movements.length > 0) {
-            console.log('Estructura del primer movimiento:', movements[0]);
-        }
-        
-        // Ocultar loading
-        loadingElement.style.display = 'none';
-        
-        // Mostrar movimientos
-        renderMovements(movements);
-        
-    } catch (error) {
-        console.error('Error detallado al cargar movimientos:', error);
-        console.error('Stack trace:', error.stack);
-        
-        // Ocultar loading
-        if (loadingElement) {
-            loadingElement.style.display = 'none';
-        }
-        
-        if (listElement) {
-            listElement.innerHTML = `
-                <div style="background: #2a1a1a; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #ff4444; color: #ff6666; text-align: center;">
-                    <i class="bi bi-exclamation-triangle" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i> 
-                    <strong>Error al cargar movimientos:</strong><br>
-                    ${error.message}
-                    <br><br>
-                    <button class="btn primary" onclick="loadMovements()" style="margin-top: 1rem;">
-                        <i class="bi bi-arrow-clockwise"></i> Reintentar
-                    </button>
-                </div>
-            `;
-        }
-    }
-}
 
 /**
  * Renderizar movimientos en el dashboard
@@ -875,135 +799,92 @@ function renderMovements(movements) {
     `;
 }
 
-/**
- * Función para refrescar movimientos
- */
-function refreshMovements() {
-    movementsData = [];
-    loadMovements();
-}
+
 
 /**
  * Renderizar tickets en el dashboard
  * @param {Array} tickets - Lista de tickets
  */
-async function renderTickets() {
+function renderTickets(tickets) {
     const listElement = document.getElementById('ticketsList');
     
-    // Verificar que el elemento exista
-    if (!listElement) {
-        console.log('Elemento ticketsList no encontrado, reintentando en 500ms...');
-        setTimeout(renderTickets, 500);
+    if (!tickets || tickets.length === 0) {
+        listElement.innerHTML = `
+            <div class="coming-soon" style="grid-column: 1 / -1;">
+                No hay tickets disponibles
+            </div>
+        `;
         return;
     }
     
-    try {
-        // Mostrar loading
-        listElement.innerHTML = `
-            <div class="loading" style="display: flex; justify-content: center; align-items: center; padding: 2rem;">
-                <i class="bi bi-arrow-clockwise spin" style="font-size: 2rem; margin-right: 1rem;"></i> 
-                Cargando tickets...
-            </div>
-        `;
-        
-        console.log('Cargando tickets desde la API...');
-        
-        const tickets = await getAllTickets();
-        console.log('Tickets cargados:', tickets.length);
-        
-        if (!tickets || tickets.length === 0) {
-            listElement.innerHTML = `
-                <div class="coming-soon" style="grid-column: 1 / -1;">
-                    No hay tickets disponibles
-                </div>
-            `;
-            return;
-        }
-        
-        listElement.innerHTML = `
-            <div class="tickets-grid">
-                ${tickets.map(ticket => {
-                    const date = new Date(ticket.createdAt).toLocaleString('es-ES', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    });
-                    
-                    return `
-                        <div class="ticket-card">
-                            <div class="ticket-header">
-                                <div class="ticket-info">
-                                    <div class="ticket-code">
-                                        <i class="bi bi-receipt"></i>
-                                        <span>${ticket.ticketCode}</span>
-                                    </div>
-                                    <div class="ticket-customer">
-                                        <i class="bi bi-person"></i>
-                                        <span>${escapeHtml(ticket.customerName)}</span>
-                                    </div>
+    console.log('Renderizando tickets en cards:', tickets.length);
+    
+    listElement.innerHTML = `
+        <div class="tickets-grid">
+            ${tickets.map(ticket => {
+                const date = new Date(ticket.createdAt).toLocaleString('es-ES', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                return `
+                    <div class="ticket-card">
+                        <div class="ticket-header">
+                            <div class="ticket-info">
+                                <div class="ticket-code">
+                                    <i class="bi bi-receipt"></i>
+                                    <span>${ticket.ticketCode}</span>
                                 </div>
-                                <div class="ticket-total">
-                                    $${ticket.total.toFixed(2)}
+                                <div class="ticket-customer">
+                                    <i class="bi bi-person"></i>
+                                    <span>${escapeHtml(ticket.customerName)}</span>
                                 </div>
                             </div>
-                            
-                            <div class="ticket-meta">
-                                <div class="ticket-date">
-                                    <i class="bi bi-calendar-event"></i>
-                                    <span>${date}</span>
-                                </div>
-                                <div class="ticket-products-count">
-                                    <i class="bi bi-box"></i>
-                                    <span>${ticket.products.length} producto${ticket.products.length !== 1 ? 's' : ''}</span>
-                                </div>
-                            </div>
-                            
-                            <div class="ticket-actions">
-                                <button class="ticket-toggle" onclick="toggleTicketProducts('${ticket.ticketCode}')">
-                                    <span class="toggle-text">Ver productos</span>
-                                    <i class="bi bi-chevron-down toggle-icon"></i>
-                                </button>
-                            </div>
-                            
-                            <div class="ticket-products" id="products-${ticket.ticketCode}" style="display: none;">
-                                <div class="products-list">
-                                    ${ticket.products.map(product => `
-                                        <div class="product-item">
-                                            <div class="product-name">${escapeHtml(product.productName)}</div>
-                                            <div class="product-details">
-                                                <span class="quantity">Cant: ${product.quantity}</span>
-                                                <span class="price">$${product.price.toFixed(2)} c/u</span>
-                                                <span class="subtotal">$${product.subtotal.toFixed(2)}</span>
-                                            </div>
-                                        </div>
-                                    `).join('')}
-                                </div>
+                            <div class="ticket-total">
+                                $${ticket.total.toFixed(2)}
                             </div>
                         </div>
-                    `;
-                }).join('')}
-            </div>
-        `;
-        
-    } catch (error) {
-        console.error('Error al cargar tickets:', error);
-        
-        if (listElement) {
-            listElement.innerHTML = `
-                <div style="background: #2a1a1a; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #ff4444; color: #ff6666; text-align: center;">
-                    <i class="bi bi-exclamation-triangle" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i> 
-                    <strong>Error al cargar tickets:</strong><br>
-                    ${error.message}
-                    <br><br>
-                    <button class="btn primary" onclick="renderTickets()" style="margin-top: 1rem;">
-                        <i class="bi bi-arrow-clockwise"></i> Reintentar
-                    </button>
-                </div>
-            `;
-        }
-    }
+                        
+                        <div class="ticket-meta">
+                            <div class="ticket-date">
+                                <i class="bi bi-calendar-event"></i>
+                                <span>${date}</span>
+                            </div>
+                            <div class="ticket-products-count">
+                                <i class="bi bi-box"></i>
+                                <span>${ticket.products.length} producto${ticket.products.length !== 1 ? 's' : ''}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="ticket-actions">
+                            <button class="ticket-toggle" onclick="toggleTicketProducts('${ticket.ticketCode}')">
+                                <span class="toggle-text">Ver productos</span>
+                                <i class="bi bi-chevron-down toggle-icon"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="ticket-products" id="products-${ticket.ticketCode}" style="display: none;">
+                            <div class="products-list">
+                                ${ticket.products.map(product => `
+                                    <div class="product-item">
+                                        <div class="product-name">${escapeHtml(product.productName)}</div>
+                                        <div class="product-details">
+                                            <span class="quantity">Cant: ${product.quantity}</span>
+                                            <span class="price">$${product.price.toFixed(2)} c/u</span>
+                                            <span class="subtotal">$${product.subtotal.toFixed(2)}</span>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `;
 }
 
 /**
@@ -1031,9 +912,6 @@ function toggleTicketProducts(ticketCode) {
     }
 }
 
-// Hacer las funciones de movimientos disponibles globalmente
-window.loadMovements = loadMovements;
-window.refreshMovements = refreshMovements;
 
 // Hacer las funciones de tickets disponibles globalmente
 window.renderTickets = renderTickets;

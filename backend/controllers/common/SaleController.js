@@ -86,11 +86,16 @@ const createTicket = async (req, res) => {
 
 const getTickets = async(req, res) => {
     try {
-        const tickets = await getAllSales();
-        if (!tickets || tickets.length === 0) {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 6;
+        
+        const result = await getAllSales(page, limit);
+        
+        if (!result || result.count === 0) {
             return res.status(404).json({ message: "No tickets found" });
         }
-        const formattedTickets = tickets.map(ticket => ({
+        
+        const formattedTickets = result.rows.map(ticket => ({
             ticketCode: ticket.ticket_code,
             customerName: ticket.customer_name,
             total: ticket.total,
@@ -103,7 +108,18 @@ const getTickets = async(req, res) => {
             }))
         }));
 
-        res.status(200).json(formattedTickets)        
+        const totalPages = Math.ceil(result.count / limit);
+
+        res.status(200).json({
+            tickets: formattedTickets,
+            pagination: {
+                currentPage: page,
+                totalPages: totalPages,
+                totalTickets: result.count,
+                hasNextPage: page < totalPages,
+                hasPreviousPage: page > 1
+            }
+        });        
     } catch (error) {
         console.error("Error getting tickets:", error);
         res.status(500).json({ message: error.message, success: false });
