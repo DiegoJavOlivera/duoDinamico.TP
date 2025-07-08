@@ -20,7 +20,9 @@ function addToCart(product) {
     } else {
         cartObj.products.push({
             id: product.id,
+            image: product.image,
             name: product.name,
+            description: product.description,
             price: product.price,
             stock: product.stock,
             quantity: 1

@@ -1,5 +1,4 @@
 const base = window.location.origin;
-console.log("BASE ", base)
 
 function moveToLogin() {
   window.location.href = `${base}/frontend/pages/admin/login/login.html`;

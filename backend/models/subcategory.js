@@ -13,6 +13,14 @@ module.exports = (connection) => {
             allowNull: false,
             unique: true,
         },
+        image: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        description: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
         category_id: {
             type: DataTypes.INTEGER,
             allowNull: false,

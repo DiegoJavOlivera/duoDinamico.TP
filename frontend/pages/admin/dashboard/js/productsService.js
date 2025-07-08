@@ -116,7 +116,6 @@ async function deleteProductById(productId) {
         method: 'PATCH' // Usamos PATCH para cambiar el estado a inactivo
     });
     
-    console.log("RESPIONSE ", response)
     if (!response.ok) {
         throw new Error('Error al eliminar el producto');
     }

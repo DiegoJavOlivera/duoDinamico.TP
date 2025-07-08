@@ -22,6 +22,10 @@ body, html {
     background-color: var(--bg-main);
 }
 
+.theme-toggle:hover {
+    transform: rotate(15deg);
+}
+
 #ticket-bg {
     min-height: 100vh;
     width: 100vw;
@@ -125,6 +129,8 @@ body, html {
 .ticket-total-wrapper {
     margin-top: 1.5rem;
 }
+
+
 @media (max-width: 600px) {
     .ticket-card {
         min-width: 94vw;
