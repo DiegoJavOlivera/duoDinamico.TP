@@ -124,17 +124,13 @@ Ajusta los valores según tu entorno y necesidades.
    ```bash
    npm install
    ```
-2. Ejecuta el script de sincronización de la base de datos:
+
+2. Inicializa la base de datos:
    ```bash
-   npm run db:sync
+   npm run db:init
    ```
 
-3. Ejecuta el script de relleno de la base de datos:
-   ```bash
-   npm run db:seed
-   ```
-
-4. Inicia el backend:
+3. Inicia el backend:
    ```bash
    npm run dev
    ```
@@ -147,6 +143,11 @@ Ajusta los valores según tu entorno y necesidades.
 ---
 
 ## Scripts Backend(`backend/scripts`)
+
+- **init.js**: Inicializa la base de datos (eliminacion, sincronización y relleno). Ejecutar con:
+  ```bash
+  npm run db:init
+  ```
 
 - **seed.js**: Rellena la base de datos con datos de ejemplo (categorías, subcategorías, productos, usuarios, etc). Ejecutar con:
   ```bash
