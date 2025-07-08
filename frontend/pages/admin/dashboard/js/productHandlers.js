@@ -395,7 +395,7 @@ async function editProduct(productId) {
                 </div>
                 <div class="form-group">
                     <label for="editProductPrice">Precio</label>
-                    <input type="number" id="editProductPrice" step="0.01" value="${product.price}" required>
+                    <input type="number" id="editProductPrice" step="0.01" min="0" value="${product.price}" required>
                 </div>
             </div>
             
@@ -432,7 +432,7 @@ async function editProduct(productId) {
             <div class="form-row">
                 <div class="form-group">
                     <label for="editProductStock">Stock</label>
-                    <input type="number" id="editProductStock" value="${product.stock}" required>
+                    <input type="number" min="0" id="editProductStock" value="${product.stock}" required>
                 </div>
             </div>
             <div class="form-group">
